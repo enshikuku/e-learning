@@ -1,0 +1,187 @@
+@font-face {
+    font-family: Assistant;
+    src: url(Assistant-VariableFont_wght.ttf);
+}
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: Assistant;
+}
+.container {
+    padding-left: 150px;
+    padding-right: 150px;
+}
+header {
+    background-color: #CB857C;
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+header h1 {
+    color: #900020;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 47px;
+}
+header h1:hover {
+    cursor: pointer;
+}
+header img {
+    height: 50px;
+}
+header #logOut {
+    text-decoration: none;
+    border-radius: 18px;
+    color: #900020;
+    font-size: 20px;
+    padding: 5px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    transition: .5s;
+}
+header #logOut:hover  {
+    transition: .5s;
+}
+#landing > p {
+    color: #900020;
+    font-size: 30px;
+}#signInUp {
+    padding: 10px;
+    display: flex;
+    gap: 10px;
+}
+#signInUpIMG{
+    width: 32px;
+}
+#signInUp a{
+    text-decoration: none;
+    height: fit-content;
+    color: #900020;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    background-color: #F6CBB7;
+    border: 1px solid #F6CBB7;
+    padding: 10px;
+    border-radius: 18px;
+    letter-spacing: 2px;
+}
+#login-form, #signup {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#login-form form, #signup form {
+    background-color: #CB857C;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border-radius: 10px;
+    gap: 10px;
+}
+#login-form input, #signup input {
+    font-size: 25px;
+    border: #900020;
+    border-radius: 10px;
+    padding: 8px;
+}
+#login-form input[type='submit'], #signup input[type='submit'] {
+    background-color: #900020;
+    border: 1px solid #900020;
+    color: #F6CBB7;
+    font-weight: bold;
+    letter-spacing: 2px;
+    width: fit-content;
+    margin: 0 auto;
+    border-radius: 10px;
+    font-size: 23px;
+    transition: .4s;
+}
+#login-form input[type='submit']:hover, #signup input[type='submit']:hover {
+    cursor: pointer;
+    letter-spacing: 3px;
+    transition: .4s;
+}
+#login-form a, #signup a {
+    text-align: center;
+    text-decoration: none;
+    font-size: 25px;
+    color: #900020;
+    transition: .4s;
+}
+#login-form a:hover, #signup a:hover {
+    letter-spacing: 2px;
+    transition: .5s;
+}
+#login-form, #signup {
+    color: #900020;
+}
+#login-form h1, #signup h1 {
+    color: #900020;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    letter-spacing: 3px;
+    gap: 3px;
+}
+.error {
+    background-color: #ff0000;
+    border-radius: 5px;
+    color: #ffffff;
+    text-align: center;
+    padding: 5px;
+    font-weight: bold;
+}
+#home h1 {
+    text-align: center;
+    font-size: 22px;
+    padding: 5px;
+}
+
+
+
+
+
+
+
+/* Preloader */
+.loader{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    background-color: #CB857C;
+}
+.spinner{
+    width: 80px;
+    height: 80px;
+    border: 10px solid #F6CBB7;
+    border-radius: 50%;
+    background-color: #CB857C;
+    border-top: 10px solid #900020;
+    animation: spin 2s linear infinite;
+}
+@keyframes spin {
+    0%{
+        transform: rotate(0deg);
+    }
+    100%{
+        transform: rotate(360deg);
+    }    
+}
+
+/* responsive */
+@media only screen and (max-width: 730px) {
+    .container {
+        padding: 5px 5%;
+    }
+}
