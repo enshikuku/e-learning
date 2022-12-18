@@ -4,4 +4,11 @@
     <main id="home" class="container">
         <h1>Welcome, <%= locals.username %>! You have successfully logged in.</h1>
     </main>
+    <div id="home-section" class="container">
+        <p>Select course you want to learn</p>
+        <div id="courses">
+            <a href="/learn">Software Engineering</a>
+            <a href="/learn">Procedural Programming</a>
+        </div>
+    </div>
 <%- include('partials/footer') %>
