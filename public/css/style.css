@@ -24,26 +24,39 @@ header h1 {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 47px;
+    font-size: 40px;
 }
 header h1:hover {
     cursor: pointer;
 }
 header img {
-    height: 50px;
+    height: 43px;
 }
-header #logOut {
+header nav {
+    display: flex;
+    gap: 8px;
+}
+header a {
     text-decoration: none;
-    border-radius: 18px;
     color: #900020;
-    font-size: 20px;
-    padding: 5px;
+    font-size: 17px;
+    padding: 2px;
+    border-bottom: 2px solid #900020;
+    border-left: 2px solid #900020;
+    border-top: .3px solid #900020;
+    border-right: .3px solid #900020;
+    border-radius: 5px;
     font-weight: bold;
     letter-spacing: 2px;
-    transition: .5s;
+    transition: .1s;
 }
-header #logOut:hover  {
-    transition: .5s;
+header a:hover {
+    color: #b20027;
+    border-top: 2px solid #900020;
+    border-right: 2px solid #900020;
+    border-bottom: .3px solid #900020;
+    border-left: .3px solid #900020;
+    transition: .3s;
 }
 #landing > p {
     color: #900020;
