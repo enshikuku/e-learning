@@ -135,6 +135,10 @@ app.post('/signup', (req, res) => {
     }
     
 })
+// learn page
+app.get('/learn', (req, res) => {
+    res.render('learn')
+})
 // logout functionality
 app.get('/logout', (req, res) => {
     // kill the logged in session
