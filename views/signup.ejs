@@ -1,0 +1,19 @@
+<%- include('partials/header')%>
+    <%- include('partials/preloader')%>
+
+    <main id="signup">
+        <form action="/signup" method="post">
+            <h1><img src="/images/add-user.png" alt="" id="signInUpIMG">Sign Up</h1>
+            <% if(error) {%>
+                <p class="error"><%= message %></p>
+            <% } %>
+            <input type="text" name="fullname" id="" value="<%= user.name %>" placeholder="Full Name" required>
+            <input type="email" name="email" id="" value="<%= user.email %>" placeholder="Email Address" required>
+            <input type="password" name="password" id="" value="<%= user.password %>" placeholder="Password" required minlength="8">
+            <input type="password" name="confirmPassword" id="" value="<%= user.confirmPassword %>" placeholder="Confirm Password" required minlength="8">
+            <input type="submit" value="Create Account">
+            <a href="/login">Sign In</a>
+        </form>
+    </main>
+
+<%- include('partials/footer')%>
