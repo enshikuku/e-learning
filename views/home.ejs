@@ -2,13 +2,13 @@
     <%- include('partials/preloader')%>
     <%- include('partials/nav') %>
     <main id="home" class="container">
-        <h1>Welcome, <%= locals.username %>! You have successfully logged in.</h1>
+        <p><b><i>Welcome, <%= locals.username %>!</i></b> <br> <i>Thank you for logging in. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloremque harum omnis ad pariatur similique libero?</i></p>
     </main>
     <div id="home-section" class="container">
-        <p>Select course you want to learn</p>
-        <div id="courses">
-            <a href="/learn">Software Engineering</a>
-            <a href="/learn">Procedural Programming</a>
+        <p></p>
+        <div id="learnbtn">
+            <p>Click the button below and begin enjoying the tool</p>
+            <a href="/learn"><img src="/images/learn.png" alt=""> Learn</a>
         </div>
     </div>
 <%- include('partials/footer') %>
