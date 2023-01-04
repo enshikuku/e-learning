@@ -36,6 +36,9 @@ header nav {
     display: flex;
     gap: 8px;
 }
+header nav img {
+    height: 15px;
+}
 header a {
     text-decoration: none;
     color: #900020;
@@ -43,11 +46,15 @@ header a {
     padding: 2px;
     border-bottom: 2px solid #900020;
     border-left: 2px solid #900020;
-    border-top: .3px solid #900020;
-    border-right: .3px solid #900020;
+    border-top: .4px solid #900020;
+    border-right: .4px solid #900020;
     border-radius: 5px;
     font-weight: bold;
     letter-spacing: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
     transition: .1s;
 }
 header a:hover {
@@ -58,16 +65,13 @@ header a:hover {
     border-left: .3px solid #900020;
     transition: .3s;
 }
-#landing > p {
-    color: #900020;
-    font-size: 30px;
-}#signInUp {
+#signInUp {
     padding: 10px;
     display: flex;
     gap: 10px;
 }
 #signInUpIMG{
-    width: 32px;
+    width: 19px;
 }
 #signInUp a{
     text-decoration: none;
@@ -77,10 +81,10 @@ header a:hover {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 30px;
+    font-size: 20px;
     background-color: #F6CBB7;
     border: 1px solid #F6CBB7;
-    padding: 10px;
+    padding: 2px 9px;
     border-radius: 18px;
     letter-spacing: 2px;
 }
@@ -152,13 +156,32 @@ header a:hover {
     padding: 5px;
     font-weight: bold;
 }
-#home h1 {
-    text-align: center;
+#home p {
     font-size: 22px;
-    padding: 5px;
 }
-
-
+#learnbtn p {
+    font-size: 22px;
+    letter-spacing: 3px;
+}
+#learnbtn img {
+    height: 20px;
+}
+#learnbtn a {
+    text-decoration: none;
+    height: fit-content;
+    width: fit-content;
+    color: #900020;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    background-color: #F6CBB7;
+    border: 1px solid #F6CBB7;
+    padding: 2px 9px;
+    border-radius: 18px;
+    letter-spacing: 3px;
+}
 
 
 
@@ -195,6 +218,6 @@ header a:hover {
 /* responsive */
 @media only screen and (max-width: 730px) {
     .container {
-        padding: 5px 5%;
+        padding: 5px 3%;
     }
 }
