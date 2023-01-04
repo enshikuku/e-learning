@@ -137,7 +137,11 @@ app.post('/signup', (req, res) => {
 })
 // learn page
 app.get('/learn', (req, res) => {
-    res.render('learn')
+    if (res.locals.isLogedIn) {
+        res.render('learn')
+    } else {
+        res.redirect('/login')
+    }
 })
 // logout functionality
 app.get('/logout', (req, res) => {
