@@ -9,8 +9,8 @@
     font-family: Assistant;
 }
 .container {
-    padding-left: 150px;
-    padding-right: 150px;
+    padding-left: 100px;
+    padding-right: 100px;
 }
 header {
     background-color: #CB857C;
@@ -166,7 +166,7 @@ header a:hover {
 #learnbtn img {
     height: 20px;
 }
-#learnbtn a {
+#learnbtn a, .learnDocsMain a {
     text-decoration: none;
     height: fit-content;
     width: fit-content;
@@ -182,9 +182,34 @@ header a:hover {
     border-radius: 18px;
     letter-spacing: 3px;
 }
-
-
-
+.learnDocsMain {
+    display: flex;
+    width: 45%;
+    flex-direction: column;
+    min-width: 220px;
+    gap: 10px;
+    background-color: #90002099;
+    padding: 4%;
+    border-radius: 10px;
+}
+.learnDocsMain .learnDocs {
+    width: 100%;
+    height: 200px;
+    border: none;
+    background: none;
+}
+.learnUnitsMain {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.learnUnits {
+    background-color: #F6CBB799;
+    padding: 10px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    font-size: 22px;
+}
 
 
 /* Preloader */
