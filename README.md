@@ -1,1 +1,1 @@
-# E-learning portal by Shikuku Emmanuel for ELDOHUB capstone#
+Simple E-learning Portal
