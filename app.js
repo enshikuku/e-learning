@@ -143,6 +143,16 @@ app.get('/learn', (req, res) => {
         res.redirect('/login')
     }
 })
+// pdf view
+app.get('/viewpdf', (req, res) => {
+    
+    res.render('pdf')
+    // if (res.locals.isLogedIn) {
+    //     res.render('pdf')
+    // } else {
+    //     res.redirect('/login')
+    // }
+})
 // logout functionality
 app.get('/logout', (req, res) => {
     // kill the logged in session
