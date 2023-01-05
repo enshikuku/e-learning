@@ -110,13 +110,14 @@ app.post('/signup', (req, res) => {
                 }  else {
                     // create account
                     bcrypt.hash(user.password, 10, (error, hash) => {
-                        let sql = 'INSERT INTO e_student (email, name, password) VALUES (?,?,?)'
+                        let sql = 'INSERT INTO e_student (email, name, password, learn) VALUES (?,?,?,?)'
                         connection.query(
                             sql,
                             [
                                 user.email,
                                 user.name,
-                                hash
+                                hash,
+                                0
                             ],
                             (error, results) => {
                                 res.redirect('/login')
@@ -145,13 +146,34 @@ app.get('/learn', (req, res) => {
 })
 // pdf view
 app.get('/viewpdf', (req, res) => {
-    
-    res.render('pdf')
-    // if (res.locals.isLogedIn) {
-    //     res.render('pdf')
-    // } else {
-    //     res.redirect('/login')
-    // }
+    if (res.locals.isLogedIn) {
+        connection.query(
+            'SELECT learn FROM e_student WHERE id = ?', 
+            [req.session.userID],
+            (error, results) => {
+                let newResult = results[0].learn
+                newResult++
+                connection.query(
+                    'UPDATE e_student SET learn = ? WHERE id = ?;',
+                    [newResult, req.session.userID],
+                    (error, results) => {
+                        res.render('pdf')
+                    }
+                )
+                
+            }
+        )
+    } else {
+        res.redirect('/login')
+    }
+})
+// progress view
+app.get('/progress', (req, res) => {
+    if (res.locals.isLogedIn) {
+        res.render('progres')
+    } else {
+        res.redirect('/login')
+    }
 })
 // logout functionality
 app.get('/logout', (req, res) => {
