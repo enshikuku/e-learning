@@ -167,6 +167,7 @@ header a:hover {
     height: 20px;
 }
 #learnbtn a, .learnDocsMain a {
+    margin-bottom: 10px;
     text-decoration: none;
     height: fit-content;
     width: fit-content;
@@ -251,10 +252,75 @@ header a:hover {
     align-items: center;
     gap: 10px;
 }
-
-
-
-
+#progress a {
+    text-decoration: none;
+    height: fit-content;
+    width: fit-content;
+    color: #900020;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    background-color: #F6CBB7;
+    border: 1px solid #F6CBB7;
+    padding: 2px 9px;
+    border-radius: 18px;
+    letter-spacing: 3px;
+}
+#editProfile, #editProfile form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+#editProfile form .form-input {
+    width: 60%;
+    font-size: 22px;
+    display: flex;
+    text-align: left;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    border: 2px dotted black;
+    background-color: #CB857C;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+#editProfile form .form-input input, #editProfile form .form-input select {
+    width: 75%;
+    min-width: 280px;
+    font-size: 22px;
+    background: #ffede4;
+    border: 2px double #900020;
+}
+#editProfile form input[type='submit'] {
+    background-color: #005b00;
+    border: 1px solid #005b00;
+    padding: 3px 10px;
+    color: #ffede4;
+    font-weight: bold;
+    letter-spacing: 2px;
+    width: fit-content;
+    margin: 0 auto;
+    border-radius: 10px;
+    font-size: 23px;
+    transition: .4s;
+}
+#editProfile form a {
+    background-color: red;
+    border: 1px solid red;
+    padding: 3px 10px;
+    text-decoration: none;
+    color: #ffede4;
+    font-weight: bold;
+    letter-spacing: 2px;
+    width: fit-content;
+    margin: 0 auto;
+    border-radius: 10px;
+    font-size: 23px;
+    transition: .4s;
+}
 
 
 
@@ -291,5 +357,9 @@ header a:hover {
 @media only screen and (max-width: 730px) {
     .container {
         padding: 5px 3%;
+    }
+    #editProfile form .form-input {
+        width: 100%;
+        flex-direction: column;
     }
 }
