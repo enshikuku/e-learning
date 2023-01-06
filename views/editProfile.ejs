@@ -1,0 +1,35 @@
+<%- include('partials/header') %>
+    <%- include('partials/preloader') %>
+    <%- include('partials/nav') %>
+    <main class="container" id="editProfile">
+        <form action="/editProfile/<%= profile.id %>" method="post" enctype="multipart/form-data">
+            <h1>Edit Profile</h1>
+            <div class="form-input">
+                <label for="">Name</label>
+                <input type="text" name="name" id="" value="<%= profile.name %>">
+            </div>
+            <div class="form-input">
+                <label for="">Email Address</label>
+                <input type="text" name="email" id="" value="<%= profile.email %>">
+            </div>
+            <div class="form-input">
+                <label for="">Gender</label>
+                <select name="gender" id="">
+                    <% if(profile.gender) { %>
+                        <option value="<%= profile.gender %>" selected><%= profile.gender %></option>
+                    <% } %>
+                    <option value="">Choose Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </div>
+            <div class="form-input">
+                <label for="">Profile Pic (1:1)</label>
+                <input type="file" name="profilePic" id="">
+            </div>
+            <input type="submit" value="Update Profile"><br> 
+            <a href="/progress">Cancel</a>
+        </form>
+    </main>
+
+<%- include('partials/footer') %>
