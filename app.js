@@ -1,15 +1,19 @@
 import express from 'express'
-import bcrypt from 'bcrypt'
 import mysql from 'mysql'
 import session from 'express-session'
+import bcrypt from 'bcrypt'
+import multer from 'multer'
 
 const app = express()
+
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
     database: 'e_learning_portal'
 })
+
+const uploads = multer({dest: 'public/images/profileUploads' })
 
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
@@ -37,13 +41,61 @@ app.use((req, res, next) => {
 app.get('/', (req, res) => {
     res.render('index')
 })
-// home
-app.get('/home', (req, res) => {
-    if (res.locals.isLogedIn) {
-        res.render('home')
-    } else {
-        res.redirect('/login')
+// Display Signup Page
+app.get('/signup', (req, res) => {
+    const user = {
+        name: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
     }
+    res.render('signup', {error:false, user: user})
+})
+// process signup form 
+app.post('/signup', (req, res) => {
+    const user = {
+        name: req.body.fullname,
+        email: req.body.email,
+        password: req.body.password,
+        confirmPassword: req.body.confirmPassword
+    }
+    if (user.password === user.confirmPassword) {
+        // check if user exists
+        let sql = 'SELECT * FROM e_student WHERE email = ?'
+        connection.query(
+            sql, [user.email], (error, results) => {
+                if (results.length > 0) {
+                    let message = 'Account already exists with the email provided!'
+                    res.render('signup', {error: true, message: message, user: user})
+                }  else {
+                    // create account
+                    bcrypt.hash(user.password, 10, (error, hash) => {
+                        let sql = 'INSERT INTO e_student (email, name, password, learn, profilePic) VALUES (?,?,?,?,?)'
+                        connection.query(
+                            sql,
+                            [
+                                user.email,
+                                user.name,
+                                hash,
+                                0,
+                                'user.png'
+                            ],
+                            (error, results) => {
+                                res.redirect('/login')
+                            }
+                        )
+                    })
+                }
+            }
+        )
+        
+    } else {
+        
+        let message = 'Passwords dont match!'
+        res.render('signup', {error:true, message: message, user: user})
+
+    }
+    
 })
 // Display Login Page
 app.get('/login', (req, res) => {
@@ -81,60 +133,13 @@ app.post('/login', (req, res) => {
         }
     )
 })
-// Display Signup Page
-app.get('/signup', (req, res) => {
-    const user = {
-        name: '',
-        email: '',
-        password: '',
-        confirmPassword: ''
-    }
-    res.render('signup', {error:false, user: user})
-})
-// process signup form 
-app.post('/signup', (req, res) => {
-    const user = {
-        name: req.body.fullname,
-        email: req.body.email,
-        password: req.body.password,
-        confirmPassword: req.body.confirmPassword
-    }
-    if (user.password === user.confirmPassword) {
-        // check if user exists
-        let sql = 'SELECT * FROM e_student WHERE email = ?'
-        connection.query(
-            sql, [user.email], (error, results) => {
-                if (results.length > 0) {
-                    let message = 'Account already exists with the email provided!'
-                    res.render('signup', {error: true, message: message, user: user})
-                }  else {
-                    // create account
-                    bcrypt.hash(user.password, 10, (error, hash) => {
-                        let sql = 'INSERT INTO e_student (email, name, password, learn) VALUES (?,?,?,?)'
-                        connection.query(
-                            sql,
-                            [
-                                user.email,
-                                user.name,
-                                hash,
-                                0
-                            ],
-                            (error, results) => {
-                                res.redirect('/login')
-                            }
-                        )
-                    })
-                }
-            }
-        )
-        
+// home
+app.get('/home', (req, res) => {
+    if (res.locals.isLogedIn) {
+        res.render('home')
     } else {
-        
-        let message = 'Passwords dont match!'
-        res.render('signup', {error:true, message: message, user: user})
-
+        res.redirect('/login')
     }
-    
 })
 // learn page
 app.get('/learn', (req, res) => {
@@ -170,11 +175,66 @@ app.get('/viewpdf', (req, res) => {
 // progress view
 app.get('/progress', (req, res) => {
     if (res.locals.isLogedIn) {
-        res.render('progres')
+        let sql = 'SELECT * FROM e_student WHERE id = ?'
+        connection.query(
+            sql, [req.session.userID], (error, results) => {
+                res.render('progres', {profile: results[0]})
+            } 
+        )
     } else {
         res.redirect('/login')
     }
 })
+// edit Profile view
+app.get('/editMyProfile', (req, res) => {
+    if (res.locals.isLogedIn) {
+        connection.query(
+            'SELECT * FROM e_student WHERE id = ?', 
+            [req.session.userID], 
+            (error, results) =>{
+                res.render('editProfile', {profile: results[0]})
+            }
+        )       
+    } else {
+        res.redirect('/login')
+    }
+})
+app.post(
+    '/editProfile/:id', 
+    uploads.single('profilePic'), 
+    (req, res) => {
+        if (req.file) {
+            connection.query(
+                'UPDATE e_student SET email = ?, name = ?, gender = ?, profilePic = ? WHERE id = ? ',
+                [
+                    req.body.email,            
+                    req.body.name,
+                    req.body.gender,
+                    req.file.filename,
+                    parseInt(req.params.id)
+                ],
+                (error, results) => {
+                    res.redirect('/progress')
+                }
+            )
+        } else {
+            connection.query(
+                'UPDATE e_student SET email = ?, name = ?, gender = ?,  WHERE id = ? ',
+                [
+                    req.body.email,            
+                    req.body.name,
+                    req.body.gender,
+                    parseInt(req.params.id)
+                ],
+                (error, results) => {
+                    res.redirect('/progress')
+                }
+            )
+            
+        }
+    }
+)
+
 // logout functionality
 app.get('/logout', (req, res) => {
     // kill the logged in session
