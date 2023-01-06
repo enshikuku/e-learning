@@ -226,6 +226,38 @@ header a:hover {
     gap: 20px;
     margin: 10px 0;
 }
+#progress #progressProfile img {
+    width: 280px;
+    background-color: #F6CBB7;
+    border-radius: 50%;
+    border: 2px solid #900020;
+    padding: 25px;
+}
+#progress {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+#progress div {
+    text-align: center;
+    font-size: 22px;
+    width: 40%;
+    min-width: 290px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+
+
+
+
+
+
 
 /* Preloader */
 .loader{
