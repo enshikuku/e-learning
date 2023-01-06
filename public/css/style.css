@@ -231,8 +231,7 @@ header a:hover {
     width: 280px;
     background-color: #F6CBB7;
     border-radius: 50%;
-    border: 2px solid #900020;
-    padding: 25px;
+    border: 4px solid #900020;
 }
 #progress {
     display: flex;
