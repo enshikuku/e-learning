@@ -4,12 +4,26 @@
     <main class="container" id="progress">
         <div>
             <h1>Progress Tab</h1>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis voluptatum alias perferendis magni reiciendis ex quia dicta quaerat incidunt totam.</p>
         </div>
         <div id="progressProfile">
-            <img src="/images/user.png" alt="progressProfileImg">
-            <h2>Name</h2>
-            <h4>Learning Progress: <span id="learn">0</span></h4>
+            <img src="/images/profileUploads/<%= profile.profilePic %>" alt="progressProfileImg">
+            <h2><%= profile.name %></h2>
+            <h4>Learning Progress: <span id="learn"><%= profile.learn %></span></h4>
+            <p>
+                <b>Recomendation:</b> 
+                <% if(profile.learn >= 15) { %> 
+                    Well done!&#x1F60A;
+                <% } else if(profile.learn >= 10) { %>
+                    Keep Up!&#x1F603;
+                <% } else if(profile.learn >= 5) { %>
+                    Work Hard!&#x1F616;
+                <% } else if(profile.learn >= 2) { %>
+                    Be more Serious!&#x1F612;
+                <% } else { %>
+                    Go and learn dummy!&#128544;
+                <% } %>
+            </p>
         </div>
+        <a href="/editMyProfile">Edit My Profile</a>
     </main>
 <%- include('partials/footer') %>
