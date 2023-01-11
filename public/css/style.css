@@ -41,6 +41,9 @@ header nav img {
 }
 header a {
     text-decoration: none;
+}
+header nav a {
+    text-decoration: none;
     color: #900020;
     font-size: 17px;
     padding: 2px;
@@ -57,7 +60,7 @@ header a {
     gap: 2px;
     transition: .1s;
 }
-header a:hover {
+header nav a:hover {
     color: #b20027;
     border-top: 2px solid #900020;
     border-right: 2px solid #900020;
@@ -224,8 +227,81 @@ header a:hover {
 #pdf #miniNav {
     width: 100%;
     display: flex;
+    align-items: center;
+    justify-content: center;
     gap: 20px;
     margin: 10px 0;
+}
+#pdfView {
+    width: 100%;
+    height: 80vh;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+#pdfView embed {
+    width: 60%;
+}
+#pdfView div {
+    width: 30%;
+    padding: 15px;
+    font-size: 22px;
+}
+#pdfView div a {
+    text-decoration: none;
+    font-size: 20px;
+    color: #900020;
+    background-color: #F6CBB7;
+    border: 1px solid #F6CBB7;
+    border-radius: 10px;
+    padding: 1px 5px;
+    font-weight: bold;
+    letter-spacing: 3px;
+}
+#pdfView div h1 {
+    text-transform: uppercase;
+}
+#pdfView embed, #pdfView div{
+    min-width: 280px;
+    height: 100%;
+}
+#remark {
+    width: 100%;
+}
+#remark form {
+    width: 100%;
+    font-size: 22px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 10px;
+}
+#remark form div {
+    width: 60%;
+    min-width: 280px;
+}
+#remark form div input {
+    width: 100%;
+    font-size: 22px;
+    border: 2px solid #CB857C;
+    border-radius: 10px;
+    padding: 5px;
+}
+#remark form div #remarkText {
+    height: 30vh;
+}
+#remark form input[type='submit'] {
+    background-color: #900020;
+    border: 1px solid #900020;
+    color: #F6CBB7;
+    font-weight: bold;
+    padding: 3px;
+    letter-spacing: 2px;
+    width: fit-content;
+    border-radius: 10px;
+    font-size: 22px;
+    cursor: pointer;
 }
 #progress #progressProfile img {
     width: 280px;
@@ -360,5 +436,14 @@ header a:hover {
     #editProfile form .form-input {
         width: 100%;
         flex-direction: column;
+    }
+    #pdfView embed {
+        height: 60%;
+    }
+    #pdfView div {
+        height: fit-content;
+    }
+    #remark form div{
+        width: 100%;
     }
 }
