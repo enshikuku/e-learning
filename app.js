@@ -289,6 +289,125 @@ app.post(
     }
 )
 
+// Admin signup
+app.get('/adminsignup', (req, res) => {
+    const admin = {
+        name: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+        pin: '',
+    }
+    res.render('adminsignup', {error:false, admin: admin} )
+})
+// process admin signup form
+app.post('/adminsignup', (req, res) => {
+    const admin = {
+        name: req.body.name,
+        email: req.body.email,
+        password: req.body.password,
+        confirmPassword: req.body.confirmPassword,
+        pin: req.body.adminPin
+    }
+    let adminAuthentificationPin = 'Admin2023'
+    if (admin.pin === adminAuthentificationPin) {
+        if (admin.password === admin.confirmPassword) {
+            connection.query(
+                'SELECT * FROM e_adminInfo WHERE email = ?',
+                [admin.email],
+                (error, results) => {
+                    if (results.length > 0) {
+                        let message = 'Sorry! You already have an account with that Email'
+                        admin.email = ''
+                        res.render('adminsignup', {error: true, message: message, admin: admin})
+                    } else {
+                        // create account
+                        bcrypt.hash(admin.password, 10, (error, hash) => {
+                            connection.query(
+                                'INSERT INTO e_adminInfo (name, email, password) VALUES (?,?,?)',
+                                [
+                                    admin.name,
+                                    admin.email,
+                                    hash
+                                ],
+                                (error, results) => {
+                                    res.redirect('/adminlogin')
+                                }
+                            )
+                        })
+                    }
+                }
+            )
+        } else {
+            let message = 'Passwords do not match!'
+            admin.password = ''
+            admin.confirmPassword = ''
+            res.render('adminsignup', {error: true, message: message, admin: admin})
+        }       
+    } else {
+        let message = 'Incorrect Admin pin'
+        admin.pin = ''
+        res.render('adminsignup', {error: true, message: message, admin: admin})
+    }
+})
+// Admin login
+app.get('/adminlogin', (req, res) => {
+    const admin = {
+        email : '',
+        password : '',
+        pin: ''
+    }
+    res.render('adminlogin', {error:false, admin: admin})
+})
+// Process admin login frm
+app.post('/adminlogin', (req, res) => {
+    const admin = {
+        email : req.body.email,
+        password : req.body.password,
+        pin: req.body.pin
+    }
+    let adminAuthentificationPin = 'Admin2023'
+    if (admin.pin === adminAuthentificationPin) {
+        // Check if user exists
+        connection.query(
+            'SELECT * FROM e_admininfo WHERE email = ?',
+            [admin.email],
+            (error, results) => {
+                if (results.length > 0) {
+                    bcrypt.compare(admin.password, results[0].password, (error, passwordMatches) => {
+                        if (passwordMatches) {
+                            req.session.userID = results[0].adminID
+                            req.session.username = results[0].name.split(' ')[0]
+                            req.session.adminPin = adminAuthentificationPin
+                            res.redirect('/adminhome')
+                        } else {
+                            let message = 'Incorrect password!'
+                            admin.password = ''
+                            res.render('login', {error: true, message: message, admin: admin})
+                        }
+                    })
+                } else {
+                    let message = 'You do not have an account with that email! Please create one'
+                    res.render('login', {error: true, message: message, admin: admin})
+                }
+            }
+        )    
+    } else {
+        let message = 'Wrong Admin Pin'
+        admin.pin = ''
+        res.render('login', {error: true, message: message, admin: admin})
+    }
+})
+// Render admin home page
+app.get('/adminhome', (req, res) => {
+    if (req.session.adminPin === 'Admin2023') {
+        res.render('adminhome')
+    } else {
+        res.redirect('/adminlogin')
+    }
+})
+
+
 // logout functionality
 app.get('/logout', (req, res) => {
     // kill the logged in session
