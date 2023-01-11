@@ -1,0 +1,19 @@
+<%- include('partials/header') %>
+    <%- include('partials/preloader')%>
+    <%- include('partials/nav') %>
+    <main id="remark" class="container">
+        <form action="/remark/<%= resource %>" method="post">
+            <h1>Remarks</h1>
+            <p><i>Your remarks will be highly appreciated and benefitial to the development of this tool</i></p>
+            <div>
+                <label for="">Your full name</label><br>
+                <input type="text" name="name" id="remarkName" value="">
+            </div>
+            <div>
+                <label for="">What are your thoughts about the paper?</label>
+                <input type="text" name="remark" id="remarkText" value="">
+            </div>
+            <input type="submit" value="Send Remark">
+        </form>        
+    </main>
+<%- include('partials/footer') %>
