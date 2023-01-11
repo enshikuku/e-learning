@@ -1,0 +1,21 @@
+<%- include('partials/header')%>
+    <%- include('partials/preloader')%>
+
+    <main id="adminsignup">
+        <form action="/adminsignup" method="post">
+            <h1><img src="/images/add-user.png" alt="" id="signInUpIMG">Sign Up As Admin</h1>
+            <% if(error) {%>
+                <p class="error"><%= message %></p>
+            <% } %>
+            <input type="text" name="name" id="" value="<%= admin.name %>" placeholder="Full Name" required>
+            <input type="email" name="email" id="" value="<%= admin.email %>" placeholder="Email Address" required>
+            <input type="password" name="password" id="" value="<%= admin.password %>" placeholder="Your Password" required minlength="8">
+            <input type="password" name="confirmPassword" id="" value="<%= admin.confirmPassword %>" placeholder="Confirm Your Password" required minlength="8">
+            <input type="password" name="adminPin" value="<%= admin.pin %>" id="" placeholder="Enter Admin pin">
+            <input type="submit" value="Create Admin Account">
+            <a href="/adminlogin">Sign In as Admin</a>
+            <a href="/">Continue as student?</a>
+        </form>
+    </main>
+
+<%- include('partials/footer')%>
