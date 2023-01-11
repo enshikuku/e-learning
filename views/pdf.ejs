@@ -6,6 +6,13 @@
             <a href="/learn">UNITS</a>
             <a href="/progress">PROGRESS</a>
         </div>
-        <embed src="/docs/Programming.pdf" type="application/pdf" width="100%" height="600px"/>
+        <div id="pdfView">
+            <embed src="/docs/<%= routes.route %>" type="application/pdf"/>
+            <div>
+                <h1><%= routes.resource %></h1>
+                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Maiores itaque est delectus eius. Doloribus ipsam est in nulla maxime officia perspiciatis expedita dolore officiis maiores, ratione nisi voluptatum voluptates ea?</p>
+                <a href="/remark/<%= routes.resource %>">Leave a remark</a>
+            </div>
+        </div>
     </main>
 <%- include('partials/footer') %>
