@@ -39,7 +39,11 @@ app.use((req, res, next) => {
 } )
 // Landing page
 app.get('/', (req, res) => {
-    res.render('index')
+    if (res.locals.isLogedIn) {
+        res.redirect('/home')
+    } else {
+        res.render('index')
+    }
 })
 // Display Signup Page
 app.get('/signup', (req, res) => {
@@ -150,7 +154,9 @@ app.get('/learn', (req, res) => {
     }
 })
 // pdf view
-app.get('/viewpdf', (req, res) => {
+app.get('/viewpdf/:resource', (req, res) => {
+    let resource = req.params.resource
+    // console.log(resource)
     if (res.locals.isLogedIn) {
         connection.query(
             'SELECT learn FROM e_student WHERE id = ?', 
@@ -162,10 +168,58 @@ app.get('/viewpdf', (req, res) => {
                     'UPDATE e_student SET learn = ? WHERE id = ?;',
                     [newResult, req.session.userID],
                     (error, results) => {
-                        res.render('pdf')
+                        connection.query(
+                            'SELECT * FROM learningremarks WHERE resource = ?',
+                            [resource],
+                            (error, results) => {
+                                res.render('pdf', {routes: results[0]})
+                            }
+                        )
                     }
                 )
                 
+            }
+        )
+    } else {
+        res.redirect('/login')
+    }
+})
+// remark view 
+app.get('/remark/:resource', (req, res) => {
+    let resource = req.params.resource
+    if (res.locals.isLogedIn) {
+        
+        res.render('remark', {resource: resource})
+    } else {
+        res.redirect('/login')
+    }
+})
+app.post('/remark/:resource', (req, res) => {
+    let resource = req.params.resource
+    const userRemarks = {
+        name: req.body.name,
+        remark: req.body.remark
+    }
+    if (res.locals.isLogedIn) {
+        connection.query(
+            'SELECT studentremarks FROM learningremarks WHERE resource = ?',
+            [resource],
+            (error, results) => {
+                let newstudetremarks = results[0].studentremarks
+                newstudetremarks++
+                connection.query(
+                    'UPDATE learningremarks SET studentremarks = ? WHERE resource = ?', 
+                    [newstudetremarks, resource],
+                    (error, results) => {
+                        connection.query(
+                            'INSERT INTO remarks_table (resource, name, remark) VALUES (?, ?, ?)',
+                            [resource, userRemarks.name, userRemarks.remark],
+                            (error, results) => {
+                                res.redirect('/learn')
+                            }
+                        )
+                    }
+                )
             }
         )
     } else {
@@ -244,5 +298,5 @@ app.get('/logout', (req, res) => {
 })
 const PORT = process.env.PORT || 3550
 app.listen(PORT, () => {
-    console.log(`app is running on PORT ${PORT}`)
+    console.log(`app is live on PORT ${PORT}`)
 })
