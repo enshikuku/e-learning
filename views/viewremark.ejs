@@ -2,6 +2,18 @@
     <%- include('partials/preloader')%>
     <%- include('partials/nav') %>
     <main id="adminviewremark" class="container">
-        <p>adminviewremark</p>
+        <div>
+            <h1>Total remarks: <%= results.length %></h1>
+            
+            <% results.forEach(result => { %>
+                <div class="remarkMain">
+                    <p class="remarkid"><%= results.indexOf(result)+1 %>. <%= result.name %></p>
+                    <div class="remarks">
+                        <div class="remarkInfo resources"><p><b>Resource:</b> <i class="resource"><%= result.resource %></i></p></div>
+                        <div class="remarkInfo remark"><p><b>Remark: </b><%= result.remark %></p></div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
     </main>
 <%- include('partials/footer') %>
