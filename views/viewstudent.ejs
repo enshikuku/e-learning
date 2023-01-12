@@ -1,0 +1,29 @@
+<%- include('partials/header') %>
+    <%- include('partials/preloader')%>
+    <%- include('partials/nav') %>
+    <main id="adminviewstudent" class="container">
+        <div>
+            <h1>Total students: <%= results.length %></h1>
+            <% results.forEach(result => { %>
+                <div class="student">
+                    <div><img src="/images/profileUploads/<%= result.profilePic %>" alt="" class="pic"></div>
+                    <p class="name"><%= result.name %></p>
+                    <p>gender<%= result.gender %></p>
+                    <p class="learn">Activity: <%= result.learn %>
+                        <% if(result.learn >= 15) { %> 
+                            &#x1F60A;
+                        <% } else if(result.learn >= 10) { %>
+                            &#x1F603;
+                        <% } else if(result.learn >= 5) { %>
+                            &#x1F616;
+                        <% } else if(result.learn >= 2) { %>
+                            &#x1F612;
+                        <% } else { %>
+                            &#128544;
+                        <% } %>
+                    </p>
+                </div>
+            <% }) %>
+        </div>       
+    </main>
+<%- include('partials/footer') %>
