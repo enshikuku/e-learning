@@ -1,10 +1,10 @@
 const load = document.querySelector(".loader")
+let students = document.querySelectorAll('.studentidandname')
+let details = document.querySelectorAll('.studentdetailedinformation')
+
 window.addEventListener("load", function(){
     load.style.display = 'none'
 })
-
-let students = document.querySelectorAll('.studentidandname')
-let details = document.querySelectorAll('.studentdetailedinformation')
 
 students.forEach(student => {
     student.addEventListener('click', () => {
