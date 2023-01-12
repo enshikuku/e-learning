@@ -24,13 +24,13 @@ header h1 {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 40px;
+    font-size: 30px;
 }
 header h1:hover {
     cursor: pointer;
 }
 header img {
-    height: 43px;
+    height: 31px;
 }
 header nav {
     display: flex;
@@ -43,7 +43,6 @@ header a {
     text-decoration: none;
 }
 header nav a {
-    text-decoration: none;
     color: #900020;
     font-size: 17px;
     padding: 2px;
@@ -442,21 +441,84 @@ header nav a:hover {
 #adminhome > div p {
     text-align: center;
 }
-#adminviewstudent .student {
-    border: 1px solid black;
+#adminviewstudent .studentdetailedinformation {
     padding: 10px;
-    display: flex;
+    display: none;
     gap: 20px;
     flex-wrap: wrap;
     align-items: center;
+    border-radius: 0 0 15px 15px;
+    border-right: 2px solid #900020;
+    border-bottom: 2px solid #900020;
+    border-left: 2px solid #900020;
 }
-#adminviewstudent .student .pic {
-    width: 150px;
+#adminviewstudent .studentmain {
+    /* border: 2px 0 0 2px double #900020; */
+    border-radius: 15px;
+    margin-bottom: 10px;
+}
+#adminviewstudent .studentidandname {
+    border-radius: 15px;
+    border: 2px double #900020;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    word-spacing: 4px;
+    border-radius: -10px;
+    font-size: 20px;
+    color: #5f0015;
+    font-weight: bold;
+    padding: 5px 20px;
+} 
+#adminviewstudent .studentdetailedinformation .pic {
+    width: 100px;
     background-color: #F6CBB7;
     border-radius: 50%;
     border: 4px solid #900020;
 }
-
+#adminviewstudent .studentdetailedinformation .studentinfo {
+    width: 23%;
+    font-size: 22px;
+    text-transform: uppercase;
+    font-weight: bold;
+    min-width: 180px;
+}
+#adminviewstudent .studentdetailedinformation .studentinfo .email {
+    text-transform: lowercase;
+    letter-spacing: 2px;
+}
+#adminviewremark .remarkMain, #adminviewresource .resourcesMain {
+    border: 2px solid #900020;
+    margin-bottom: 10px;
+    border-radius: 15px;
+}
+#adminviewremark div .remarkid, #adminviewresource .resourceid {
+    border-bottom: 2px solid #900020;
+    text-transform: uppercase;
+    color: #5f0015;
+    padding: 2px 5px;
+    font-size: 22px;
+}
+#adminviewremark .remarks, #adminviewresource .resources {
+    display: flex;
+    min-height: 60px;
+    flex-wrap: wrap;
+}
+#adminviewremark div .remarkInfo, #adminviewresource .resourceInfo {
+    font-size: 22px;
+    min-width: 280px;
+    padding: 5px;
+}
+#adminviewremark .remarks .remark {
+    width: 65%;
+}
+#adminviewremark .remarks .resources {
+    width: 30%;
+}
+#adminviewremark div .remarkInfo .resource {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
 /* Preloader */
 .loader{
     width: 100%;
@@ -490,6 +552,18 @@ header nav a:hover {
     .container {
         padding: 5px 3%;
     }
+    header h1 {
+        font-size: 25px;
+    }
+    header img {
+        width: 26px;
+    }
+    header nav a {
+        font-size: 13px;
+    }
+    header nav img {
+        width: 13px;
+    }
     #editProfile form .form-input {
         width: 100%;
         flex-direction: column;
@@ -502,9 +576,6 @@ header nav a:hover {
     }
     #remark form div{
         width: 100%;
-    }
-    #adminviewstudent .student .pic {
-        width: 100px;
     }
     #adminviewstudent .student {
         gap: 10px;
