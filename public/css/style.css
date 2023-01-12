@@ -399,9 +399,63 @@ header nav a:hover {
     font-size: 23px;
     transition: .4s;
 }
-
-
-
+#adminhome #adminview {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+    border: 2px dotted #900020;
+    background-color: #ffffff;
+    border-radius: 10px;
+}
+#adminhome #adminview .actualviews {
+    border: 2px dotted #900020;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 32%;
+    min-width: 280px;
+    height: fit-content;
+    border-radius: 30px;
+}
+#adminhome #adminview .actualviews img {
+    width: 100%;
+    border-radius: 30px 30px 0 0;
+}
+#adminhome #adminview .actualviews a {
+    text-decoration: none;
+}
+#adminhome #adminview .actualviews .cardtitle {
+    width: 100%;
+    text-align: center;
+    background-color: #F6CBB7;
+    color: #900020;
+    text-transform: uppercase;
+    border-radius: 0 0 30px 30px;
+}
+#adminhome > div {
+    font-size: 22px;
+}
+#adminhome > div p {
+    text-align: center;
+}
+#adminviewstudent .student {
+    border: 1px solid black;
+    padding: 10px;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+#adminviewstudent .student .pic {
+    width: 150px;
+    background-color: #F6CBB7;
+    border-radius: 50%;
+    border: 4px solid #900020;
+}
 
 /* Preloader */
 .loader{
@@ -448,5 +502,11 @@ header nav a:hover {
     }
     #remark form div{
         width: 100%;
+    }
+    #adminviewstudent .student .pic {
+        width: 100px;
+    }
+    #adminviewstudent .student {
+        gap: 10px;
     }
 }
