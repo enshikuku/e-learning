@@ -39,8 +39,10 @@ app.use((req, res, next) => {
 } )
 // Landing page
 app.get('/', (req, res) => {
-    if (res.locals.isLogedIn) {
-        res.redirect('/home')
+    if (res.locals.isLogedIn && req.session.adminPin === 'Admin2023') {
+        res.redirect('/adminhome')
+    } else if (res.locals.isLogedIn) {
+        res.redirect('home')
     } else {
         res.render('index')
     }
@@ -139,7 +141,10 @@ app.post('/login', (req, res) => {
 })
 // home
 app.get('/home', (req, res) => {
-    if (res.locals.isLogedIn) {
+    
+    if (res.locals.isLogedIn && req.session.adminPin === 'Admin2023') {
+        res.redirect('/adminhome')
+    } else if (res.locals.isLogedIn) {
         res.render('home')
     } else {
         res.redirect('/login')
@@ -253,39 +258,42 @@ app.get('/editMyProfile', (req, res) => {
         res.redirect('/login')
     }
 })
-app.post(
-    '/editProfile/:id', 
-    uploads.single('profilePic'), 
-    (req, res) => {
-        if (req.file) {
-            connection.query(
-                'UPDATE e_student SET email = ?, name = ?, gender = ?, profilePic = ? WHERE id = ? ',
-                [
-                    req.body.email,            
-                    req.body.name,
-                    req.body.gender,
-                    req.file.filename,
-                    parseInt(req.params.id)
-                ],
-                (error, results) => {
-                    res.redirect('/progress')
-                }
-            )
-        } else {
-            connection.query(
-                'UPDATE e_student SET email = ?, name = ?, gender = ?,  WHERE id = ? ',
-                [
-                    req.body.email,            
-                    req.body.name,
-                    req.body.gender,
-                    parseInt(req.params.id)
-                ],
-                (error, results) => {
-                    res.redirect('/progress')
-                }
-            )
-            
-        }
+app.post('/editProfile/:id', uploads.single('profilePic'), (req, res) => {
+    // const e_student = {
+    //     email: req.body.email,
+    //     name: req.body.name,
+    //     gender: req.body.gender,
+    //     filename
+    // }
+    if (req.file) {
+        connection.query(
+            'UPDATE e_student SET email = ?, name = ?, gender = ?, profilePic = ? WHERE id = ? ',
+            [
+                req.body.email,            
+                req.body.name,
+                req.body.gender,
+                req.file.filename,
+                parseInt(req.params.id)
+            ],
+            (error, results) => {
+                res.redirect('/progress')
+            }
+        )
+    } else {
+        connection.query(
+            'UPDATE e_student SET email = ?, name = ?, gender = ?,  WHERE id = ? ',
+            [
+                req.body.email,            
+                req.body.name,
+                req.body.gender,
+                parseInt(req.params.id)
+            ],
+            (error, results) => {
+                res.redirect('/progress')
+            }
+        )
+        
+    }
     }
 )
 
@@ -383,25 +391,55 @@ app.post('/adminlogin', (req, res) => {
                         } else {
                             let message = 'Incorrect password!'
                             admin.password = ''
-                            res.render('login', {error: true, message: message, admin: admin})
+                            res.render('adminlogin', {error: true, message: message, admin: admin})
                         }
                     })
                 } else {
                     let message = 'You do not have an account with that email! Please create one'
-                    res.render('login', {error: true, message: message, admin: admin})
+                    res.render('adminlogin', {error: true, message: message, admin: admin})
                 }
             }
         )    
     } else {
         let message = 'Wrong Admin Pin'
-        admin.pin = ''
-        res.render('login', {error: true, message: message, admin: admin})
+        admin.pin = 'Admin2023'    //remember to remove this..............................................................
+        res.render('adminlogin', {error: true, message: message, admin: admin})
     }
 })
 // Render admin home page
 app.get('/adminhome', (req, res) => {
     if (req.session.adminPin === 'Admin2023') {
         res.render('adminhome')
+    } else {
+        res.redirect('/adminlogin')
+    }
+})
+// Render viewStudent
+app.get('/viewstudent', (req, res) => {
+    if (req.session.adminPin === 'Admin2023') {
+        connection.query(
+            'SELECT name, email, learn, gender, profilePic FROM e_student',
+            [],
+            (error, results) => {
+                res.render('viewstudent', {results: results})
+            }
+        )
+    } else {
+        res.redirect('/adminlogin')
+    }
+})
+// Render viewresource
+app.get('/viewresource', (req, res) => {
+    if (req.session.adminPin === 'Admin2023') {
+        res.render('viewresource')
+    } else {
+        res.redirect('/adminlogin')
+    }
+})
+// Render viewremarks
+app.get('/viewremark', (req, res) => {
+    if (req.session.adminPin === 'Admin2023') {
+        res.render('viewremark')
     } else {
         res.redirect('/adminlogin')
     }
