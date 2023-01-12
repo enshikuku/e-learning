@@ -5,23 +5,28 @@
         <div>
             <h1>Total students: <%= results.length %></h1>
             <% results.forEach(result => { %>
-                <div class="student">
-                    <div><img src="/images/profileUploads/<%= result.profilePic %>" alt="" class="pic"></div>
-                    <p class="name"><%= result.name %></p>
-                    <p>gender<%= result.gender %></p>
-                    <p class="learn">Activity: <%= result.learn %>
-                        <% if(result.learn >= 15) { %> 
-                            &#x1F60A;
-                        <% } else if(result.learn >= 10) { %>
-                            &#x1F603;
-                        <% } else if(result.learn >= 5) { %>
-                            &#x1F616;
-                        <% } else if(result.learn >= 2) { %>
-                            &#x1F612;
-                        <% } else { %>
-                            &#128544;
-                        <% } %>
-                    </p>
+                <div class="studentmain">
+                    <p class="studentidandname"><%= results.indexOf(result)+1 %>. <%= result.name %></p>
+                    <div class="studentdetailedinformation">
+                        <div class="studentinfo"><img src="/images/profileUploads/<%= result.profilePic %>" alt="" class="pic"></div>
+                        <div class="studentinfo"><p class="email"><%= result.email %></p></div>
+                        <div class="studentinfo"><p><i><%= result.gender %></i></p></div>
+                        <div class="studentinfo">
+                            <p class="learn"><i>Activity: <%= result.learn %></i>
+                                <% if(result.learn >= 15) { %> 
+                                    &#x1F60A;
+                                <% } else if(result.learn >= 10) { %>
+                                    &#x1F603;
+                                <% } else if(result.learn >= 5) { %>
+                                    &#x1F616;
+                                <% } else if(result.learn >= 2) { %>
+                                    &#x1F612;
+                                <% } else { %>
+                                    &#128544;
+                                <% } %>
+                            </p>
+                        </div>
+                    </div>
                 </div>
             <% }) %>
         </div>       
