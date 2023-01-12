@@ -177,7 +177,21 @@ app.get('/viewpdf/:resource', (req, res) => {
                             'SELECT * FROM learningremarks WHERE resource = ?',
                             [resource],
                             (error, results) => {
-                                res.render('pdf', {routes: results[0]})
+                                let newopened = results[0].opened
+                                newopened++
+                                connection.query(
+                                    'UPDATE learningremarks SET opened = ? WHERE resource = ?',
+                                    [newopened, resource],
+                                    (error, results) => {
+                                        connection.query(
+                                            'SELECT * FROM learningremarks WHERE resource = ?',
+                                            [resource],
+                                            (error, results) => {
+                                                res.render('pdf', {routes: results[0]})
+                                            }
+                                        )
+                                    }
+                                )
                             }
                         )
                     }
@@ -192,17 +206,17 @@ app.get('/viewpdf/:resource', (req, res) => {
 // remark view 
 app.get('/remark/:resource', (req, res) => {
     let resource = req.params.resource
+    let username = req.session.username
     if (res.locals.isLogedIn) {
-        
-        res.render('remark', {resource: resource})
+        res.render('remark', {resource: resource, username: username})
     } else {
         res.redirect('/login')
     }
 })
-app.post('/remark/:resource', (req, res) => {
+app.post('/remark/:resource/:username', (req, res) => {
     let resource = req.params.resource
+    let username = req.params.username
     const userRemarks = {
-        name: req.body.name,
         remark: req.body.remark
     }
     if (res.locals.isLogedIn) {
@@ -218,7 +232,7 @@ app.post('/remark/:resource', (req, res) => {
                     (error, results) => {
                         connection.query(
                             'INSERT INTO remarks_table (resource, name, remark) VALUES (?, ?, ?)',
-                            [resource, userRemarks.name, userRemarks.remark],
+                            [resource, username, userRemarks.remark],
                             (error, results) => {
                                 res.redirect('/learn')
                             }
@@ -431,7 +445,13 @@ app.get('/viewstudent', (req, res) => {
 // Render viewresource
 app.get('/viewresource', (req, res) => {
     if (req.session.adminPin === 'Admin2023') {
-        res.render('viewresource')
+        connection.query(
+            'SELECT * FROM learningremarks',
+            [],
+            (error, results) => {
+                res.render('viewresource', {results: results})
+            }
+        )
     } else {
         res.redirect('/adminlogin')
     }
@@ -439,7 +459,13 @@ app.get('/viewresource', (req, res) => {
 // Render viewremarks
 app.get('/viewremark', (req, res) => {
     if (req.session.adminPin === 'Admin2023') {
-        res.render('viewremark')
+        connection.query(
+            'SELECT * FROM remarks_table',
+            [],
+            (error, results) => {
+                res.render('viewremark', {results: results})
+            }
+        )
     } else {
         res.redirect('/adminlogin')
     }
