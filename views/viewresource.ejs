@@ -2,6 +2,35 @@
     <%- include('partials/preloader')%>
     <%- include('partials/nav') %>
     <main id="adminviewresource" class="container">
-        <p>adminviewresource</p>
+        <div>
+            <h1>Total resources: <%= results.length %></h1>
+            <% results.forEach(result => { %>
+                <div class="resourcesMain">
+                    <p class="resourceid"><%= results.indexOf(result)+1 %>. <%= result.resource %></p>
+                    <div class="resources">
+                        <div class="resourceInfo">
+                            <p>
+                                <b>No. of times used: </b> 
+                                <% if(result.opened > 0) { %>
+                                    <%= result.opened %>
+                                <% } else { %>
+                                    <i>Never</i>
+                                <% } %>
+                            </p>
+                        </div>
+                        <div class="resourceInfo">
+                            <p>
+                                <b>No. of remarks: </b>
+                                <% if(result.studentremarks > 0) { %>
+                                    <%= result.studentremarks %>
+                                <% } else { %>
+                                    <i>None</i>
+                                <% } %>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
     </main>
 <%- include('partials/footer') %>
