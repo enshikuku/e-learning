@@ -70,6 +70,7 @@ header nav a:hover {
 #signInUp {
     padding: 10px;
     display: flex;
+    flex-wrap: wrap;
     gap: 10px;
 }
 #signInUpIMG{
@@ -78,6 +79,7 @@ header nav a:hover {
 #signInUp a{
     text-decoration: none;
     height: fit-content;
+    width: fit-content;
     color: #900020;
     font-weight: bold;
     display: flex;
@@ -190,7 +192,7 @@ header nav a:hover {
 }
 .learnDocsMain {
     display: flex;
-    width: 35%;
+    /* width: 35%; */
     flex-direction: column;
     min-width: 220px;
     gap: 10px;
@@ -212,9 +214,17 @@ header nav a:hover {
 .learnUnits {
     background-color: #F6CBB799;
     padding: 20px;
+    width: 40%;
+    min-width: 300px;
     border-radius: 15px;
     margin-bottom: 20px;
     font-size: 22px;
+}
+#learn #learndiv {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 20px;
 }
 #pdf #miniNav a {
     font-size: 25px;
@@ -283,7 +293,7 @@ header nav a:hover {
     width: 60%;
     min-width: 280px;
 }
-#remark form div input {
+#remark form div textarea {
     width: 100%;
     font-size: 22px;
     border: 2px solid #CB857C;
@@ -453,7 +463,6 @@ header nav a:hover {
     border-left: 2px solid #900020;
 }
 #adminviewstudent .studentmain {
-    /* border: 2px 0 0 2px double #900020; */
     border-radius: 15px;
     margin-bottom: 10px;
 }
@@ -519,6 +528,83 @@ header nav a:hover {
     text-transform: uppercase;
     letter-spacing: 2px;
 }
+#adminviewresource #rscmininav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 5px 10px;
+}
+#adminviewresource #rscmininav #editmininav {
+    width: fit-content;
+}
+#adminviewresource #rscmininav #editmininav a {
+    text-decoration: none;
+    text-transform: uppercase;
+    height: fit-content;
+    width: fit-content;
+    color: #900020;
+    font-weight: bold;
+    font-size: 19px;
+    background-color: #F6CBB7;
+    border: 1px solid #F6CBB7;
+    padding: 2px 9px;
+    border-radius: 18px;
+    letter-spacing: 3px;
+}
+#addresource, #addresource form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}#addresource form .form-input {
+    width: 100%;
+    font-size: 22px;
+    display: flex;
+    text-align: left;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    border: 2px dotted black;
+    background-color: #CB857C;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+#addresource form .form-input input {
+    width: 90%;
+    min-width: 280px;
+    font-size: 22px;
+    background: #ffede4;
+    border: 2px double #900020;
+}
+#addresource form input[type='submit'] {
+    background-color: #005b00;
+    border: 1px solid #005b00;
+    padding: 3px 10px;
+    color: #ffede4;
+    font-weight: bold;
+    letter-spacing: 2px;
+    width: fit-content;
+    margin: 0 auto;
+    border-radius: 10px;
+    font-size: 23px;
+    transition: .4s;
+}
+#addresource form a {
+    background-color: red;
+    border: 1px solid red;
+    padding: 3px 10px;
+    text-decoration: none;
+    color: #ffede4;
+    font-weight: bold;
+    letter-spacing: 2px;
+    width: fit-content;
+    margin: 0 auto;
+    border-radius: 10px;
+    font-size: 23px;
+    transition: .4s;
+}
 /* Preloader */
 .loader{
     width: 100%;
@@ -564,7 +650,7 @@ header nav a:hover {
     header nav img {
         width: 13px;
     }
-    #editProfile form .form-input {
+    #editProfile form .form-input, #addresource form .form-input {
         width: 100%;
         flex-direction: column;
     }

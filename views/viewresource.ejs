@@ -3,10 +3,13 @@
     <%- include('partials/nav') %>
     <main id="adminviewresource" class="container">
         <div>
-            <h1>Total resources: <%= results.length %></h1>
+            <div id="rscmininav">
+                <div id="editmininav"><h1>Total resources: <%= results.length %></h1></div>
+                <div id="editmininav"><a href="/editresources">EDIT resources</a></div>
+            </div>
             <% results.forEach(result => { %>
                 <div class="resourcesMain">
-                    <p class="resourceid"><%= results.indexOf(result)+1 %>. <%= result.resource %></p>
+                    <p class="resourceid"><%= results.indexOf(result)+1 %>. <%= result.rsctitle %></p>
                     <div class="resources">
                         <div class="resourceInfo">
                             <p>
