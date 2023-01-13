@@ -13,7 +13,7 @@ const connection = mysql.createConnection({
     database: 'e_learning_portal'
 })
 
-const uploads = multer({dest: 'public/images/profileUploads' })
+const uploads = multer({dest: 'public/uploads' })
 
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
@@ -153,7 +153,13 @@ app.get('/home', (req, res) => {
 // learn page
 app.get('/learn', (req, res) => {
     if (res.locals.isLogedIn) {
-        res.render('learn')
+        connection.query(
+            'SELECT * FROM learningremarks',
+            [],
+            (error, results) => {
+                res.render('learn', {results: results})
+            }
+        )
     } else {
         res.redirect('/login')
     }
@@ -456,6 +462,30 @@ app.get('/viewresource', (req, res) => {
         res.redirect('/adminlogin')
     }
 })
+// Render editresources
+app.get('/editresources', (req, res) => {
+    if (req.session.adminPin === 'Admin2023') {
+        res.render('editresources')
+    } else {
+        res.redirect('/adminlogin')
+    }
+})
+
+app.post('/addresource', uploads.single('route'), (req, res) => {
+        connection.query(
+            'INSERT INTO learningremarks (rsctitle, learndefinition, resource, route) VALUES (?, ?, ?, ?)',
+            [
+                req.body.rsctitle,            
+                req.body.learndefinition,
+                req.body.resource,
+                req.file.filename,
+            ],
+            (error, results) => {
+                res.redirect('/viewresource')
+            }
+        )
+})
+
 // Render viewremarks
 app.get('/viewremark', (req, res) => {
     if (req.session.adminPin === 'Admin2023') {
@@ -470,7 +500,6 @@ app.get('/viewremark', (req, res) => {
         res.redirect('/adminlogin')
     }
 })
-
 
 // logout functionality
 app.get('/logout', (req, res) => {
