@@ -7,10 +7,10 @@
             <a href="/progress">PROGRESS</a>
         </div>
         <div id="pdfView">
-            <embed src="/docs/<%= routes.route %>" type="application/pdf"/>
+            <embed src="/uploads/<%= routes.route %>" type="application/pdf"/>
             <div>
-                <h1><%= routes.resource %></h1>
-                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Maiores itaque est delectus eius. Doloribus ipsam est in nulla maxime officia perspiciatis expedita dolore officiis maiores, ratione nisi voluptatum voluptates ea?</p>
+                <h1><%= routes.rsctitle %></h1>
+                <p><%= routes.learndefinition %></p>
                 <a href="/remark/<%= routes.resource %>">Leave a remark</a>
             </div>
         </div>
