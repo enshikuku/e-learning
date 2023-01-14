@@ -422,7 +422,6 @@ app.post('/adminlogin', (req, res) => {
         )    
     } else {
         let message = 'Wrong Admin Pin'
-        admin.pin = 'Admin2023'    //remember to remove this..............................................................
         res.render('adminlogin', {error: true, message: message, admin: admin})
     }
 })
@@ -508,6 +507,10 @@ app.get('/logout', (req, res) => {
         res.redirect('/')
     })
 })
+app.get('*', (req, res) => {
+    res.render('pagenotfound')
+})
+
 const PORT = process.env.PORT || 3550
 app.listen(PORT, () => {
     console.log(`app is live on PORT ${PORT}`)
