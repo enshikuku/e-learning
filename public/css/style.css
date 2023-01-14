@@ -67,30 +67,72 @@ header nav a:hover {
     border-left: .3px solid #900020;
     transition: .3s;
 }
-#signInUp {
-    padding: 10px;
+#landing {
+    font-size: 22px;
+}
+#landing .landingSing {
+    border: 2px dotted #5f0015;
+    width: 100%;
+    min-width: 302px;
+    border-radius: 15px;
     display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
-#signInUpIMG{
-    width: 19px;
+#landing .landingSing .userpic, #landing .signInUp {
+    width: 100%;
+    min-width: 300px;
 }
-#signInUp a{
+#landing .signInUp a {
     text-decoration: none;
-    height: fit-content;
-    width: fit-content;
+    width: 48%;
+    font-size: 17px;
+    padding: 5px;
+    background-color: #F6CBB7;
     color: #900020;
     font-weight: bold;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 20px;
+}
+#landing #landingMain .landingMainDiv {
+    min-width: 300px;
+    width: 45%;
+}
+#landing #landingMain .landingMainDiv .title {
+    width: 100%;
     background-color: #F6CBB7;
-    border: 1px solid #F6CBB7;
-    padding: 2px 9px;
-    border-radius: 18px;
-    letter-spacing: 2px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+    border-radius: 15px 15px 0 0;
+}
+#landing #landingMain {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+#landing .signInUp {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 0 0 15px 15px;
+}
+#landing .signInUp .left {
+    border-radius: 0 15px 0 15px;
+}
+#landing .signInUp .right {
+    border-radius: 15px 0 15px 0;
+}
+#landing .signInUpIMG {
+    width: 17px;
+}
+#login-form .signInUpIMG, #signup .signInUpIMG, #adminsignup .signInUpIMG, #adminlogin .signInUpIMG{
+    width: 32px;
 }
 #login-form, #signup, #adminsignup, #adminlogin {
     height: 100vh;
@@ -166,14 +208,50 @@ header nav a:hover {
 #home p {
     font-size: 22px;
 }
-#learnbtn p {
+#cardsHolder {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+#cardsHolder .cardMain .card {
+    width: 100%;
+    min-width: 300px;
+    border-radius: 25px 25px 0 0;
+    display: flex;
+    flex-direction: column;
+}
+#cardsHolder .cardMain {
+    border-radius: 25px 25px 15px 15px;
+    width: 45%;
+    min-width: 304px;
+    text-decoration: none;
+    font-size: 25px;
+    font-weight: 400;
+    color: #5f0015;
+    border: 2px dotted #5f0015;
+    background-color: #F6CBB7;
+    text-transform: uppercase;
+}
+#cardsHolder .cardMain .icon {
+    width: 26px;
+}
+#cardsHolder .cardMain p {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3px;
+
+}
+#home-section {
     font-size: 22px;
+    text-align: center;
     letter-spacing: 3px;
+    cursor: default;
 }
-#learnbtn img {
-    height: 20px;
-}
-#learnbtn a, .learnDocsMain a {
+.learnDocsMain a {
     margin-bottom: 10px;
     text-decoration: none;
     height: fit-content;
@@ -605,6 +683,28 @@ header nav a:hover {
     font-size: 23px;
     transition: .4s;
 }
+#pagenotfound {
+    text-align: center;
+    font-size: 22px;
+}
+#pagenotfound a {
+    display: flex;
+    width: fit-content;
+    margin: 0 auto;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #900020;
+    color: #900020;
+    border-radius: 5px;
+    text-decoration: none;
+}
+#pagenotfound a img {
+    height: 22px;
+    width: 22px;
+}
+#pagenotfound, #pagenotfound img {
+    width: 100%;
+}
 /* Preloader */
 .loader{
     width: 100%;
@@ -612,7 +712,9 @@ header nav a:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    position: absolute;
+    position: fixed;
+    z-index: 99;
+    top: 0;
     background-color: #CB857C;
 }
 .spinner{
@@ -656,9 +758,11 @@ header nav a:hover {
     }
     #pdfView embed {
         height: 60%;
+        width: 100%;
     }
     #pdfView div {
         height: fit-content;
+        width: 100%;
     }
     #remark form div{
         width: 100%;
