@@ -2,7 +2,7 @@
     <%- include('partials/preloader')%>
     <main id="adminlogin">
         <form action="/adminlogin" method="post">
-            <h1><img src="/images/login.png" alt="" id="signInUpIMG">Log In As Admin</h1>
+            <h1><img src="/images/login.png" alt="" class="signInUpIMG">Log In As Admin</h1>
             <% if(error) {%>
                 <p class="error"><%= message %></p>
             <% } %>

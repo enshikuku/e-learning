@@ -2,16 +2,29 @@
     <%- include('partials/preloader')%>
     <%- include('partials/nav')%>
     <main class="container" id="landing">
-        <h1>E-LEARNING-PORTAL</h1>
-        <P>Are you a student? Looking for materials to study online with no ads? This free tool will help you learn and also track your consistency.</P>
-        <span id="signInUp">
-            <a href="/signup"><img src="/images/add-user.png" alt="" id="signInUpIMG">SIGN UP</a>
-            <a href="/login"><img src="/images/login.png" alt="" id="signInUpIMG">LOGIN</a>
-        </span>
-        <p>If you are a tutor use this to login or signup</p>
-        <span id="signInUp">
-            <a href="/adminlogin"><img src="/images/login.png" alt="" id="signInUpIMG">LOGIN ADMIN</a>
-            <a href="/adminsignup"><img src="/images/add-user.png" alt="" id="signInUpIMG">SIGNUP ADMIN</a>
-        </span>
+        <h1>E-LEARN</h1>
+        <P>Are you a student? Looking for materials to study online with no ads? This free tool will help you learn and also track your consistency. It is simple to use and has enough resources. <br> If you are a teacher, We also have a section for you where you can upload resources and also keep track of your students perfomance.</P>
+        <div id="landingMain">
+            <div class="landingMainDiv">
+                <div class="landingSing">
+                    <p class="title">STUDENT</p>
+                    <img src="https://res.cloudinary.com/dlkqilyi0/image/upload/v1673697544/Images/elearning_srrn9y.png" class="userpic" alt="">
+                    <span class="signInUp">
+                        <a href="/signup" class="left"><img src="/images/add-user.png" alt="" class="signInUpIMG">SIGN UP</a>
+                        <a href="/login" class="right"><img src="/images/login.png" alt="" class="signInUpIMG">LOGIN</a>
+                    </span>
+                </div>
+            </div>
+            <div class="landingMainDiv">
+                <div class="landingSing">
+                    <p class="title">TUTOR</p>
+                    <img src="https://res.cloudinary.com/dlkqilyi0/image/upload/v1673698143/Images/admin_main_ov15pf.jpg" class="userpic" alt="">
+                    <span class="signInUp">
+                        <a href="/adminlogin" class="left"><img src="/images/login.png" alt="" class="signInUpIMG">LOGIN ADMIN</a>
+                        <a href="/adminsignup" class="right"><img src="/images/add-user.png" alt="" class="signInUpIMG">SIGNUP ADMIN</a>
+                    </span>
+                </div>
+            </div>
+        </div>
     </main>
 <%- include('partials/footer')%>

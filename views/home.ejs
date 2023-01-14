@@ -5,12 +5,16 @@
         <p><b><i>Welcome, <%= locals.username %>!</i></b> <br> <i>Thank you for logging in. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloremque harum omnis ad pariatur similique libero?</i></p>
     </main>
     <div id="home-section" class="container">
-        <p></p>
-        <div id="learnbtn">
-            <p>Click the button below and begin enjoying the tool</p>
-            <a href="/learn"><img src="/images/learn.png" alt=""> Learn</a>
-            <p>Click here to check your Learning progress</p>
-            <a href="/progress"><img src="/images/progress.png" alt=""> PROGRESS</a>
+        <p>Click on the cards to specifically choose what you want to do today</p>
+        <div id="cardsHolder">
+            <a href="/learn" class="cardMain">
+                <img src="https://res.cloudinary.com/dlkqilyi0/image/upload/v1673697544/Images/learn_eq6z1h.png" class="card" alt=""> 
+                <p><img src="/images/learn.png" alt="" class="icon"> learn</p>
+            </a>
+            <a href="/progress" class="cardMain">
+                <img src="https://res.cloudinary.com/dlkqilyi0/image/upload/v1673697544/Images/progress_yfsuiw.png" class="card" alt="">
+                <p><img src="/images/progress.png" alt="" class="icon"> progress</p>
+            </a>
         </div>
     </div>
 <%- include('partials/footer') %>
