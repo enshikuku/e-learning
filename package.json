@@ -1,5 +1,5 @@
 {
-    "name": "e-learning_portal",
+    "name": "e-learn",
     "version": "1.0.0",
     "description": "E-learning portal, simple to use and access materials",
     "main": "app.js",
@@ -7,7 +7,7 @@
     "start": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
     },   
-    "keywords": [],
+    "keywords": ["E-LEARN"],
     "author": "Shikuku Emmanuel Nabwana",
     "license": "ISC",
     "type": "module",
