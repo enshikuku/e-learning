@@ -98,7 +98,7 @@ header nav a:hover {
 }
 #landing #landingMain .landingMainDiv {
     min-width: 300px;
-    width: 45%;
+    width: 30%;
 }
 #landing #landingMain .landingMainDiv .title {
     width: 100%;
@@ -225,7 +225,7 @@ header nav a:hover {
 }
 #cardsHolder .cardMain {
     border-radius: 25px 25px 15px 15px;
-    width: 45%;
+    width: 30%;
     min-width: 304px;
     text-decoration: none;
     font-size: 25px;
