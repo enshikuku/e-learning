@@ -565,9 +565,8 @@ header nav a:hover {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 32%;
+    width: 19%;
     min-width: 280px;
-    height: fit-content;
     border-radius: 30px;
 }
 #adminhome #adminview .actualviews img {
