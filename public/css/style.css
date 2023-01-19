@@ -69,7 +69,9 @@ header nav a:hover {
 }
 #landing {
     font-size: 22px;
+    text-align: center;
 }
+
 #landing .landingSing {
     border: 2px dotted #5f0015;
     width: 100%;
@@ -486,6 +488,66 @@ header nav a:hover {
     font-size: 23px;
     transition: .4s;
 }
+#chatroom {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 80vh;
+}
+#chatroom .chats {
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+}
+#chatroom .chats .chatMain {
+    width: 60%;
+    min-width: 300px;
+    background-color: #F6CBB7;
+    border: 1px solid #F6CBB7;
+    border-radius: 10px 10px 20px 20px;
+}
+#chatroom .chats .chatMain .userInfo .uiTitle {
+    padding: 0 10px;
+}
+#chatroom .chats .chatMain .userInfo {
+    display: flex;
+    justify-content: space-between;
+    color: #900020;
+    border-bottom: 2px dotted #900020;
+}
+#chatroom .chats .chatMain .messages {
+    font-size: 22px;
+    padding: 10px;
+}
+#chatroom form {
+    width: 100%;
+    min-width: 300px;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px;
+    gap: 20px;
+    justify-content: space-between;
+    align-items: center;
+}
+#chatroom form input {
+    width: 60%;
+    min-width: 300px;
+    font-size: 20px;
+    border: 2px double #5f0015;
+    border-radius: 10px;
+    padding: 1px 5px;
+}
+#chatroom form input[type="submit"] {
+    color: #F6CBB7;
+    background-color: #5f0015;
+    text-transform: capitalize;
+    cursor: pointer;
+    width: fit-content;
+
+}
 #adminhome #adminview {
     display: flex;
     flex-wrap: wrap;
@@ -578,13 +640,49 @@ header nav a:hover {
     border: 2px solid #900020;
     margin-bottom: 10px;
     border-radius: 15px;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
 }
-#adminviewremark div .remarkid, #adminviewresource .resourceid {
+#adminviewresource .resourceid {
+    display: flex;
+    flex-wrap: wrap;
+    min-width: 300px;
+    justify-content: space-between;
+    gap: 20px;
     border-bottom: 2px solid #900020;
     text-transform: uppercase;
     color: #5f0015;
     padding: 2px 5px;
     font-size: 22px;
+}
+#adminviewresource .resourceid .edit-delete {
+    width: fit-content;
+    padding: 0 5px;
+    font-size: 19px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+#adminviewresource .resourceid .edit-delete a {
+    text-decoration: none;
+    background-color: #005b00;
+    text-transform: capitalize;
+    color: #ffffff;
+    padding: 2px 5px;
+    border-radius: 10px;
+}
+#adminviewresource .resourceid .edit-delete input {
+    text-decoration: none;
+    font-size: 19px;
+    text-transform: capitalize;
+    background-color: red;
+    border: 1px solid red;
+    color: #ffffff;
+    padding: 2px 5px;
+    border-radius: 10px;
 }
 #adminviewremark .remarks, #adminviewresource .resources {
     display: flex;
@@ -630,13 +728,14 @@ header nav a:hover {
     border-radius: 18px;
     letter-spacing: 3px;
 }
-#addresource, #addresource form {
+#addresource, #addresource form, #editresource, #editresource form {
     width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-}#addresource form .form-input {
+}
+#addresource form .form-input, #editresource form .form-input {
     width: 100%;
     font-size: 22px;
     display: flex;
@@ -649,14 +748,14 @@ header nav a:hover {
     padding: 5px;
     margin-bottom: 10px;
 }
-#addresource form .form-input input {
+#addresource form .form-input input, #editresource form .form-input input {
     width: 90%;
     min-width: 280px;
     font-size: 22px;
     background: #ffede4;
     border: 2px double #900020;
 }
-#addresource form input[type='submit'] {
+#addresource form input[type='submit'], #editresource form input[type='submit'] {
     background-color: #005b00;
     border: 1px solid #005b00;
     padding: 3px 10px;
@@ -669,7 +768,7 @@ header nav a:hover {
     font-size: 23px;
     transition: .4s;
 }
-#addresource form a {
+#addresource form a, #editresource form a {
     background-color: red;
     border: 1px solid red;
     padding: 3px 10px;
