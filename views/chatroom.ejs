@@ -1,0 +1,23 @@
+<%- include('partials/header') %>
+    <%- include('partials/preloader')%>
+    <%- include('partials/nav') %>
+    <main id="chatroom" class="container">
+        <div class="chats">
+            <% results.forEach(result => { %>
+                <div class="chatMain">
+                    <div class="userInfo">
+                        <p class="nameId uiTitle"><%= result.s_name %></p>
+                        <p class="time uiTitle"><%= result.created_at.toLocaleString() %></p>
+                    </div>
+                    <div class="message">
+                        <p class="messages"><%= result.chat %></p>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+        <form action="/sendmessage" method="post">
+            <input type="text" name="message" id="">
+            <input type="submit" value="Send message">
+        </form>
+    </main>
+<%- include('partials/footer') %>
