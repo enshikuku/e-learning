@@ -1,0 +1,32 @@
+<%- include('partials/header') %>
+    <%- include('partials/preloader')%>
+    <%- include('partials/nav') %>
+    <main id="editresource" class="container">
+        <div>
+            <form action="/editresource/<%= results.resource %>" method="post" enctype="multipart/form-data">
+                <h1>Edit Resource: <%= results.rsctitle %></h1>
+                <% if(error) { %>
+                    <p class="error"><%= message %></p>
+                <% } %>
+                <div class="form-input">
+                    <label for="">Resource Title</label>
+                    <input type="text" name="rsctitle" id="" value="<%= results.rsctitle %>">
+                </div>
+                <div class="form-input">
+                    <label for="">Brief Resource Definition</label>
+                    <input type="text" name="learndefinition" id="" value="<%= results.learndefinition %>">
+                </div>
+                <div class="form-input">
+                    <label for="">Resource code (no spacing)</label>
+                    <input type="text" name="resource" id="" value="<%= results.resource %>">
+                </div>
+                <div class="form-input">
+                    <label for="">File Name (pdf only)</label>
+                    <input type="file" name="route" id="" value="<%= results.route %>" accept=".pdf">
+                </div>
+                <input type="submit" value="Update Resource"><br>
+                <a href="/viewresource">Cancel</a>
+            </form>
+        </div>
+    </main>
+<%- include('partials/footer') %>
