@@ -5,11 +5,19 @@
         <div>
             <div id="rscmininav">
                 <div id="editmininav"><h1>Total resources: <%= results.length %></h1></div>
-                <div id="editmininav"><a href="/editresources">EDIT resources</a></div>
+                <div id="editmininav"><a href="/addresource">add resources</a></div>
             </div>
             <% results.forEach(result => { %>
                 <div class="resourcesMain">
-                    <p class="resourceid"><%= results.indexOf(result)+1 %>. <%= result.rsctitle %></p>
+                    <div class="resourceid">
+                        <p><%= results.indexOf(result)+1 %>. <%= result.rsctitle %></p>
+                        <div class="edit-delete">
+                            <a href="/editresource/<%= result.resource %>">Edit</a>
+                            <form action="/delete/<%= result.resource %>" method="post">
+                                <input type="submit" value="Delete">
+                            </form>
+                        </div>
+                    </div>
                     <div class="resources">
                         <div class="resourceInfo">
                             <p>

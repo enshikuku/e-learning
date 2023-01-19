@@ -2,7 +2,7 @@
     <%- include('partials/preloader')%>
     <%- include('partials/nav') %>
     <main id="home" class="container">
-        <p><b><i>Welcome, <%= locals.username %>!</i></b> <br> <i>Thank you for logging in. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloremque harum omnis ad pariatur similique libero?</i></p>
+        <p><b><i>Welcome to E-LEARN <%= locals.username %>!</i></b> <br> <i>Thank you for logging in. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloremque harum omnis ad pariatur similique libero?</i></p>
     </main>
     <div id="home-section" class="container">
         <p>Click on the cards to specifically choose what you want to do today</p>
@@ -14,6 +14,10 @@
             <a href="/progress" class="cardMain">
                 <img src="https://res.cloudinary.com/dlkqilyi0/image/upload/v1673801208/Images/InShot_20230115_194401888_hs9naa.jpg" class="card" alt="">
                 <p><img src="/images/progress.png" alt="" class="icon"> progress</p>
+            </a>
+            <a href="/chatroom" class="cardMain">
+                <img src="https://res.cloudinary.com/dlkqilyi0/image/upload/v1674152042/Images/InShot_20230119_210623467_pn1qdg.jpg" class="card" alt="">
+                <p><img src="/images/chat.png" alt="" class="icon"> chatroom</p>
             </a>
         </div>
     </div>
