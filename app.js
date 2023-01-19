@@ -3,6 +3,9 @@ import mysql from 'mysql'
 import session from 'express-session'
 import bcrypt from 'bcrypt'
 import multer from 'multer'
+import fs from 'fs'
+
+
 
 const app = express()
 
@@ -12,8 +15,31 @@ const connection = mysql.createConnection({
     password: '',
     database: 'e_learning_portal'
 })
-
-const uploads = multer({dest: 'public/uploads' })
+const storage1 = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './public/images/imageuploads')
+    },
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+        cb(null, file.fieldname + '-' + uniqueSuffix)
+    }
+})
+  
+const storage2 = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './public/pdfuploads')
+    },
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+        // cb(null, file.fieldname + '-' + uniqueSuffix)
+        cb(null, file.originalname)
+    }
+})
+  
+const upload1 = multer({ storage: storage1 })
+const upload2 = multer({ storage: storage2 })
+  
+// const uploads = multer({dest: 'public/uploads' })
 
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
@@ -176,7 +202,7 @@ app.get('/viewpdf/:resource', (req, res) => {
                 let newResult = results[0].learn
                 newResult++
                 connection.query(
-                    'UPDATE e_student SET learn = ? WHERE id = ?;',
+                    'UPDATE e_student SET learn = ? WHERE id = ?',
                     [newResult, req.session.userID],
                     (error, results) => {
                         connection.query(
@@ -278,7 +304,7 @@ app.get('/editMyProfile', (req, res) => {
         res.redirect('/login')
     }
 })
-app.post('/editProfile/:id', uploads.single('profilePic'), (req, res) => {
+app.post('/editProfile/:id', upload1.single('profilePic'), (req, res) => {
     // const e_student = {
     //     email: req.body.email,
     //     name: req.body.name,
@@ -301,7 +327,7 @@ app.post('/editProfile/:id', uploads.single('profilePic'), (req, res) => {
         )
     } else {
         connection.query(
-            'UPDATE e_student SET email = ?, name = ?, gender = ?,  WHERE id = ? ',
+            'UPDATE e_student SET email = ?, name = ?, gender = ?  WHERE id = ? ',
             [
                 req.body.email,            
                 req.body.name,
@@ -309,14 +335,51 @@ app.post('/editProfile/:id', uploads.single('profilePic'), (req, res) => {
                 parseInt(req.params.id)
             ],
             (error, results) => {
-                res.redirect('/progress')
+                if (error) {
+                    console.log(error)
+                    res.render('pagenotfound')
+                } else {
+                    res.redirect('/progress')
+                }
+                
             }
         )
         
     }
     }
 )
-
+// render chatroom 
+app.get('/chatroom', (req, res) => {
+    if (res.locals.isLogedIn) {
+        let s_username = req.session.username
+        connection.query(
+            'SELECT * FROM chatroom',
+            [],
+            (error, results) => {
+                res.render('chatroom', {results: results, s_username: s_username})
+            }
+        )
+    } else {
+        res.redirect('/login')
+    }
+})
+// Send message in chatroom
+app.post('/sendmessage', (req, res) => {
+    const chatInfo = {
+        username : req.session.username,            
+        message : req.body.message
+    }
+    connection.query(
+        'INSERT INTO chatroom (s_name, chat) VALUES (?, ?)',
+        [
+            chatInfo.username,
+            chatInfo.message
+        ],
+        (error, results) => {
+            res.redirect('/chatroom')
+        }
+    )
+})
 // Admin signup
 app.get('/adminsignup', (req, res) => {
     const admin = {
@@ -461,30 +524,153 @@ app.get('/viewresource', (req, res) => {
         res.redirect('/adminlogin')
     }
 })
-// Render editresources
-app.get('/editresources', (req, res) => {
+// Render addresource
+app.get('/addresource', (req, res) => {
     if (req.session.adminPin === 'Admin2023') {
-        res.render('editresources')
+        connection.query(
+            'SELECT * FROM learningremarks',
+            [],
+            (error, results) => {
+                res.render('addresource', {error:false, results: results})
+            }
+        )
     } else {
         res.redirect('/adminlogin')
     }
 })
-
-app.post('/addresource', uploads.single('route'), (req, res) => {
+// Adding resource
+app.post('/addresource', upload2.single('route'), (req, res) => {
+    const resourceInfo = {
+        title : req.body.rsctitle,            
+        definition : req.body.learndefinition,
+        resource : req.body.resource,
+        filename : req.file.originalname,
+    } 
+    connection.query(
+        'SELECT rsctitle FROM learningremarks WHERE rsctitle = ?',
+        [resourceInfo.title],
+        (error, results) => {
+            if(results.length > 0){
+                let message = 'There is already a resource with the title! Please rename!'
+                resourceInfo.title = ''
+                res.render('addresource', {error: true, message: message, resourceInfo: resourceInfo})
+            }else{
+                connection.query(
+                    'SELECT resource FROM learningremarks WHERE resource = ?',
+                    [resourceInfo.resource],
+                    (error, results) => {
+                        if(results.length > 0){
+                            let message = 'Resource code already exists! Please change the resouce code'
+                            resourceInfo.resource = ''
+                            res.render('addresource', {error: true, message: message, resourceInfo: resourceInfo})
+                        }else{
+                            connection.query(
+                                'SELECT route FROM learningremarks WHERE route = ?',
+                                [resourceInfo.route],
+                                (error, results) => {
+                                    if(results.length > 0){
+                                        let message = 'File name already exists! Please rename the file before uploading.'
+                                        resourceInfo.filename = ''
+                                        res.render('addresource', {error: true, message: message, resourceInfo: resourceInfo})
+                                    }else{
+                                        connection.query(
+                                            'INSERT INTO learningremarks (rsctitle, learndefinition, resource, route) VALUES (?, ?, ?, ?)',
+                                            [
+                                                resourceInfo.title,            
+                                                resourceInfo.definition,
+                                                resourceInfo.resource,
+                                                resourceInfo.filename,
+                                            ],
+                                            (error, results) => {
+                                                res.redirect('/viewresource')
+                                            }
+                                        )
+                                    }
+                                }
+                            )
+                        }
+                    }
+                )
+            }
+        }
+    )
+})
+// edit resource
+app.get('/editresource/:resource', (req, res) => {
+    let resource = req.params.resource
+    if (req.session.adminPin === 'Admin2023') {
         connection.query(
-            'INSERT INTO learningremarks (rsctitle, learndefinition, resource, route) VALUES (?, ?, ?, ?)',
+            'SELECT * FROM learningremarks WHERE resource = ?',
+            [resource],
+            (error, results) => {
+                res.render('editresource', {results: results[0], error: false})
+            }
+        )
+    } else {
+        res.redirect('/adminlogin')
+    }
+})
+// editting the resource
+app.post('/editresource/:resource', upload2.single('route'), (req, res) => {
+    let resource = req.params.resource
+    const resourceInfo = {
+        title : req.body.rsctitle,            
+        definition : req.body.learndefinition,
+        resource : req.body.resource
+    } 
+    if (req.file) {
+        connection.query(
+            'UPDATE learningremarks SET rsctitle = ?, learndefinition = ?, resource = ?, route = ? WHERE resource = ? ',
             [
-                req.body.rsctitle,            
-                req.body.learndefinition,
-                req.body.resource,
-                req.file.filename,
+                resourceInfo.title,            
+                resourceInfo.definition,
+                resourceInfo.resource,
+                req.file.originalname,
+                resource
             ],
             (error, results) => {
                 res.redirect('/viewresource')
             }
         )
+    } else {
+        connection.query(
+            'UPDATE learningremarks SET rsctitle = ?, learndefinition = ?, resource = ? WHERE resource = ? ',
+            [
+                resourceInfo.title,            
+                resourceInfo.definition,
+                resourceInfo.resource,
+                resource
+            ],
+            (error, results) => {
+                res.redirect('/viewresource')
+            }
+        )
+        
+    }
 })
-
+// DELETE ITEM
+app.post('/delete/:resource', (req, res) => {
+    connection.query (
+        'SELECT * FROM learningremarks WHERE resource = ?', 
+        [req.params.resource],
+        (error, results) => {
+            fs.unlink(`./public/pdfuploads/${results[0].route}`, (err) => {
+                if (err) {
+                    console.error(err)
+                    return
+                }
+                //file removed
+                connection.query(
+                    'DELETE FROM learningremarks WHERE resource = ?',
+                    [req.params.resource],
+                    (error, results) => {
+                        res.redirect('/viewresource')
+                    }
+                )
+            })
+        }
+    )
+})
 // Render viewremarks
 app.get('/viewremark', (req, res) => {
     if (req.session.adminPin === 'Admin2023') {
