@@ -522,7 +522,7 @@ header nav a:hover {
     font-size: 22px;
     padding: 10px;
 }
-#chatroom form {
+#chatroom #form {
     width: 100%;
     min-width: 300px;
     display: flex;
@@ -532,7 +532,7 @@ header nav a:hover {
     justify-content: space-between;
     align-items: center;
 }
-#chatroom form input {
+#chatroom #form input {
     width: 60%;
     min-width: 300px;
     font-size: 20px;
@@ -540,13 +540,24 @@ header nav a:hover {
     border-radius: 10px;
     padding: 1px 5px;
 }
-#chatroom form input[type="submit"] {
+#chatroom #form input[type="submit"] {
     color: #F6CBB7;
     background-color: #5f0015;
     text-transform: capitalize;
     cursor: pointer;
     width: fit-content;
 
+}#chatroom form input[type="submit"] {
+    margin: 0 20px;
+    color: #F6CBB7;
+    background-color: #900020;
+    letter-spacing: 2px;
+    border: #900020;
+    border-radius: 10px;
+    padding: 2px 5px;
+    text-transform: capitalize;
+    cursor: pointer;
+    width: fit-content;
 }
 #adminhome #adminview {
     display: flex;
@@ -669,19 +680,57 @@ header nav a:hover {
     text-decoration: none;
     background-color: #005b00;
     text-transform: capitalize;
-    color: #ffffff;
+    color: #ffede4;
     padding: 2px 5px;
     border-radius: 10px;
 }
 #adminviewresource .resourceid .edit-delete input {
-    text-decoration: none;
     font-size: 19px;
     text-transform: capitalize;
     background-color: red;
     border: 1px solid red;
-    color: #ffffff;
+    color: #ffede4;
     padding: 2px 5px;
     border-radius: 10px;
+}
+#adminviewremark .remarkMain form input {
+    font-size: 19px;
+    text-transform: capitalize;
+    background-color: #005b00;
+    border: #005b00;
+    padding: 2px 5px;
+    color: #ffede4;
+    border-radius: 10px;
+}
+#adminviewremark .remarkMain .remarkHeading .remarkid {
+    min-width: 250px;
+}
+#adminviewremark .remarkMain .handled {
+    display: flex;
+    min-width: 250px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+#adminviewremark .remarkMain .handled form {
+    min-width: fit-content;
+}
+#adminviewremark .remarkMain .handled p {
+    min-width: fit-content;
+    font-size: 17px;
+    color: #5f0015;
+}
+#adminviewremark .remarkHeading {
+    display: flex;
+    flex-wrap: wrap;
+    min-width: 300px;
+    justify-content: space-between;
+    border-bottom: 2px solid #900020;
+    text-transform: uppercase;
+    color: #5f0015;
+    padding: 2px 5px;
+    font-size: 22px;
 }
 #adminviewremark .remarks, #adminviewresource .resources {
     display: flex;
@@ -694,10 +743,10 @@ header nav a:hover {
     padding: 5px;
 }
 #adminviewremark .remarks .remark {
-    width: 65%;
+    width: 50%;
 }
 #adminviewremark .remarks .resources {
-    width: 30%;
+    width: 45%;
 }
 #adminviewremark div .remarkInfo .resource {
     text-transform: uppercase;
@@ -823,6 +872,23 @@ header nav a:hover {
     background-color: #CB857C;
     border-top: 10px solid #900020;
     animation: spin 2s linear infinite;
+}
+#scroll-to-bottom-button img {
+    width: 40px;
+    height: 40px;
+}
+#scroll-to-bottom-button {
+    background: none;
+    border: 2px solid #900020;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    position: fixed;
+    bottom: 50px;
+    right: 5px;
 }
 @keyframes spin {
     0%{
