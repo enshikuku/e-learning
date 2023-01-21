@@ -15,6 +15,7 @@ const connection = mysql.createConnection({
     password: '',
     database: 'e_learning_portal'
 })
+
 const storage1 = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, './public/images/imageuploads')
@@ -240,7 +241,13 @@ app.get('/remark/:resource', (req, res) => {
     let resource = req.params.resource
     let username = req.session.username
     if (res.locals.isLogedIn) {
-        res.render('remark', {resource: resource, username: username})
+        connection.query(
+            'SELECT rsctitle FROM learningremarks WHERE resource = ?',
+            [resource],
+            (error, results) => {
+                res.render('remark', {resource: resource, username: username, results: results[0]})
+            }
+        )
     } else {
         res.redirect('/login')
     }
@@ -249,7 +256,8 @@ app.post('/remark/:resource/:username', (req, res) => {
     let resource = req.params.resource
     let username = req.params.username
     const userRemarks = {
-        remark: req.body.remark
+        remark: req.body.remark,
+        title: req.body.rsctitle
     }
     if (res.locals.isLogedIn) {
         connection.query(
@@ -263,8 +271,8 @@ app.post('/remark/:resource/:username', (req, res) => {
                     [newstudetremarks, resource],
                     (error, results) => {
                         connection.query(
-                            'INSERT INTO remarks_table (resource, name, remark) VALUES (?, ?, ?)',
-                            [resource, username, userRemarks.remark],
+                            'INSERT INTO remarks_table (resource, name, remark, title) VALUES (?, ?, ?, ?)',
+                            [resource, username, userRemarks.remark, userRemarks.title],
                             (error, results) => {
                                 res.redirect('/learn')
                             }
@@ -350,13 +358,20 @@ app.post('/editProfile/:id', upload1.single('profilePic'), (req, res) => {
 )
 // render chatroom 
 app.get('/chatroom', (req, res) => {
-    if (res.locals.isLogedIn || req.session.adminPin === 'Admin2023') {
-        let s_username = req.session.username
+    if (req.session.adminPin === 'Admin2023') {
         connection.query(
             'SELECT * FROM chatroom',
             [],
             (error, results) => {
-                res.render('chatroom', {results: results, s_username: s_username})
+                res.render('chatroom', {results: results, admin: true})
+            }
+        )
+    } else if (res.locals.isLogedIn) {
+        connection.query(
+            'SELECT * FROM chatroom',
+            [],
+            (error, results) => {
+                res.render('chatroom', {results: results, admin: false})
             }
         )
     } else {
@@ -366,7 +381,7 @@ app.get('/chatroom', (req, res) => {
 // Send message in chatroom
 app.post('/sendmessage', (req, res) => {
     const chatInfo = {
-        username : req.session.username,            
+        username : req.body.username,            
         message : req.body.message
     }
     connection.query(
@@ -375,6 +390,16 @@ app.post('/sendmessage', (req, res) => {
             chatInfo.username,
             chatInfo.message
         ],
+        (error, results) => {
+            res.redirect('/chatroom')
+        }
+    )
+})
+// Clear Messages
+app.post('/clearchats', (req, res) => {
+    connection.query(
+        'DELETE FROM chatroom WHERE id > ?',
+        [0],
         (error, results) => {
             res.redirect('/chatroom')
         }
@@ -526,12 +551,17 @@ app.get('/viewresource', (req, res) => {
 })
 // Render addresource
 app.get('/addresource', (req, res) => {
+    const resourceInfo = {
+        title : req.body.rsctitle,            
+        definition : req.body.learndefinition,
+        resource : req.body.resource
+    }
     if (req.session.adminPin === 'Admin2023') {
         connection.query(
             'SELECT * FROM learningremarks',
             [],
             (error, results) => {
-                res.render('addresource', {error:false, results: results})
+                res.render('addresource', {error:false, results: results, resourceInfo: resourceInfo})
             }
         )
     } else {
@@ -648,7 +678,7 @@ app.post('/editresource/:resource', upload2.single('route'), (req, res) => {
         
     }
 })
-// DELETE ITEM
+// delete resource
 app.post('/delete/:resource', (req, res) => {
     connection.query (
         'SELECT * FROM learningremarks WHERE resource = ?', 
@@ -685,7 +715,16 @@ app.get('/viewremark', (req, res) => {
         res.redirect('/adminlogin')
     }
 })
-
+// Handle remark
+app.post('/handle/:r_id', (req, res) => {
+    connection.query (
+        'DELETE FROM remarks_table WHERE r_id = ?',
+        [req.params.r_id],
+        (error, results) => {
+            res.redirect('/viewremark')
+        }
+    )
+})
 // logout functionality
 app.get('/logout', (req, res) => {
     // kill the logged in session
