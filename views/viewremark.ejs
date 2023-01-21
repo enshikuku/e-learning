@@ -7,9 +7,17 @@
             
             <% results.forEach(result => { %>
                 <div class="remarkMain">
-                    <p class="remarkid"><%= results.indexOf(result)+1 %>. <%= result.name %></p>
+                    <div class="remarkHeading">
+                        <p class="remarkid"><%= results.indexOf(result)+1 %>. <%= result.name %></p>
+                        <div class="handled">
+                            <p><%= result.created_at.toLocaleString() %></p>
+                            <form action="/handle/<%= result.r_id %>" method="post">
+                                <input type="submit" value="clear">
+                            </form>
+                        </div>
+                    </div>
                     <div class="remarks">
-                        <div class="remarkInfo resources"><p><b>Resource:</b> <i class="resource"><%= result.resource %></i></p></div>
+                        <div class="remarkInfo resources"><p><b>Resource:</b> <i class="resource"><%= result.title %></i></p></div>
                         <div class="remarkInfo remark"><p><b>Remark: </b><%= result.remark %></p></div>
                     </div>
                 </div>
