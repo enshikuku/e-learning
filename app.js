@@ -82,7 +82,14 @@ app.get('/signup', (req, res) => {
         password: '',
         confirmPassword: ''
     }
-    res.render('signup', {error:false, user: user})
+    
+    if (res.locals.isLogedIn && req.session.adminPin === 'Admin2023') {
+        res.redirect('/adminhome')
+    } else if (res.locals.isLogedIn) {
+        res.redirect('home')
+    } else {
+        res.render('signup', {error:false, user: user})
+    }  
 })
 // process signup form 
 app.post('/signup', (req, res) => {
@@ -136,7 +143,13 @@ app.get('/login', (req, res) => {
         email : '',
         password : ''
     }
-    res.render('login', {error:false, user: user})
+    if (res.locals.isLogedIn && req.session.adminPin === 'Admin2023') {
+        res.redirect('/adminhome')
+    } else if (res.locals.isLogedIn) {
+        res.redirect('home')
+    } else {
+        res.render('login', {error:false, user: user})
+    }
 })
 // process login page
 app.post('/login', (req, res) => {
@@ -414,7 +427,13 @@ app.get('/adminsignup', (req, res) => {
         confirmPassword: '',
         pin: '',
     }
-    res.render('adminsignup', {error:false, admin: admin} )
+    if (res.locals.isLogedIn && req.session.adminPin === 'Admin2023') {
+        res.redirect('/adminhome')
+    } else if (res.locals.isLogedIn) {
+        res.redirect('home')
+    } else {
+        res.render('adminsignup', {error:false, admin: admin} )
+    }
 })
 // process admin signup form
 app.post('/adminsignup', (req, res) => {
@@ -473,7 +492,13 @@ app.get('/adminlogin', (req, res) => {
         password : '',
         pin: ''
     }
-    res.render('adminlogin', {error:false, admin: admin})
+    if (res.locals.isLogedIn && req.session.adminPin === 'Admin2023') {
+        res.redirect('/adminhome')
+    } else if (res.locals.isLogedIn) {
+        res.redirect('home')
+    } else {
+        res.render('adminlogin', {error:false, admin: admin})
+    }
 })
 // Process admin login frm
 app.post('/adminlogin', (req, res) => {
