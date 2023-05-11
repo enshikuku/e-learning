@@ -2,15 +2,17 @@
     <%- include('partials/preloader')%>
     <main id="login-form">
         <form action="/login" method="post">
-            <h1><img src="/images/login.png" alt="" class="signInUpIMG">Log In</h1>
+            <h1><img src="/images/login.png" alt="" class="signInUpIMG">signin</h1>
             <% if(error) { %>
                 <p class="error"><%= message %></p>
             <% } %>
             <input type="email" name="email" id="" value="<%= user.email %>" placeholder="Email Address" required>
             <input type="password" name="password" id="" value="<%= user.password %>" placeholder="Password" required minlength="8">
-            <input type="submit" value="Log In">
-            <a href="/signup">Create Account</a>
-            <a href="/adminlogin">Continue as admin?</a>
+            <input type="submit" value="signin">
+            <div class="form-btwn">
+                <a href="/signup" class="btn41-43 btn-41" >signup</a>
+                <a href="/adminlogin" class="btn41-43 btn-41" >tutor Signin</a>
+            </div>
         </form>
     </main>
 <%- include('partials/footer')%>

@@ -3,7 +3,7 @@
 
     <main id="signup">
         <form action="/signup" method="post">
-            <h1><img src="/images/add-user.png" alt="" class="signInUpIMG">Sign Up</h1>
+            <h1><img src="/images/add-user.png" alt="" class="signInUpIMG">SignUp</h1>
             <% if(error) {%>
                 <p class="error"><%= message %></p>
             <% } %>
@@ -11,9 +11,12 @@
             <input type="email" name="email" id="" value="<%= user.email %>" placeholder="Email Address" required>
             <input type="password" name="password" id="" value="<%= user.password %>" placeholder="Password" required minlength="8">
             <input type="password" name="confirmPassword" id="" value="<%= user.confirmPassword %>" placeholder="Confirm Password" required minlength="8">
-            <input type="submit" value="Create Account">
-            <a href="/login">Sign In</a>
-            <a href="/adminsignup">Continue as admin?</a>
+            <input type="submit" value="signup">
+            <div class="form-btwn">
+                <a href="/login" class="btn41-43 btn-41" >Signin</a>
+                <a href="/adminsignup" class="btn41-43 btn-41" >tutor signup</a>
+            </div>
+            
         </form>
     </main>
 

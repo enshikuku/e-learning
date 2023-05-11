@@ -2,15 +2,27 @@
     <%- include('partials/preloader')%>
     <%- include('partials/nav') %>
     <main id="adminhome" class="container">
-        <div>
-            <h2>Tutor: <i><%= locals.username %></i></h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellat cum officiis iusto ullam dignissimos architecto. Perferendis, corrupti. Doloremque voluptas cum veritatis explicabo eveniet dolor deserunt!</p>
-        </div>
-        <div id="adminview">
-            <div class="actualviews"><a href="/viewstudent"><img src="https://res.cloudinary.com/dlkqilyi0/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1674150044/Images/students_ymxwed.jpg" alt=""><h1 class="cardtitle">students</h1></a></div>
-            <div class="actualviews"><a href="/viewresource"><img src="https://res.cloudinary.com/dlkqilyi0/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1674150045/Images/resources_tx00v4.jpg" alt=""><h1 class="cardtitle">resources</h1></a></div>
-            <div class="actualviews"><a href="/viewremark"><img src="https://res.cloudinary.com/dlkqilyi0/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1674150045/Images/remarks_c8ub3r.png" alt=""><h1 class="cardtitle">Remarks</h1></a></div>
-            <div class="actualviews"><a href="/chatroom"><img src="https://res.cloudinary.com/dlkqilyi0/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1674152042/Images/InShot_20230119_210623467_pn1qdg.jpg" alt=""><h1 class="cardtitle">Chatroom</h1></a></div>
+        <h2><%= locals.username %>'s Tutor Hub:</h2> 
+        <p>Explore Students, Learning Resources and Discussions</p>
+        <div class="allcards">
+            <div class="cardsHolder">
+                <a href="/viewstudent" class="cardMain">
+                    <img src="https://res.cloudinary.com/dlkqilyi0/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1674150044/Images/students_ymxwed.jpg" class="card" alt=""> 
+                    <p><img src="/images/student.png" alt="" class="icon"> students</p>
+                </a>
+                <a href="/viewresource" class="cardMain">
+                    <img src="https://res.cloudinary.com/dlkqilyi0/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1674150045/Images/resources_tx00v4.jpg" class="card" alt="">
+                    <p><img src="/images/ebook.png" alt="" class="icon"> resources</p>
+                </a>
+                <a href="/viewremark" class="cardMain">
+                    <img src="https://res.cloudinary.com/dlkqilyi0/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1674150045/Images/remarks_c8ub3r.png" class="card" alt="">
+                    <p><img src="/images/remark.png" alt="" class="icon"> Remarks</p>
+                </a>
+                <a href="/chatroom" class="cardMain">
+                    <img src="https://res.cloudinary.com/dlkqilyi0/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1674152042/Images/InShot_20230119_210623467_pn1qdg.jpg" class="card" alt="">
+                    <p><img src="/images/chat.png" alt="" class="icon"> Chatroom</p>
+                </a>
+            </div>
         </div>
     </main>
 <%- include('partials/footer') %>

@@ -3,7 +3,7 @@
 
     <main id="adminsignup">
         <form action="/adminsignup" method="post">
-            <h1><img src="/images/add-user.png" alt="" class="signInUpIMG">Sign Up As Admin</h1>
+            <h1><img src="/images/add-user.png" alt="" class="signInUpIMG">tutor signup</h1>
             <% if(error) {%>
                 <p class="error"><%= message %></p>
             <% } %>
@@ -12,9 +12,11 @@
             <input type="password" name="password" id="" value="<%= admin.password %>" placeholder="Your Password" required minlength="8">
             <input type="password" name="confirmPassword" id="" value="<%= admin.confirmPassword %>" placeholder="Confirm Your Password" required minlength="8">
             <input type="password" name="adminPin" value="<%= admin.pin %>" id="" placeholder="Enter Admin pin">
-            <input type="submit" value="Create Admin Account">
-            <a href="/adminlogin">Sign In as Admin</a>
-            <a href="/signup">Continue as student?</a>
+            <input type="submit" value="signup">
+            <div class="form-btwn">
+                <a href="/adminlogin" class="btn41-43 btn-41">tutor signin</a>
+                <a href="/signup" class="btn41-43 btn-41">student signup</a>
+            </div>
         </form>
     </main>
 

@@ -7,10 +7,41 @@
     margin: 0;
     box-sizing: border-box;
     font-family: Assistant;
+    scroll-behavior: smooth;
 }
 .container {
     padding-left: 100px;
     padding-right: 100px;
+}
+::-webkit-scrollbar {
+    width: 12px;
+}
+::-webkit-scrollbar-track {
+    background-color: #F6CBB7;
+}  
+::-webkit-scrollbar-thumb {
+    background-color: #900020;
+    border-radius: 10px;
+}
+::-moz-scrollbar {
+    width: 12px;
+}
+::-moz-scrollbar-track {
+    background-color: #F6CBB7;
+}
+::-moz-scrollbar-thumb {
+    background-color: #900020;
+    border-radius: 10px;
+}
+::-ms-scrollbar {
+    width: 12px;
+}
+::-ms-scrollbar-track {
+    background-color: #F6CBB7;
+}
+::-ms-scrollbar-thumb {
+    background-color: #900020;
+    border-radius: 10px;
 }
 header {
     background-color: #CB857C;
@@ -61,11 +92,7 @@ header nav a {
 }
 header nav a:hover {
     color: #b20027;
-    border-top: 2px solid #900020;
-    border-right: 2px solid #900020;
-    border-bottom: .3px solid #900020;
-    border-left: .3px solid #900020;
-    transition: .3s;
+    transform: scale(1.05); 
 }
 #landing {
     font-size: 22px;
@@ -97,6 +124,7 @@ header nav a:hover {
     display: flex;
     justify-content: center;
     align-items: center;
+    text-transform: uppercase;
 }
 #landing #landingMain .landingMainDiv {
     min-width: 300px;
@@ -149,7 +177,6 @@ header nav a:hover {
     display: flex;
     flex-direction: column;
     padding: 20px;
-    border-radius: 10px;
     gap: 10px;
     border-radius: 15px;
     box-shadow: 0 0 15px #9b0020e6;
@@ -161,6 +188,11 @@ header nav a:hover {
     border-radius: 10px;
     padding: 8px;
 }
+.form-btwn {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
 #login-form input[type='submit'], #signup input[type='submit'], #adminsignup input[type='submit'], #adminlogin input[type='submit'] {
     background-color: #900020;
     border: 1px solid #900020;
@@ -168,7 +200,7 @@ header nav a:hover {
     font-weight: bold;
     letter-spacing: 2px;
     text-transform: uppercase;
-    width: fit-content;
+    width: 100%;
     margin: 0 auto;
     border-radius: 10px;
     font-size: 20px;
@@ -176,20 +208,8 @@ header nav a:hover {
 }
 #login-form input[type='submit']:hover, #signup input[type='submit']:hover, #adminsignup input[type='submit']:hover, #adminlogin input[type='submit']:hover {
     cursor: pointer;
-    letter-spacing: 3px;
+    transform: scale(1.05);
     transition: .4s;
-}
-#login-form a, #signup a, #adminsignup a, #adminlogin a {
-    text-align: center;
-    text-decoration: none;
-    text-transform: uppercase;
-    font-size: 18px;
-    color: #900020;
-    transition: .4s;
-}
-#login-form a:hover, #signup a:hover, #adminsignup a:hover, #adminlogin a:hover {
-    letter-spacing: 2px;
-    transition: .5s;
 }
 #login-form, #signup, #adminsignup,#adminlogin {
     color: #900020;
@@ -215,73 +235,104 @@ header nav a:hover {
 #home p {
     font-size: 22px;
 }
-#cardsHolder {
+.cardsHolder {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    gap: 15px;
+    gap: 30px;
+    padding: 30px 0;
 }
-#cardsHolder .cardMain .card {
+.cardsHolder .cardMain .card {
     width: 100%;
-    min-width: 300px;
     border-radius: 25px 25px 0 0;
-    display: flex;
-    flex-direction: column;
 }
-#cardsHolder .cardMain {
+.cardsHolder .cardMain {
     border-radius: 25px 25px 15px 15px;
-    width: 30%;
-    min-width: 304px;
+    width: 20%;
+    min-width: 250px;
+    box-shadow: 0 0 10px #ff7a95e6;
     text-decoration: none;
     font-size: 25px;
     font-weight: 400;
     color: #5f0015;
-    border: 2px dotted #5f0015;
     background-color: #F6CBB7;
     text-transform: uppercase;
+    transition: all 0.3s ease;
 }
-#cardsHolder .cardMain .icon {
+.cardsHolder .cardMain:hover {
+    box-shadow: 0 0 25px #9b0020e6;
+    transform: scale(1.08); 
+}
+.cardsHolder .cardMain .icon {
     width: 26px;
 }
-#cardsHolder .cardMain p {
+.cardsHolder .cardMain p {
     display: flex;
+    padding: 5px;
     justify-content: center;
     align-items: center;
     gap: 3px;
-
 }
-#home-section {
+.allcards {
     font-size: 22px;
     text-align: center;
-    letter-spacing: 3px;
     cursor: default;
 }
-.learnDocsMain a {
-    margin-bottom: 10px;
+.btn41-43 {
+    padding: 5px;
     text-decoration: none;
-    height: fit-content;
-    width: fit-content;
-    color: #900020;
-    font-weight: bold;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 20px;
-    background-color: #F6CBB7;
-    border: 1px solid #F6CBB7;
-    padding: 2px 9px;
-    border-radius: 18px;
-    letter-spacing: 3px;
+    font-weight: 500;
+    background: transparent;
+    text-align: center;
+    text-transform: uppercase;
+    outline: none !important;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+    background-color:  #F6CBB7;
+}
+.btn-41 {
+    border: 2px solid #8f001f;
+    border-radius: 15px;
+    z-index: 1;
+    color: #8f001f;
+}
+.btn-41:after {
+    position: absolute;
+    content: "";
+    width: 0;
+    height: 100%;
+    top: 0;
+    left: 0;
+    direction: rtl;
+    z-index: -1;
+    background: #CB857C;
+    transition: all 0.3s ease;
+    border-radius: 14px;
+}
+.btn-41:hover {
+    color: #560013;
+    border: 2px solid #560013;
+
+} 
+.btn-41:hover:after {
+    left: auto;
+    right: 0;
+    width: 100%;
+} 
+.btn-41:active {
+    top: 2px;
 }
 .learnDocsMain {
     display: flex;
-    /* width: 35%; */
-    flex-direction: column;
+    width: 100%;
+    flex-direction: column-reverse;
     min-width: 220px;
     gap: 10px;
-    background-color: rgba(143, 0, 31, 0.5);
+    background-color: #8f001f80;
     padding: 5%;
     border-radius: 10px;
 }
@@ -300,7 +351,8 @@ header nav a:hover {
     background-color: #F6CBB799;
     padding: 20px;
     width: 40%;
-    min-width: 300px;
+    min-width: 380px;
+    max-width: 380px;
     border-radius: 15px;
     margin-bottom: 20px;
     font-size: 22px;
@@ -564,48 +616,6 @@ header nav a:hover {
     cursor: pointer;
     width: fit-content;
 }
-#adminhome #adminview {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 10px;
-    border: 2px dotted #900020;
-    background-color: #ffffff;
-    border-radius: 10px;
-}
-#adminhome #adminview .actualviews {
-    border: 2px dotted #900020;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 19%;
-    min-width: 280px;
-    border-radius: 30px;
-}
-#adminhome #adminview .actualviews img {
-    width: 100%;
-    border-radius: 30px 30px 0 0;
-}
-#adminhome #adminview .actualviews a {
-    text-decoration: none;
-}
-#adminhome #adminview .actualviews .cardtitle {
-    width: 100%;
-    text-align: center;
-    background-color: #F6CBB7;
-    color: #900020;
-    text-transform: uppercase;
-    border-radius: 0 0 30px 30px;
-}
-#adminhome > div {
-    font-size: 22px;
-}
-#adminhome > div p {
-    text-align: center;
-}
 #adminviewstudent .studentdetailedinformation {
     padding: 10px;
     display: none;
@@ -767,20 +777,6 @@ header nav a:hover {
 #adminviewresource #rscmininav #editmininav {
     width: fit-content;
 }
-#adminviewresource #rscmininav #editmininav a {
-    text-decoration: none;
-    text-transform: uppercase;
-    height: fit-content;
-    width: fit-content;
-    color: #900020;
-    font-weight: bold;
-    font-size: 19px;
-    background-color: #F6CBB7;
-    border: 1px solid #F6CBB7;
-    padding: 2px 9px;
-    border-radius: 18px;
-    letter-spacing: 3px;
-}
 #addresource, #addresource form, #editresource, #editresource form {
     width: 100%;
     display: flex;
@@ -939,4 +935,10 @@ header nav a:hover {
     #adminviewstudent .student {
         gap: 10px;
     }
+    .learnUnits {
+        width: 100%;
+    }
+    /* .cardsHolder .cardMain {
+        width: 250px;
+    } */
 }

@@ -2,23 +2,22 @@
     <%- include('partials/preloader')%>
     <%- include('partials/nav') %>
     <main id="home" class="container">
-        <p><b><i>Welcome to E-LEARN <%= locals.username %>!</i></b> <br> <i>Thank you for logging in. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloremque harum omnis ad pariatur similique libero?</i></p>
-    </main>
-    <div id="home-section" class="container">
-        <p>Click on the cards to specifically choose what you want to do today</p>
-        <div id="cardsHolder">
-            <a href="/learn" class="cardMain">
-                <img src="https://res.cloudinary.com/dlkqilyi0/image/upload/v1673801209/Images/InShot_20230115_194432068_cuxghs.jpg" class="card" alt=""> 
-                <p><img src="/images/learn.png" alt="" class="icon"> learn</p>
-            </a>
-            <a href="/progress" class="cardMain">
-                <img src="https://res.cloudinary.com/dlkqilyi0/image/upload/v1673801208/Images/InShot_20230115_194401888_hs9naa.jpg" class="card" alt="">
-                <p><img src="/images/progress.png" alt="" class="icon"> progress</p>
-            </a>
-            <a href="/chatroom" class="cardMain">
-                <img src="https://res.cloudinary.com/dlkqilyi0/image/upload/v1674152042/Images/InShot_20230119_210623467_pn1qdg.jpg" class="card" alt="">
-                <p><img src="/images/chat.png" alt="" class="icon"> chatroom</p>
-            </a>
+        <p><b><i>Welcome to E-LEARN <%= locals.username %>!</i></b><br>Access a vast library of educational resources to broaden your knowledge in various subjects, monitor your learning journey, track achievements, and stay motivated to reach your goals, and engage in interactive discussions, seek guidance, and connect with fellow learners in our vibrant chatroom.</p>
+        <div class="allcards">
+            <div class="cardsHolder">
+                <a href="/learn" class="cardMain">
+                    <img src="https://res.cloudinary.com/dlkqilyi0/image/upload/v1673801209/Images/InShot_20230115_194432068_cuxghs.jpg" class="card" alt=""> 
+                    <p><img src="/images/learn.png" alt="" class="icon"> Start Learning Now</p>
+                </a>
+                <a href="/progress" class="cardMain">
+                    <img src="https://res.cloudinary.com/dlkqilyi0/image/upload/v1673801208/Images/InShot_20230115_194401888_hs9naa.jpg" class="card" alt="">
+                    <p><img src="/images/progress.png" alt="" class="icon"> Track My Progress</p>
+                </a>
+                <a href="/chatroom" class="cardMain">
+                    <img src="https://res.cloudinary.com/dlkqilyi0/image/upload/v1674152042/Images/InShot_20230119_210623467_pn1qdg.jpg" class="card" alt="">
+                    <p><img src="/images/chat.png" alt="" class="icon"> Join the Chatroom</p>
+                </a>
+            </div>
         </div>
-    </div>
+    </main>
 <%- include('partials/footer') %>

@@ -207,7 +207,6 @@ app.get('/learn', (req, res) => {
 // pdf view
 app.get('/viewpdf/:resource', (req, res) => {
     let resource = req.params.resource
-    // console.log(resource)
     if (res.locals.isLogedIn) {
         connection.query(
             'SELECT learn FROM e_student WHERE s_id = ?', 
@@ -326,12 +325,6 @@ app.get('/editMyProfile', (req, res) => {
     }
 })
 app.post('/editProfile/:s_id', upload1.single('profilePic'), (req, res) => {
-    // const e_student = {
-    //     email: req.body.email,
-    //     name: req.body.name,
-    //     gender: req.body.gender,
-    //     filename
-    // }
     if (req.file) {
         connection.query(
             'UPDATE e_student SET email = ?, name = ?, gender = ?, profilePic = ? WHERE s_id = ? ',
@@ -357,7 +350,6 @@ app.post('/editProfile/:s_id', upload1.single('profilePic'), (req, res) => {
             ],
             (error, results) => {
                 if (error) {
-                    console.log(error)
                     res.render('pagenotfound')
                 } else {
                     res.redirect('/progress')
@@ -517,7 +509,7 @@ app.post('/adminlogin', (req, res) => {
                 if (results.length > 0) {
                     bcrypt.compare(admin.password, results[0].password, (error, passwordMatches) => {
                         if (passwordMatches) {
-                            req.session.userID = results[0].adminID
+                            req.session.userID = results[0].a_id
                             req.session.username = results[0].name.split(' ')[0]
                             req.session.adminPin = adminAuthentificationPin
                             res.redirect('/adminhome')
