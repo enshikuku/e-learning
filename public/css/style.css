@@ -73,7 +73,7 @@ header nav a:hover {
 }
 
 #landing .landingSing {
-    border: 2px dotted #5f0015;
+    /* border: 2px dotted #5f0015; */
     width: 100%;
     min-width: 302px;
     border-radius: 15px;
@@ -100,6 +100,8 @@ header nav a:hover {
 }
 #landing #landingMain .landingMainDiv {
     min-width: 300px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(155, 0, 32, 0.9);
     width: 30%;
 }
 #landing #landingMain .landingMainDiv .title {
@@ -116,7 +118,8 @@ header nav a:hover {
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    gap: 15px;
+    gap: 25px;
+    padding: 20px;
 }
 #landing .signInUp {
     display: flex;
@@ -143,16 +146,18 @@ header nav a:hover {
     align-items: center;
 }
 #login-form form, #signup form, #adminsignup form, #adminlogin form {
-    background-color: #CB857C;
     display: flex;
     flex-direction: column;
     padding: 20px;
     border-radius: 10px;
     gap: 10px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px #9b0020e6;
+    /* background-color: #F6A5A5; */
 }
 #login-form input, #signup input, #adminsignup input, #adminlogin input {
     font-size: 25px;
-    border: #900020;
+    border: 2px solid #9b0020e6;
     border-radius: 10px;
     padding: 8px;
 }
