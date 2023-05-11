@@ -13,7 +13,7 @@ const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'e_learning_portal'
+    database: 'e_learn_portal'
 })
 
 const storage1 = multer.diskStorage({
@@ -48,7 +48,7 @@ app.use(express.urlencoded({extended: false}))
 
 // prepare to use session
 app.use(session({
-    secret: 'e_learning_portal',
+    secret: 'e_learn_portal',
     saveUninitialized: false,
     resave: true
 }))
@@ -164,7 +164,7 @@ app.post('/login', (req, res) => {
             if (results.length > 0) {
                 bcrypt.compare(user.password, results[0].password, (error, passwordMatches) => {
                     if (passwordMatches) {
-                        req.session.userID = results[0].id
+                        req.session.userID = results[0].s_id
                         req.session.username = results[0].name.split(' ')[0]
                         res.redirect('/home')
                     } else {
@@ -194,7 +194,7 @@ app.get('/home', (req, res) => {
 app.get('/learn', (req, res) => {
     if (res.locals.isLogedIn) {
         connection.query(
-            'SELECT * FROM learningremarks',
+            'SELECT * FROM learningresources',
             [],
             (error, results) => {
                 res.render('learn', {results: results})
@@ -210,27 +210,27 @@ app.get('/viewpdf/:resource', (req, res) => {
     // console.log(resource)
     if (res.locals.isLogedIn) {
         connection.query(
-            'SELECT learn FROM e_student WHERE id = ?', 
+            'SELECT learn FROM e_student WHERE s_id = ?', 
             [req.session.userID],
             (error, results) => {
                 let newResult = results[0].learn
                 newResult++
                 connection.query(
-                    'UPDATE e_student SET learn = ? WHERE id = ?',
+                    'UPDATE e_student SET learn = ? WHERE s_id = ?',
                     [newResult, req.session.userID],
                     (error, results) => {
                         connection.query(
-                            'SELECT * FROM learningremarks WHERE resource = ?',
+                            'SELECT * FROM learningresources WHERE resource = ?',
                             [resource],
                             (error, results) => {
                                 let newopened = results[0].opened
                                 newopened++
                                 connection.query(
-                                    'UPDATE learningremarks SET opened = ? WHERE resource = ?',
+                                    'UPDATE learningresources SET opened = ? WHERE resource = ?',
                                     [newopened, resource],
                                     (error, results) => {
                                         connection.query(
-                                            'SELECT * FROM learningremarks WHERE resource = ?',
+                                            'SELECT * FROM learningresources WHERE resource = ?',
                                             [resource],
                                             (error, results) => {
                                                 res.render('pdf', {routes: results[0]})
@@ -255,7 +255,7 @@ app.get('/remark/:resource', (req, res) => {
     let username = req.session.username
     if (res.locals.isLogedIn) {
         connection.query(
-            'SELECT rsctitle FROM learningremarks WHERE resource = ?',
+            'SELECT rsctitle FROM learningresources WHERE resource = ?',
             [resource],
             (error, results) => {
                 res.render('remark', {resource: resource, username: username, results: results[0]})
@@ -274,14 +274,14 @@ app.post('/remark/:resource/:username', (req, res) => {
     }
     if (res.locals.isLogedIn) {
         connection.query(
-            'SELECT studentremarks FROM learningremarks WHERE resource = ?',
+            'SELECT totalremarks FROM learningresources WHERE resource = ?',
             [resource],
             (error, results) => {
-                let newstudetremarks = results[0].studentremarks
-                newstudetremarks++
+                let newtotalremarks = results[0].totalremarks
+                newtotalremarks++
                 connection.query(
-                    'UPDATE learningremarks SET studentremarks = ? WHERE resource = ?', 
-                    [newstudetremarks, resource],
+                    'UPDATE learningresources SET totalremarks = ? WHERE resource = ?', 
+                    [newtotalremarks, resource],
                     (error, results) => {
                         connection.query(
                             'INSERT INTO remarks_table (resource, name, remark, title) VALUES (?, ?, ?, ?)',
@@ -301,7 +301,7 @@ app.post('/remark/:resource/:username', (req, res) => {
 // progress view
 app.get('/progress', (req, res) => {
     if (res.locals.isLogedIn) {
-        let sql = 'SELECT * FROM e_student WHERE id = ?'
+        let sql = 'SELECT * FROM e_student WHERE s_id = ?'
         connection.query(
             sql, [req.session.userID], (error, results) => {
                 res.render('progres', {profile: results[0]})
@@ -315,7 +315,7 @@ app.get('/progress', (req, res) => {
 app.get('/editMyProfile', (req, res) => {
     if (res.locals.isLogedIn) {
         connection.query(
-            'SELECT * FROM e_student WHERE id = ?', 
+            'SELECT * FROM e_student WHERE s_id = ?', 
             [req.session.userID], 
             (error, results) =>{
                 res.render('editProfile', {profile: results[0]})
@@ -325,7 +325,7 @@ app.get('/editMyProfile', (req, res) => {
         res.redirect('/login')
     }
 })
-app.post('/editProfile/:id', upload1.single('profilePic'), (req, res) => {
+app.post('/editProfile/:s_id', upload1.single('profilePic'), (req, res) => {
     // const e_student = {
     //     email: req.body.email,
     //     name: req.body.name,
@@ -334,13 +334,13 @@ app.post('/editProfile/:id', upload1.single('profilePic'), (req, res) => {
     // }
     if (req.file) {
         connection.query(
-            'UPDATE e_student SET email = ?, name = ?, gender = ?, profilePic = ? WHERE id = ? ',
+            'UPDATE e_student SET email = ?, name = ?, gender = ?, profilePic = ? WHERE s_id = ? ',
             [
                 req.body.email,            
                 req.body.name,
                 req.body.gender,
                 req.file.filename,
-                parseInt(req.params.id)
+                parseInt(req.params.s_id)
             ],
             (error, results) => {
                 res.redirect('/progress')
@@ -348,12 +348,12 @@ app.post('/editProfile/:id', upload1.single('profilePic'), (req, res) => {
         )
     } else {
         connection.query(
-            'UPDATE e_student SET email = ?, name = ?, gender = ?  WHERE id = ? ',
+            'UPDATE e_student SET email = ?, name = ?, gender = ?  WHERE s_id = ? ',
             [
                 req.body.email,            
                 req.body.name,
                 req.body.gender,
-                parseInt(req.params.id)
+                parseInt(req.params.s_id)
             ],
             (error, results) => {
                 if (error) {
@@ -411,7 +411,7 @@ app.post('/sendmessage', (req, res) => {
 // Clear Messages
 app.post('/clearchats', (req, res) => {
     connection.query(
-        'DELETE FROM chatroom WHERE id > ?',
+        'DELETE FROM chatroom WHERE c_id > ?',
         [0],
         (error, results) => {
             res.redirect('/chatroom')
@@ -564,7 +564,7 @@ app.get('/viewstudent', (req, res) => {
 app.get('/viewresource', (req, res) => {
     if (req.session.adminPin === 'Admin2023') {
         connection.query(
-            'SELECT * FROM learningremarks',
+            'SELECT * FROM learningresources',
             [],
             (error, results) => {
                 res.render('viewresource', {results: results})
@@ -583,7 +583,7 @@ app.get('/addresource', (req, res) => {
     }
     if (req.session.adminPin === 'Admin2023') {
         connection.query(
-            'SELECT * FROM learningremarks',
+            'SELECT * FROM learningresources',
             [],
             (error, results) => {
                 res.render('addresource', {error:false, results: results, resourceInfo: resourceInfo})
@@ -602,7 +602,7 @@ app.post('/addresource', upload2.single('route'), (req, res) => {
         filename : req.file.originalname,
     } 
     connection.query(
-        'SELECT rsctitle FROM learningremarks WHERE rsctitle = ?',
+        'SELECT rsctitle FROM learningresources WHERE rsctitle = ?',
         [resourceInfo.title],
         (error, results) => {
             if(results.length > 0){
@@ -611,7 +611,7 @@ app.post('/addresource', upload2.single('route'), (req, res) => {
                 res.render('addresource', {error: true, message: message, resourceInfo: resourceInfo})
             }else{
                 connection.query(
-                    'SELECT resource FROM learningremarks WHERE resource = ?',
+                    'SELECT resource FROM learningresources WHERE resource = ?',
                     [resourceInfo.resource],
                     (error, results) => {
                         if(results.length > 0){
@@ -620,7 +620,7 @@ app.post('/addresource', upload2.single('route'), (req, res) => {
                             res.render('addresource', {error: true, message: message, resourceInfo: resourceInfo})
                         }else{
                             connection.query(
-                                'SELECT route FROM learningremarks WHERE route = ?',
+                                'SELECT route FROM learningresources WHERE route = ?',
                                 [resourceInfo.route],
                                 (error, results) => {
                                     if(results.length > 0){
@@ -629,7 +629,7 @@ app.post('/addresource', upload2.single('route'), (req, res) => {
                                         res.render('addresource', {error: true, message: message, resourceInfo: resourceInfo})
                                     }else{
                                         connection.query(
-                                            'INSERT INTO learningremarks (rsctitle, learndefinition, resource, route) VALUES (?, ?, ?, ?)',
+                                            'INSERT INTO learningresources (rsctitle, learndefinition, resource, route) VALUES (?, ?, ?, ?)',
                                             [
                                                 resourceInfo.title,            
                                                 resourceInfo.definition,
@@ -655,7 +655,7 @@ app.get('/editresource/:resource', (req, res) => {
     let resource = req.params.resource
     if (req.session.adminPin === 'Admin2023') {
         connection.query(
-            'SELECT * FROM learningremarks WHERE resource = ?',
+            'SELECT * FROM learningresources WHERE resource = ?',
             [resource],
             (error, results) => {
                 res.render('editresource', {results: results[0], error: false})
@@ -675,7 +675,7 @@ app.post('/editresource/:resource', upload2.single('route'), (req, res) => {
     } 
     if (req.file) {
         connection.query(
-            'UPDATE learningremarks SET rsctitle = ?, learndefinition = ?, resource = ?, route = ? WHERE resource = ? ',
+            'UPDATE learningresources SET rsctitle = ?, learndefinition = ?, resource = ?, route = ? WHERE resource = ? ',
             [
                 resourceInfo.title,            
                 resourceInfo.definition,
@@ -689,7 +689,7 @@ app.post('/editresource/:resource', upload2.single('route'), (req, res) => {
         )
     } else {
         connection.query(
-            'UPDATE learningremarks SET rsctitle = ?, learndefinition = ?, resource = ? WHERE resource = ? ',
+            'UPDATE learningresources SET rsctitle = ?, learndefinition = ?, resource = ? WHERE resource = ? ',
             [
                 resourceInfo.title,            
                 resourceInfo.definition,
@@ -706,7 +706,7 @@ app.post('/editresource/:resource', upload2.single('route'), (req, res) => {
 // delete resource
 app.post('/delete/:resource', (req, res) => {
     connection.query (
-        'SELECT * FROM learningremarks WHERE resource = ?', 
+        'SELECT * FROM learningresources WHERE resource = ?', 
         [req.params.resource],
         (error, results) => {
             fs.unlink(`./public/pdfuploads/${results[0].route}`, (err) => {
@@ -714,9 +714,8 @@ app.post('/delete/:resource', (req, res) => {
                     console.error(err)
                     return
                 }
-                //file removed
                 connection.query(
-                    'DELETE FROM learningremarks WHERE resource = ?',
+                    'DELETE FROM learningresources WHERE resource = ?',
                     [req.params.resource],
                     (error, results) => {
                         res.redirect('/viewresource')
