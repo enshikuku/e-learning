@@ -9,19 +9,19 @@
                     <p class="error"><%= message %></p>
                 <% } %>
                 <div class="form-input">
-                    <label for="">Resource Title</label>
+                    <label for="">Change Resource Title</label>
                     <input type="text" name="rsctitle" id="" value="<%= results.rsctitle %>">
                 </div>
                 <div class="form-input">
-                    <label for="">Brief Resource Definition</label>
-                    <input type="text" name="learndefinition" id="" value="<%= results.learndefinition %>">
+                    <label for="">Change Resource Definition</label>
+                    <textarea name="learndefinition" id="" required value="<%= results.learndefinition %>" cols="30" rows="3"></textarea>
                 </div>
                 <div class="form-input">
-                    <label for="">Resource code (no spacing)</label>
+                    <label for="">Change resource code (no spacing)</label>
                     <input type="text" name="resource" id="" value="<%= results.resource %>">
                 </div>
                 <div class="form-input">
-                    <label for="">File Name (pdf only)</label>
+                    <label for="">Change File (pdf only)</label>
                     <input type="file" name="route" id="" value="<%= results.route %>" accept=".pdf">
                 </div>
                 <input type="submit" value="Update Resource"><br>

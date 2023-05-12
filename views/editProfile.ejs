@@ -5,15 +5,15 @@
         <form action="/editProfile/<%= profile.s_id %>" method="post" enctype="multipart/form-data">
             <h1>Edit Profile</h1>
             <div class="form-input">
-                <label for="">Name</label>
+                <label for="">Change Your Name</label>
                 <input type="text" name="name" id="" value="<%= profile.name %>">
             </div>
             <div class="form-input">
-                <label for="">Email Address</label>
+                <label for="">Change Your Email Address</label>
                 <input type="text" name="email" id="" value="<%= profile.email %>">
             </div>
             <div class="form-input">
-                <label for="">Gender</label>
+                <label for="">Select Your Gender</label>
                 <select name="gender" id="">
                     <% if(profile.gender) { %>
                         <option value="<%= profile.gender %>" selected><%= profile.gender %></option>
@@ -24,7 +24,7 @@
                 </select>
             </div>
             <div class="form-input">
-                <label for="">Profile Pic (1:1)</label>
+                <label for="">Change Your Profile Pic (1:1)</label>
                 <input type="file" name="profilePic" id="">
             </div>
             <input type="submit" value="Update Profile"><br> 

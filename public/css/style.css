@@ -43,6 +43,16 @@
     background-color: #900020;
     border-radius: 10px;
 }
+::selection {
+    background-color: #F6CBB7;
+}
+::-moz-selection {
+    background-color: #F6CBB7;
+    color: #fff;
+}
+input::selection, textarea::selection {
+    background-color: #F6CBB7;
+}
 header {
     background-color: #CB857C;
     height: 80px;
@@ -363,16 +373,6 @@ header nav a:hover {
     align-items: center;
     gap: 20px;
 }
-#pdf #miniNav a {
-    font-size: 25px;
-    text-decoration: none;
-    color: #900020;
-    font-weight: bold;
-    background-color: #F6CBB7;
-    border-radius: 10px;
-    padding: 0 5px;
-    letter-spacing: 3px;
-}
 #pdf #miniNav {
     width: 100%;
     display: flex;
@@ -397,16 +397,13 @@ header nav a:hover {
     padding: 15px;
     font-size: 22px;
 }
-#pdfView div a {
-    text-decoration: none;
-    font-size: 20px;
-    color: #900020;
-    background-color: #F6CBB7;
-    border: 1px solid #F6CBB7;
-    border-radius: 10px;
-    padding: 1px 5px;
-    font-weight: bold;
-    letter-spacing: 3px;
+.pdfnav {
+    display: flex;
+    justify-content: space-between;
+    min-width: 300px;
+    width: 40%;
+    padding: 5px 20px;
+    margin: auto;
 }
 #pdfView div h1 {
     text-transform: uppercase;
@@ -456,7 +453,9 @@ header nav a:hover {
     width: 280px;
     background-color: #F6CBB7;
     border-radius: 50%;
-    border: 4px solid #900020;
+    backdrop-filter: blur(15px); 
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 0 15px rgba(144, 0, 32, 0.5);
 }
 #progress {
     display: flex;
@@ -476,22 +475,6 @@ header nav a:hover {
     align-items: center;
     gap: 10px;
 }
-#progress a {
-    text-decoration: none;
-    height: fit-content;
-    width: fit-content;
-    color: #900020;
-    font-weight: bold;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 20px;
-    background-color: #F6CBB7;
-    border: 1px solid #F6CBB7;
-    padding: 2px 9px;
-    border-radius: 18px;
-    letter-spacing: 3px;
-}
 #editProfile, #editProfile form {
     width: 100%;
     display: flex;
@@ -506,16 +489,24 @@ header nav a:hover {
     text-align: left;
     flex-wrap: wrap;
     justify-content: space-between;
-    border: 2px dotted black;
     background-color: #CB857C;
-    padding: 5px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    backdrop-filter: blur(15px); 
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 0 15px rgba(144, 0, 32, 0.5);
+    padding: 10px;
+}
+#editProfile form .form-input label {
+    display: block;
 }
 #editProfile form .form-input input, #editProfile form .form-input select {
-    width: 75%;
+    width: 100%;
     min-width: 280px;
     font-size: 22px;
     background: #ffede4;
+    padding: 0 10px;
+    border-radius: 10px;
     border: 2px double #900020;
 }
 #editProfile form input[type='submit'] {
@@ -616,6 +607,9 @@ header nav a:hover {
     cursor: pointer;
     width: fit-content;
 }
+#adminhome {
+    font-size: 20px;
+}
 #adminviewstudent .studentdetailedinformation {
     padding: 10px;
     display: none;
@@ -648,7 +642,9 @@ header nav a:hover {
     width: 100px;
     background-color: #F6CBB7;
     border-radius: 50%;
-    border: 4px solid #900020;
+    backdrop-filter: blur(15px); 
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 0 15px rgba(144, 0, 32, 0.5);
 }
 #adminviewstudent .studentdetailedinformation .studentinfo {
     width: 23%;
@@ -792,17 +788,22 @@ header nav a:hover {
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    border: 2px dotted black;
     background-color: #CB857C;
     padding: 5px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    backdrop-filter: blur(15px); 
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 0 15px rgba(144, 0, 32, 0.5);
+    padding: 10px;
 }
-#addresource form .form-input input, #editresource form .form-input input {
-    width: 90%;
-    min-width: 280px;
-    font-size: 22px;
+#addresource form .form-input input, #editresource form .form-input input, #addresource form .form-input textarea, #editresource form .form-input textarea {
+    width: 100%;
+    font-size: 20px;
     background: #ffede4;
     border: 2px double #900020;
+    padding: 0 10px;
+    border-radius: 10px;
 }
 #addresource form input[type='submit'], #editresource form input[type='submit'] {
     background-color: #005b00;
