@@ -3,15 +3,15 @@
     <%- include('partials/nav') %>
     <main id="pdf" class="container">
         <div class="pdfnav">
-            <a href="/learn" class="btn41-43 btn-41">units</a>
-            <a href="/progress" class="btn41-43 btn-41">progress</a>
+            <a href="/learn" class="btn41-43 btn-41">Explore units</a>
+            <a href="/progress" class="btn41-43 btn-41">Monitor Your Progress</a>
         </div>
         <div id="pdfView">
             <embed src="/pdfuploads/<%= routes.route %>" type="application/pdf"/>
             <div>
                 <h1><%= routes.rsctitle %></h1>
                 <p><%= routes.learndefinition %></p>
-                <a href="/remark/<%= routes.resource %>" class="btn41-43 btn-41">Leave a remark</a>
+                <a href="/remark/<%= routes.resource %>" class="btn41-43 btn-41">Express your remarks</a>
             </div>
         </div>
     </main>
