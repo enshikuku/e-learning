@@ -262,22 +262,22 @@ app.get('/viewpdf/:resource', (req, res) => {
 // remark view 
 app.get('/remark/:resource', (req, res) => {
     let resource = req.params.resource
-    let username = req.session.username
+    let studentID = req.session.userID
     if (res.locals.isLogedIn) {
         connection.query(
             'SELECT rsctitle FROM learningresources WHERE resource = ?',
             [resource],
             (error, results) => {
-                res.render('remark', {resource: resource, username: username, results: results[0]})
+                res.render('remark', {resource: resource, studentID: studentID, results: results[0]})
             }
         )
     } else {
         res.redirect('/login')
     }
 })
-app.post('/remark/:resource/:username', (req, res) => {
+app.post('/remark/:resource/:studentID', (req, res) => {
     let resource = req.params.resource
-    let username = req.params.username
+    let studentID = req.params.studentID
     const userRemarks = {
         remark: req.body.remark,
         title: req.body.rsctitle
@@ -294,8 +294,8 @@ app.post('/remark/:resource/:username', (req, res) => {
                     [newtotalremarks, resource],
                     (error, results) => {
                         connection.query(
-                            'INSERT INTO remarks_table (resource, name, remark, title) VALUES (?, ?, ?, ?)',
-                            [resource, username, userRemarks.remark, userRemarks.title],
+                            'INSERT INTO remarks_table (resource, s_id, remark, title) VALUES (?, ?, ?, ?)',
+                            [resource, studentID, userRemarks.remark, userRemarks.title],
                             (error, results) => {
                                 res.redirect('/learn')
                             }
@@ -379,7 +379,8 @@ app.get('/chatroom', (req, res) => {
             'SELECT * FROM chatroom',
             [],
             (error, results) => {
-                res.render('chatroom', {results: results, admin: true})
+                let Tutor = 'Tutor'
+                res.render('chatroom', {results: results,Tutor: Tutor, admin: true})
             }
         )
     } else if (res.locals.isLogedIn) {
@@ -397,7 +398,7 @@ app.get('/chatroom', (req, res) => {
 // Send message in chatroom
 app.post('/sendmessage', (req, res) => {
     const chatInfo = {
-        username : req.body.username,            
+        id : req.body.id,            
         message : req.body.message
     }
     connection.query(
@@ -552,7 +553,7 @@ app.get('/adminhome', (req, res) => {
 app.get('/viewstudent', (req, res) => {
     if (res.locals.sessionpin) {
         connection.query(
-            'SELECT name, email, learn, gender, profilePic FROM e_student',
+            'SELECT s_id, name, email, learn, gender, profilePic FROM e_student',
             [],
             (error, results) => {
                 res.render('viewstudent', {results: results})
@@ -731,7 +732,8 @@ app.post('/delete/:resource', (req, res) => {
 app.get('/viewremark', (req, res) => {
     if (res.locals.sessionpin) {
         connection.query(
-            'SELECT * FROM remarks_table',
+            // 'SELECT * FROM remarks_table',
+            'SELECT e_student.*, remarks_table.* FROM e_student JOIN remarks_table ON e_student.s_id = remarks_table.s_id',
             [],
             (error, results) => {
                 res.render('viewremark', {results: results})

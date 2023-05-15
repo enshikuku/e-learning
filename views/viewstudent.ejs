@@ -6,7 +6,7 @@
             <h1>Total students: <%= results.length %></h1>
             <% results.forEach(result => { %>
                 <div class="studentmain">
-                    <p class="studentidandname"><%= results.indexOf(result)+1 %>. <%= result.name %></p>
+                    <p class="studentidandname"><%= results.indexOf(result)+1 %>. <%= result.name %>[<%= result.s_id %>]</p>
                     <div class="studentdetailedinformation">
                         <div class="studentinfo"><img src="/images/imageuploads/<%= result.profilePic %>" alt="" class="pic"></div>
                         <div class="studentinfo"><p class="email"><%= result.email %></p></div>

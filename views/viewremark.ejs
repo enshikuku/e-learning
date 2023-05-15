@@ -8,7 +8,7 @@
             <% results.forEach(result => { %>
                 <div class="remarkMain">
                     <div class="remarkHeading">
-                        <p class="remarkid"><%= results.indexOf(result)+1 %>. <%= result.name %></p>
+                        <p class="remarkid"><%= results.indexOf(result)+1 %>. <%= result.name %>[<%= result.s_id %>]</p>
                         <div class="handled">
                             <p><%= result.created_at.toLocaleString() %></p>
                             <form action="/handle/<%= result.r_id %>" method="post">

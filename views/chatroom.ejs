@@ -8,7 +8,11 @@
             <% results.forEach(result => { %>
                 <div class="chatMain">
                     <div class="userInfo">
-                        <p class="nameId uiTitle"><%= result.s_name %></p>
+                        <% if(admin) { %>
+                            <p class="nameId uiTitle"><%= message %><%= result.s_name %></p>
+                        <% } else { %>
+                            <p class="nameId uiTitle"><%= result.s_name %></p>
+                        <% } %>
                         <p class="time uiTitle"><%= result.created_at.toLocaleString() %></p>
                     </div>
                     <div class="message">
@@ -24,9 +28,9 @@
         <% } %>
         <form action="/sendmessage" method="post" id="form">
             <% if(admin) { %>
-                <input type="hidden" name="username" value="Tutor: <%= locals.username %>">
+                <input type="hidden" name="id" value="Tutor: <%= locals.userID %>">
             <% } else { %>
-                <input type="hidden" name="username" value="<%= locals.username %>">
+                <input type="hidden" name="id" value="<%= locals.userID %>">
             <% } %>
             <input type="text" name="message" id="" required>
             <input type="submit" value="Send message">
