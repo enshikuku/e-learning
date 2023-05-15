@@ -110,7 +110,6 @@ header nav a:hover {
 }
 
 #landing .landingSing {
-    /* border: 2px dotted #5f0015; */
     width: 100%;
     min-width: 302px;
     border-radius: 15px;
@@ -157,6 +156,7 @@ header nav a:hover {
     align-items: center;
     justify-content: space-between;
     padding: 20px;
+    gap: 20px;
 }
 #landing .signInUp {
     display: flex;
@@ -172,6 +172,53 @@ header nav a:hover {
 }
 #landing .signInUpIMG {
     width: 17px;
+}
+footer {
+    background-color: #222;
+    color: #fff;
+    padding: 30px 0 0 0;
+    margin-top: 30px;
+    text-align: center
+}
+footer .container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+footer .row {
+    display: flex;
+    flex-wrap: wrap;
+}
+footer .col-md-4 {
+    flex: 0 0 33.333333%;
+    max-width: 33.333333%;
+    padding: 0 15px;
+}
+footer h3 {
+    font-size: 20px;
+    margin: 20px 0;
+    color: #616161;
+}
+footer ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+footer li {
+    margin-bottom: 10px;
+}
+footer a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 15px;
+}
+footer a:hover {
+    text-decoration: underline;
+}
+footer .copyright {
+    margin-top: 20px;
+    padding: 10px 0;
+    font-size: 14px;
+    text-transform: capitalize;
 }
 #login-form .signInUpIMG, #signup .signInUpIMG, #adminsignup .signInUpIMG, #adminlogin .signInUpIMG{
     width: 32px;
@@ -933,7 +980,8 @@ header nav a:hover {
     .learnUnits {
         width: 100%;
     }
-    /* .cardsHolder .cardMain {
-        width: 250px;
-    } */
+    footer .col-md-4 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
 }
