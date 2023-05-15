@@ -3,13 +3,13 @@
     <main id="superadminlogin">
         <form action="/superadminlogin" method="post">
             <h1><img src="/images/login.png" alt="" class="signInUpIMG">Super Admin</h1>
-            <p>Enter the super admin pin number to Continue</p>
+            <p>This page can only be accessed by super Admin <br> Enter the super admin pin number to Continue</p>
             <% if(error) {%>
                 <p class="error"><%= message %></p>
             <% } %>
-            <input type="password" name="superadminpin" id="" value="<%= superadmin.pin %>" placeholder="Enter Super Admin Pin">
+            <input type="password" name="superadminpin" id="" required value="<%= superadmin.pin %>" placeholder="Enter Super Admin Pin">
             <input type="submit" value="Continue">
-            <a href="/" class="btn41-43 btn-41"><img src="images/home.png" alt=""> home</a>
+            <a href="/" class="btn41-43 btn-41"><img src="images/home.png" alt=""> Back home</a>
         </form>
     </main>
 <%- include('partials/footer')%>

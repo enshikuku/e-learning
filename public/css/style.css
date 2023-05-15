@@ -347,9 +347,11 @@ footer .copyright {
     font-size: 16px;
     outline: none !important;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.6s ease;
     position: relative;
-    display: inline-block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color:  #F6CBB7;
 }
 .btn-41 {

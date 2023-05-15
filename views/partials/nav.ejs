@@ -1,7 +1,7 @@
 <header class="container">
     <a href="/"><h1 id="logo"><img src="/images/e_learning.png" alt=""> E-LEARN</h1></a>
     <nav>
-        <% if(locals.isLogedIn && sessionpin) { %>
+        <% if(locals.isLogedIn && locals.sessionpin) { %>
             <a href="/home"><img src="/images/home.png" alt=""> HOME</a>
             <a href="/logout" id="logOut"><img src="/images/logout.png" alt=""> LOGOUT</a>
             <a href="/superadminlogin"><img src="/images/manage.png" alt=""> Manage</a>

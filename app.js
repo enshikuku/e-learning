@@ -4,6 +4,7 @@ import session from 'express-session'
 import bcrypt from 'bcrypt'
 import multer from 'multer'
 import fs from 'fs'
+import dotenv from 'dotenv'
 
 
 
@@ -39,9 +40,8 @@ const storage2 = multer.diskStorage({
   
 const upload1 = multer({ storage: storage1 })
 const upload2 = multer({ storage: storage2 })
-  
-// const uploads = multer({dest: 'public/uploads' })
 
+dotenv.config()
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
 app.use(express.urlencoded({extended: false}))
@@ -64,9 +64,20 @@ app.use((req, res, next) => {
     }
     next()
 } )
+// check if user is admin
+app.use((req, res, next) => {
+    if (req.session.adminPin === undefined) {
+        res.locals.sessionpin = false
+    } else {
+        res.locals.sessionpin = true
+    }
+    next()
+} )
+let adminAuthenticationPin = process.env.ADMIN_AUTH_PIN
+let superAdminAuthPin = process.env.SUPER_ADMIN_AUTH_PIN
 // Landing page
 app.get('/', (req, res) => {
-    if (res.locals.isLogedIn && req.session.adminPin === 'Admin2023') {
+    if (res.locals.isLogedIn && res.locals.sessionpin) {
         res.redirect('/adminhome')
     } else if (res.locals.isLogedIn) {
         res.redirect('home')
@@ -83,7 +94,7 @@ app.get('/signup', (req, res) => {
         confirmPassword: ''
     }
     
-    if (res.locals.isLogedIn && req.session.adminPin === 'Admin2023') {
+    if (res.locals.isLogedIn && res.locals.sessionpin) {
         res.redirect('/adminhome')
     } else if (res.locals.isLogedIn) {
         res.redirect('home')
@@ -143,7 +154,7 @@ app.get('/login', (req, res) => {
         email : '',
         password : ''
     }
-    if (res.locals.isLogedIn && req.session.adminPin === 'Admin2023') {
+    if (res.locals.isLogedIn && res.locals.sessionpin) {
         res.redirect('/adminhome')
     } else if (res.locals.isLogedIn) {
         res.redirect('home')
@@ -182,7 +193,7 @@ app.post('/login', (req, res) => {
 // home
 app.get('/home', (req, res) => {
     
-    if (res.locals.isLogedIn && req.session.adminPin === 'Admin2023') {
+    if (res.locals.isLogedIn && res.locals.sessionpin) {
         res.redirect('/adminhome')
     } else if (res.locals.isLogedIn) {
         res.render('home')
@@ -363,7 +374,7 @@ app.post('/editProfile/:s_id', upload1.single('profilePic'), (req, res) => {
 )
 // render chatroom 
 app.get('/chatroom', (req, res) => {
-    if (req.session.adminPin === 'Admin2023') {
+    if (res.locals.sessionpin) {
         connection.query(
             'SELECT * FROM chatroom',
             [],
@@ -419,7 +430,7 @@ app.get('/adminsignup', (req, res) => {
         confirmPassword: '',
         pin: '',
     }
-    if (res.locals.isLogedIn && req.session.adminPin === 'Admin2023') {
+    if (res.locals.isLogedIn && res.locals.sessionpin) {
         res.redirect('/adminhome')
     } else if (res.locals.isLogedIn) {
         res.redirect('home')
@@ -436,8 +447,7 @@ app.post('/adminsignup', (req, res) => {
         confirmPassword: req.body.confirmPassword,
         pin: req.body.adminPin
     }
-    let adminAuthentificationPin = 'Admin2023'
-    if (admin.pin === adminAuthentificationPin) {
+    if (admin.pin === adminAuthenticationPin) {
         if (admin.password === admin.confirmPassword) {
             connection.query(
                 'SELECT * FROM e_adminInfo WHERE email = ?',
@@ -484,7 +494,7 @@ app.get('/adminlogin', (req, res) => {
         password : '',
         pin: ''
     }
-    if (res.locals.isLogedIn && req.session.adminPin === 'Admin2023') {
+    if (res.locals.isLogedIn && res.locals.sessionpin) {
         res.redirect('/adminhome')
     } else if (res.locals.isLogedIn) {
         res.redirect('home')
@@ -492,15 +502,14 @@ app.get('/adminlogin', (req, res) => {
         res.render('adminlogin', {error:false, admin: admin})
     }
 })
-// Process admin login frm
+// Process admin login form
 app.post('/adminlogin', (req, res) => {
     const admin = {
         email : req.body.email,
         password : req.body.password,
         pin: req.body.pin
     }
-    let adminAuthentificationPin = 'Admin2023'
-    if (admin.pin === adminAuthentificationPin) {
+    if (admin.pin === adminAuthenticationPin) {
         // Check if user exists
         connection.query(
             'SELECT * FROM e_admininfo WHERE email = ?',
@@ -511,7 +520,7 @@ app.post('/adminlogin', (req, res) => {
                         if (passwordMatches) {
                             req.session.userID = results[0].a_id
                             req.session.username = results[0].name.split(' ')[0]
-                            req.session.adminPin = adminAuthentificationPin
+                            req.session.adminPin = adminAuthenticationPin
                             res.redirect('/adminhome')
                         } else {
                             let message = 'Incorrect password!'
@@ -532,16 +541,16 @@ app.post('/adminlogin', (req, res) => {
 })
 // Render admin home page
 app.get('/adminhome', (req, res) => {
-    if (req.session.adminPin === 'Admin2023') {
-        let sessionpin = req.session.adminPin
-        res.render('adminhome', {sessionpin: sessionpin})
+    if (res.locals.sessionpin) {
+        // let sessionpin = req.session.adminPin, {sessionpin: sessionpin}
+        res.render('adminhome')
     } else {
         res.redirect('/adminlogin')
     }
 })
 // Render viewStudent
 app.get('/viewstudent', (req, res) => {
-    if (req.session.adminPin === 'Admin2023') {
+    if (res.locals.sessionpin) {
         connection.query(
             'SELECT name, email, learn, gender, profilePic FROM e_student',
             [],
@@ -555,7 +564,7 @@ app.get('/viewstudent', (req, res) => {
 })
 // Render viewresource
 app.get('/viewresource', (req, res) => {
-    if (req.session.adminPin === 'Admin2023') {
+    if (res.locals.sessionpin) {
         connection.query(
             'SELECT * FROM learningresources',
             [],
@@ -574,7 +583,7 @@ app.get('/addresource', (req, res) => {
         definition : req.body.learndefinition,
         resource : req.body.resource
     }
-    if (req.session.adminPin === 'Admin2023') {
+    if (res.locals.sessionpin) {
         connection.query(
             'SELECT * FROM learningresources',
             [],
@@ -646,7 +655,7 @@ app.post('/addresource', upload2.single('route'), (req, res) => {
 // edit resource
 app.get('/editresource/:resource', (req, res) => {
     let resource = req.params.resource
-    if (req.session.adminPin === 'Admin2023') {
+    if (res.locals.sessionpin) {
         connection.query(
             'SELECT * FROM learningresources WHERE resource = ?',
             [resource],
@@ -720,7 +729,7 @@ app.post('/delete/:resource', (req, res) => {
 })
 // Render viewremarks
 app.get('/viewremark', (req, res) => {
-    if (req.session.adminPin === 'Admin2023') {
+    if (res.locals.sessionpin) {
         connection.query(
             'SELECT * FROM remarks_table',
             [],
@@ -745,16 +754,27 @@ app.post('/handle/:r_id', (req, res) => {
 // render superadmin
 app.get('/superadminlogin', (req, res) => {
     const superadmin = {
-        email : '',
-        password : '',
-        pin: ''
+        pin: '2020'
     }
-    if (res.locals.isLogedIn && req.session.adminPin === 'Admin2023') {
+    if (res.locals.isLogedIn && res.locals.sessionpin) {
         res.render('superadminlogin', {error:false, superadmin: superadmin})
     } else if (res.locals.isLogedIn) {
         res.redirect('home')
     } else {
         res.redirect('/adminlogin')
+    }
+})
+app.post('/superadminlogin', (req, res) => {
+    const superadmin = {
+        superadminpin: req.body.superadminpin
+    }
+    if (superadmin.superadminpin === superAdminAuthPin) {
+        // Check if user exists 
+        console.log(superAdminAuthPin)  
+        res.render('superadminlogin', {error: false, superadmin: superadmin})
+    } else {
+        let message = 'Wrong Superadmin Pin'
+        res.render('superadminlogin', {error: true, message: message, superadmin: superadmin})
     }
 })
 // logout functionality
