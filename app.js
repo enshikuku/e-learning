@@ -533,7 +533,8 @@ app.post('/adminlogin', (req, res) => {
 // Render admin home page
 app.get('/adminhome', (req, res) => {
     if (req.session.adminPin === 'Admin2023') {
-        res.render('adminhome')
+        let sessionpin = req.session.adminPin
+        res.render('adminhome', {sessionpin: sessionpin})
     } else {
         res.redirect('/adminlogin')
     }
@@ -740,6 +741,21 @@ app.post('/handle/:r_id', (req, res) => {
             res.redirect('/viewremark')
         }
     )
+})
+// render superadmin
+app.get('/superadminlogin', (req, res) => {
+    const superadmin = {
+        email : '',
+        password : '',
+        pin: ''
+    }
+    if (res.locals.isLogedIn && req.session.adminPin === 'Admin2023') {
+        res.render('superadminlogin', {error:false, superadmin: superadmin})
+    } else if (res.locals.isLogedIn) {
+        res.redirect('home')
+    } else {
+        res.redirect('/adminlogin')
+    }
 })
 // logout functionality
 app.get('/logout', (req, res) => {
