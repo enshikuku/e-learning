@@ -376,19 +376,22 @@ app.post('/editProfile/:s_id', upload1.single('profilePic'), (req, res) => {
 app.get('/chatroom', (req, res) => {
     if (res.locals.sessionpin) {
         connection.query(
-            'SELECT * FROM chatroom',
+            'SELECT chatroom.*, e_admininfo.name FROM chatroom JOIN e_admininfo ON chatroom.a_id = e_admininfo.a_id',
             [],
             (error, results) => {
-                let Tutor = 'Tutor'
-                res.render('chatroom', {results: results,Tutor: Tutor, admin: true})
+                let senderID = req.session.userID
+                res.render('chatroom', {results: results, admin: true,senderID: senderID})
+                console.log(error)
             }
         )
     } else if (res.locals.isLogedIn) {
         connection.query(
-            'SELECT * FROM chatroom',
+            'SELECT chatroom.*,  e_student.name FROM chatroom JOIN e_student ON chatroom.s_id = e_student.s_id',
             [],
             (error, results) => {
-                res.render('chatroom', {results: results, admin: false})
+                let senderID = req.session.userID
+                res.render('chatroom', {results: results, admin: false,senderID: senderID})
+                console.log(error)
             }
         )
     } else {
@@ -401,16 +404,33 @@ app.post('/sendmessage', (req, res) => {
         id : req.body.id,            
         message : req.body.message
     }
-    connection.query(
-        'INSERT INTO chatroom (s_name, chat) VALUES (?, ?)',
-        [
-            chatInfo.username,
-            chatInfo.message
-        ],
-        (error, results) => {
-            res.redirect('/chatroom')
-        }
-    )
+    if (res.locals.sessionpin) {
+        connection.query(
+            'INSERT INTO chatroom (a_id, tutor, chat) VALUES (?, ?, ?)',
+            [
+                chatInfo.id,
+                'true',
+                chatInfo.message
+            ],
+            (error, results) => {
+                res.redirect('/chatroom')
+            }
+        )
+    } else if (res.locals.isLogedIn) {
+        connection.query(
+            'INSERT INTO chatroom (s_id, tutor, chat) VALUES (?, ?, ?)',
+            [
+                chatInfo.id,
+                'false',
+                chatInfo.message
+            ],
+            (error, results) => {
+                res.redirect('/chatroom')
+            }
+        )
+    } else {
+        res.redirect('/login')
+    }
 })
 // Clear Messages
 app.post('/clearchats', (req, res) => {
