@@ -9,11 +9,11 @@
                 <div class="chatMain">
                     <div class="userInfo">
                         <% if(result.tutor === 'true') { %>
-                            <p class="nameId uiTitle">Tutor: <%= result.name %></p>
+                            <p class="nameId uiTitle">Tutor: <%= result.admin_name.split(' ')[0] %></p>
                         <% } else if(result.tutor === 'false') { %>
-                            <p class="nameId uiTitle"><%= result.name %></p>
+                            <p class="nameId uiTitle"><%= result.student_name.split(' ')[0] %></p>
                         <% } %>
-                        <p class="time uiTitle"><%= result.created_at.toLocaleString() %></p>
+                        <p class="time uiTitle"><%= result.created_at.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", hour: "numeric", minute: "numeric" }) %></p>
                     </div>
                     <div class="message">
                         <p class="messages"><%= result.chat %></p>

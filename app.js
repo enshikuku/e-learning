@@ -376,22 +376,20 @@ app.post('/editProfile/:s_id', upload1.single('profilePic'), (req, res) => {
 app.get('/chatroom', (req, res) => {
     if (res.locals.sessionpin) {
         connection.query(
-            'SELECT chatroom.*, e_admininfo.name FROM chatroom JOIN e_admininfo ON chatroom.a_id = e_admininfo.a_id',
+            'SELECT chatroom.*, e_student.name AS student_name, e_admininfo.name AS admin_name FROM chatroom LEFT JOIN e_student ON chatroom.s_id = e_student.s_id LEFT JOIN e_admininfo ON chatroom.a_id = e_admininfo.a_id',
             [],
             (error, results) => {
                 let senderID = req.session.userID
                 res.render('chatroom', {results: results, admin: true,senderID: senderID})
-                console.log(error)
             }
         )
     } else if (res.locals.isLogedIn) {
         connection.query(
-            'SELECT chatroom.*,  e_student.name FROM chatroom JOIN e_student ON chatroom.s_id = e_student.s_id',
+            'SELECT chatroom.*, e_student.name AS student_name, e_admininfo.name AS admin_name FROM chatroom LEFT JOIN e_student ON chatroom.s_id = e_student.s_id LEFT JOIN e_admininfo ON chatroom.a_id = e_admininfo.a_id',
             [],
             (error, results) => {
                 let senderID = req.session.userID
                 res.render('chatroom', {results: results, admin: false,senderID: senderID})
-                console.log(error)
             }
         )
     } else {
