@@ -3,7 +3,7 @@
     <%- include('partials/nav') %>
     <main id="editresource" class="container">
         <div>
-            <form action="/editresource/<%= results.resource %>" method="post" enctype="multipart/form-data">
+            <form action="/editresource/<%= results.lr_id %>" method="post" enctype="multipart/form-data">
                 <h1>Edit Resource: <%= results.rsctitle %></h1>
                 <% if(error) { %>
                     <p class="error"><%= message %></p>
@@ -14,11 +14,7 @@
                 </div>
                 <div class="form-input">
                     <label for="">Change Resource Definition</label>
-                    <textarea name="learndefinition" id="" required value="<%= results.learndefinition %>" cols="30" rows="3"></textarea>
-                </div>
-                <div class="form-input">
-                    <label for="">Change resource code (no spacing)</label>
-                    <input type="text" name="resource" id="" value="<%= results.resource %>">
+                    <textarea name="learndefinition" id="" value="<%= results.learndefinition %>" cols="30" rows="3"></textarea>
                 </div>
                 <div class="form-input">
                     <label for="">Change File (pdf only)</label>

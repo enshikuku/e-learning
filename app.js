@@ -216,8 +216,8 @@ app.get('/learn', (req, res) => {
     }
 })
 // pdf view
-app.get('/viewpdf/:resource', (req, res) => {
-    let resource = req.params.resource
+app.get('/viewpdf/:lr_id', (req, res) => {
+    let lr_id = req.params.lr_id
     if (res.locals.isLogedIn) {
         connection.query(
             'SELECT learn FROM e_student WHERE s_id = ?', 
@@ -230,18 +230,18 @@ app.get('/viewpdf/:resource', (req, res) => {
                     [newResult, req.session.userID],
                     (error, results) => {
                         connection.query(
-                            'SELECT * FROM learningresources WHERE resource = ?',
-                            [resource],
+                            'SELECT * FROM learningresources WHERE lr_id = ?',
+                            [lr_id],
                             (error, results) => {
                                 let newopened = results[0].opened
                                 newopened++
                                 connection.query(
-                                    'UPDATE learningresources SET opened = ? WHERE resource = ?',
-                                    [newopened, resource],
+                                    'UPDATE learningresources SET opened = ? WHERE lr_id = ?',
+                                    [newopened, lr_id],
                                     (error, results) => {
                                         connection.query(
-                                            'SELECT * FROM learningresources WHERE resource = ?',
-                                            [resource],
+                                            'SELECT * FROM learningresources WHERE lr_id = ?',
+                                            [lr_id],
                                             (error, results) => {
                                                 res.render('pdf', {routes: results[0]})
                                             }
@@ -260,42 +260,41 @@ app.get('/viewpdf/:resource', (req, res) => {
     }
 })
 // remark view 
-app.get('/remark/:resource', (req, res) => {
-    let resource = req.params.resource
+app.get('/remark/:lr_id', (req, res) => {
+    let lr_id = req.params.lr_id
     let studentID = req.session.userID
     if (res.locals.isLogedIn) {
         connection.query(
-            'SELECT rsctitle FROM learningresources WHERE resource = ?',
-            [resource],
+            'SELECT rsctitle FROM learningresources WHERE lr_id = ?',
+            [lr_id],
             (error, results) => {
-                res.render('remark', {resource: resource, studentID: studentID, results: results[0]})
+                res.render('remark', {lr_id: lr_id, studentID: studentID, results: results[0]})
             }
         )
     } else {
         res.redirect('/login')
     }
 })
-app.post('/remark/:resource/:studentID', (req, res) => {
-    let resource = req.params.resource
+app.post('/remark/:lr_id/:studentID', (req, res) => {
+    let lr_id = req.params.lr_id
     let studentID = req.params.studentID
     const userRemarks = {
-        remark: req.body.remark,
-        title: req.body.rsctitle
+        remark: req.body.remark
     }
     if (res.locals.isLogedIn) {
         connection.query(
-            'SELECT totalremarks FROM learningresources WHERE resource = ?',
-            [resource],
+            'SELECT totalremarks FROM learningresources WHERE lr_id = ?',
+            [lr_id],
             (error, results) => {
                 let newtotalremarks = results[0].totalremarks
                 newtotalremarks++
                 connection.query(
-                    'UPDATE learningresources SET totalremarks = ? WHERE resource = ?', 
-                    [newtotalremarks, resource],
+                    'UPDATE learningresources SET totalremarks = ? WHERE lr_id = ?', 
+                    [newtotalremarks, lr_id],
                     (error, results) => {
                         connection.query(
-                            'INSERT INTO remarks_table (resource, s_id, remark, title) VALUES (?, ?, ?, ?)',
-                            [resource, studentID, userRemarks.remark, userRemarks.title],
+                            'INSERT INTO remarks_table (lr_id, s_id, remark) VALUES (?, ?, ?)',
+                            [lr_id, studentID, userRemarks.remark],
                             (error, results) => {
                                 res.redirect('/learn')
                             }
@@ -585,7 +584,7 @@ app.get('/viewstudent', (req, res) => {
 app.get('/viewresource', (req, res) => {
     if (res.locals.sessionpin) {
         connection.query(
-            'SELECT * FROM learningresources',
+            'SELECT learningresources.*, e_admininfo.name FROM learningresources LEFT JOIN e_admininfo ON learningresources.a_id = e_admininfo.a_id',
             [],
             (error, results) => {
                 res.render('viewresource', {results: results})
@@ -626,6 +625,7 @@ app.post('/addresource', upload2.single('route'), (req, res) => {
         'SELECT rsctitle FROM learningresources WHERE rsctitle = ?',
         [resourceInfo.title],
         (error, results) => {
+            console.log(error)
             if(results.length > 0){
                 let message = 'There is already a resource with the title! Please rename!'
                 resourceInfo.title = ''
@@ -635,6 +635,7 @@ app.post('/addresource', upload2.single('route'), (req, res) => {
                     'SELECT resource FROM learningresources WHERE resource = ?',
                     [resourceInfo.resource],
                     (error, results) => {
+                        console.log(error)
                         if(results.length > 0){
                             let message = 'Resource code already exists! Please change the resouce code'
                             resourceInfo.resource = ''
@@ -644,20 +645,23 @@ app.post('/addresource', upload2.single('route'), (req, res) => {
                                 'SELECT route FROM learningresources WHERE route = ?',
                                 [resourceInfo.route],
                                 (error, results) => {
+                                    console.log(error)
                                     if(results.length > 0){
                                         let message = 'File name already exists! Please rename the file before uploading.'
                                         resourceInfo.filename = ''
                                         res.render('addresource', {error: true, message: message, resourceInfo: resourceInfo})
                                     }else{
                                         connection.query(
-                                            'INSERT INTO learningresources (rsctitle, learndefinition, resource, route) VALUES (?, ?, ?, ?)',
+                                            'INSERT INTO learningresources (rsctitle, learndefinition, resource, route, a_id) VALUES (?, ?, ?, ?, ?)',
                                             [
                                                 resourceInfo.title,            
                                                 resourceInfo.definition,
                                                 resourceInfo.resource,
                                                 resourceInfo.filename,
+                                                req.session.userID
                                             ],
                                             (error, results) => {
+                                                console.log(error)
                                                 res.redirect('/viewresource')
                                             }
                                         )
@@ -672,12 +676,12 @@ app.post('/addresource', upload2.single('route'), (req, res) => {
     )
 })
 // edit resource
-app.get('/editresource/:resource', (req, res) => {
-    let resource = req.params.resource
+app.get('/editresource/:lr_id', (req, res) => {
+    let lr_id = req.params.lr_id
     if (res.locals.sessionpin) {
         connection.query(
-            'SELECT * FROM learningresources WHERE resource = ?',
-            [resource],
+            'SELECT * FROM learningresources WHERE lr_id = ?',
+            [lr_id],
             (error, results) => {
                 res.render('editresource', {results: results[0], error: false})
             }
@@ -687,22 +691,20 @@ app.get('/editresource/:resource', (req, res) => {
     }
 })
 // editting the resource
-app.post('/editresource/:resource', upload2.single('route'), (req, res) => {
-    let resource = req.params.resource
+app.post('/editresource/:lr_id', upload2.single('route'), (req, res) => {
+    let lr_id = req.params.lr_id
     const resourceInfo = {
         title : req.body.rsctitle,            
-        definition : req.body.learndefinition,
-        resource : req.body.resource
+        definition : req.body.learndefinition
     } 
     if (req.file) {
         connection.query(
-            'UPDATE learningresources SET rsctitle = ?, learndefinition = ?, resource = ?, route = ? WHERE resource = ? ',
+            'UPDATE learningresources SET rsctitle = ?, learndefinition = ?, route = ? WHERE lr_id = ? ',
             [
                 resourceInfo.title,            
                 resourceInfo.definition,
-                resourceInfo.resource,
                 req.file.originalname,
-                resource
+                lr_id
             ],
             (error, results) => {
                 res.redirect('/viewresource')
@@ -710,12 +712,11 @@ app.post('/editresource/:resource', upload2.single('route'), (req, res) => {
         )
     } else {
         connection.query(
-            'UPDATE learningresources SET rsctitle = ?, learndefinition = ?, resource = ? WHERE resource = ? ',
+            'UPDATE learningresources SET rsctitle = ?, learndefinition = ? WHERE lr_id = ? ',
             [
                 resourceInfo.title,            
                 resourceInfo.definition,
-                resourceInfo.resource,
-                resource
+                lr_id
             ],
             (error, results) => {
                 res.redirect('/viewresource')
@@ -725,10 +726,10 @@ app.post('/editresource/:resource', upload2.single('route'), (req, res) => {
     }
 })
 // delete resource
-app.post('/delete/:resource', (req, res) => {
+app.post('/delete/:lr_id', (req, res) => {
     connection.query (
-        'SELECT * FROM learningresources WHERE resource = ?', 
-        [req.params.resource],
+        'SELECT * FROM learningresources WHERE lr_id = ?', 
+        [req.params.lr_id],
         (error, results) => {
             fs.unlink(`./public/pdfuploads/${results[0].route}`, (err) => {
                 if (err) {
@@ -736,8 +737,8 @@ app.post('/delete/:resource', (req, res) => {
                     return
                 }
                 connection.query(
-                    'DELETE FROM learningresources WHERE resource = ?',
-                    [req.params.resource],
+                    'DELETE FROM learningresources WHERE lr_id = ?',
+                    [req.params.lr_id],
                     (error, results) => {
                         res.redirect('/viewresource')
                     }
@@ -750,8 +751,7 @@ app.post('/delete/:resource', (req, res) => {
 app.get('/viewremark', (req, res) => {
     if (res.locals.sessionpin) {
         connection.query(
-            // 'SELECT * FROM remarks_table',
-            'SELECT e_student.*, remarks_table.* FROM e_student JOIN remarks_table ON e_student.s_id = remarks_table.s_id',
+            'SELECT rt.*, e.name, lr.rsctitle FROM remarks_table AS rt JOIN e_student AS e ON rt.s_id = e.s_id JOIN learningresources AS lr ON rt.lr_id = lr.lr_id',
             [],
             (error, results) => {
                 res.render('viewremark', {results: results})

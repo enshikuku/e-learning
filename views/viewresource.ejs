@@ -12,8 +12,8 @@
                     <div class="resourceid">
                         <p><%= results.indexOf(result)+1 %>. <%= result.rsctitle %></p>
                         <div class="edit-delete">
-                            <a href="/editresource/<%= result.resource %>">Edit</a>
-                            <form action="/delete/<%= result.resource %>" method="post">
+                            <a href="/editresource/<%= result.lr_id %>">Edit</a>
+                            <form action="/delete/<%= result.lr_id %>" method="post">
                                 <input type="submit" value="Delete">
                             </form>
                         </div>
@@ -38,6 +38,9 @@
                                     <i>None</i>
                                 <% } %>
                             </p>
+                        </div>
+                        <div class="resourceInfo">
+                            <p>Uploading tutor: <%= result.name %></p>
                         </div>
                     </div>
                 </div>
