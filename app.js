@@ -570,7 +570,7 @@ app.get('/adminhome', (req, res) => {
 app.get('/viewstudent', (req, res) => {
     if (res.locals.sessionpin) {
         connection.query(
-            'SELECT s_id, name, email, learn, gender, profilePic FROM e_student',
+            'SELECT * FROM e_student',
             [],
             (error, results) => {
                 res.render('viewstudent', {results: results})
