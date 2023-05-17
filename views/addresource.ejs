@@ -10,15 +10,15 @@
                 <% } %>
                 <div class="form-input">
                     <label for="">Resource Title</label>
-                    <input type="text" name="rsctitle" id="" required value="<%= resourceInfo.title %>">
+                    <input type="text" name="rsctitle" required value="<%= resourceInfo.title %>">
                 </div>
                 <div class="form-input">
                     <label for="">Brief Resource Definition</label>
-                    <textarea name="learndefinition" id="" required value="<%= resourceInfo.definition %>" cols="30" rows="3"></textarea>
+                    <textarea name="learndefinition" required cols="30" rows="3"><%= resourceInfo.definition %></textarea>
                 </div>
                 <div class="form-input">
                     <label for="">File Name (pdf only)</label>
-                    <input type="file" name="route" id="" required accept=".pdf" value="<%= resourceInfo.filename %>">
+                    <input type="file" name="route" required accept=".pdf" value="<%= resourceInfo.filename %>">
                 </div>
                 <input type="submit" value="Add Resource"><br>
                 <a href="/viewresource">Cancel</a>

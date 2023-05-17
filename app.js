@@ -63,7 +63,7 @@ app.use((req, res, next) => {
 
     }
     next()
-} )
+})
 // check if user is admin
 app.use((req, res, next) => {
     if (req.session.adminPin === undefined) {
@@ -72,7 +72,16 @@ app.use((req, res, next) => {
         res.locals.sessionpin = true
     }
     next()
-} )
+})
+// check if user is superadmin
+app.use((req, res, next) => {
+    if (req.session.superadminPin === undefined) {
+        res.locals.superadminsession = false
+    } else {
+        res.locals.superadminsession = true
+    }
+    next()
+})
 let adminAuthenticationPin = process.env.ADMIN_AUTH_PIN
 let superAdminAuthPin = process.env.SUPER_ADMIN_AUTH_PIN
 // Landing page
@@ -774,7 +783,7 @@ app.post('/handle/:r_id', (req, res) => {
 // render superadmin
 app.get('/superadminlogin', (req, res) => {
     const superadmin = {
-        pin: '2020'
+        pin: ''
     }
     if (res.locals.isLogedIn && res.locals.sessionpin) {
         res.render('superadminlogin', {error:false, superadmin: superadmin})
@@ -789,6 +798,7 @@ app.post('/superadminlogin', (req, res) => {
         superadminpin: req.body.superadminpin
     }
     if (superadmin.superadminpin === superAdminAuthPin) {
+        req.session.superadminPin = adminAuthenticationPin
         res.redirect('/manager')
     } else {
         let message = 'Wrong Superadmin Pin'
@@ -796,16 +806,28 @@ app.post('/superadminlogin', (req, res) => {
     }
 })
 app.get('/manager', (req, res) => {
-    res.render('manager')
+    if (res.locals.isLogedIn && res.locals.sessionpin && res.locals.superadminsession) {
+        res.render('manager')
+    } else if (res.locals.isLogedIn) {
+        res.redirect('/home')
+    } else {
+        res.redirect('/adminlogin')
+    }
 })
 app.get('/studentmanager', (req, res) => {
-    connection.query(
-        'SELECT * FROM e_student',
-        [],
-        (error, results) => {
-            res.render('studentmanager', {results: results})
-        }
-    )
+    if (res.locals.isLogedIn && res.locals.sessionpin && res.locals.superadminsession) {
+        connection.query(
+            'SELECT * FROM e_student',
+            [],
+            (error, results) => {
+                res.render('studentmanager', {results: results})
+            }
+        )
+    } else if (res.locals.isLogedIn) {
+        res.redirect('/home')
+    } else {
+        res.redirect('/adminlogin')
+    }
 })
 // delete student
 app.post('/deletestudent/:s_id', (req, res) => {
@@ -818,13 +840,19 @@ app.post('/deletestudent/:s_id', (req, res) => {
     )
 })
 app.get('/adminmanager', (req, res) => {
-    connection.query(
-        'SELECT * FROM e_admininfo',
-        [],
-        (error, results) => {
-            res.render('adminmanager', {results: results})
-        }
-    )
+    if (res.locals.isLogedIn && res.locals.sessionpin && res.locals.superadminsession) {
+        connection.query(
+            'SELECT * FROM e_admininfo',
+            [],
+            (error, results) => {
+                res.render('adminmanager', {results: results})
+            }
+        )
+    } else if (res.locals.isLogedIn) {
+        res.redirect('/home')
+    } else {
+        res.redirect('/adminlogin')
+    }
 })
 // delete admin
 app.post('/deleteadmin/:a_id', (req, res) => {
