@@ -553,7 +553,7 @@ app.post('/adminlogin', (req, res) => {
             }
         )    
     } else {
-        let message = 'Wrong Admin Pin'
+        let message = 'Incorrect Admin pin'
         res.render('adminlogin', {error: true, message: message, admin: admin})
     }
 })
@@ -789,13 +789,52 @@ app.post('/superadminlogin', (req, res) => {
         superadminpin: req.body.superadminpin
     }
     if (superadmin.superadminpin === superAdminAuthPin) {
-        // Check if user exists 
-        console.log(superAdminAuthPin)  
-        res.render('superadminlogin', {error: false, superadmin: superadmin})
+        res.redirect('/manager')
     } else {
         let message = 'Wrong Superadmin Pin'
         res.render('superadminlogin', {error: true, message: message, superadmin: superadmin})
     }
+})
+app.get('/manager', (req, res) => {
+    res.render('manager')
+})
+app.get('/studentmanager', (req, res) => {
+    connection.query(
+        'SELECT * FROM e_student',
+        [],
+        (error, results) => {
+            res.render('studentmanager', {results: results})
+        }
+    )
+})
+// delete student
+app.post('/deletestudent/:s_id', (req, res) => {
+    connection.query (
+        'DELETE FROM e_student WHERE s_id = ?',
+        [req.params.s_id],
+        (error, results) => {
+            res.redirect('/studentmanager')
+        }
+    )
+})
+app.get('/adminmanager', (req, res) => {
+    connection.query(
+        'SELECT * FROM e_admininfo',
+        [],
+        (error, results) => {
+            res.render('adminmanager', {results: results})
+        }
+    )
+})
+// delete admin
+app.post('/deleteadmin/:a_id', (req, res) => {
+    connection.query (
+        'DELETE FROM e_admininfo WHERE a_id = ?',
+        [req.params.a_id],
+        (error, results) => {
+            res.redirect('/adminmanager')
+        }
+    )
 })
 // logout functionality
 app.get('/logout', (req, res) => {

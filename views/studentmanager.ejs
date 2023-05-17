@@ -1,0 +1,35 @@
+<%- include('partials/header') %>
+    <%- include('partials/preloader')%>
+    <%- include('partials/nav') %>
+    <main id="adminviewresource" class="container">
+        <div>
+            <div id="editmininav"><h1>Total students: <%= results.length %></h1></div>
+            <% results.forEach(result => { %>
+                <div class="resourcesMain">
+                    <div class="resourceid">
+                        <p><%= results.indexOf(result)+1 %>. ES/<%= result.s_id %>/<%= result.timestamp.toLocaleDateString("en-US", { year: "numeric" }).slice(-2) %> <%= result.name %></p>
+                        <div class="edit-delete">
+                            <form action="/deletestudent/<%= result.s_id %>" method="post">
+                                <input type="submit" value="Delete Student">
+                            </form>
+                        </div>
+                    </div>
+                    <div class="resources">
+                        <div class="resourceInfo">
+                            <p>Email: <%= result.email %></p>
+                        </div>
+                        <div class="resourceInfo">
+                            <p>Gender: <%= result.gender %></p>
+                        </div>
+                        <div class="resourceInfo">
+                            <p>Learn Progress: <%= result.learn %></p>
+                        </div>
+                        <div class="resourceInfo">
+                            <p>Joined on: <%= result.timestamp.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", hour: "numeric", minute: "numeric" }) %></p>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </main>
+<%- include('partials/footer') %>

@@ -1,0 +1,22 @@
+<%- include('partials/header') %>
+    <%- include('partials/preloader')%>
+    <%- include('partials/nav') %>
+    <main id="manager" class="container">
+        <div class="introduction">
+            <h2>Welcome to E-LEARN Super Admin Manage Hub</h2>
+            <p>Here, you have the ability to efficiently manage students and admins within the E-LEARN database:</p>
+        </div>
+        <div class="allcards">
+            <div class="cardsHolder">
+                <a href="/studentmanager" class="cardMain">
+                    <img src="https://res.cloudinary.com/dlkqilyi0/image/upload/v1684326919/Images/InShot_20230517_153359762_aimarr.jpg" class="card" alt=""> 
+                    <p><img src="/images/student.png" alt="" class="icon"> Manage students</p>
+                </a>
+                <a href="/adminmanager" class="cardMain">
+                    <img src="https://res.cloudinary.com/dlkqilyi0/image/upload/v1684326919/Images/InShot_20230517_153338607_budwk7.jpg" class="card" alt="">
+                    <p><img src="/images/manage.png" alt="" class="icon"> Manage Admins</p>
+                </a>
+            </div>
+        </div>
+    </main>
+<%- include('partials/footer')%>

@@ -944,7 +944,9 @@ footer .copyright {
         transform: rotate(360deg);
     }    
 }
-
+#manager .introduction {
+    font-size: 22px;
+}
 /* responsive */
 @media only screen and (max-width: 730px) {
     .container {
