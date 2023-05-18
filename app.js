@@ -256,7 +256,7 @@ app.get('/home', (req, res) => {
     } else if (res.locals.isLogedIn) {
         res.render('home')
     } else {
-        res.redirect('/login')
+        res.redirect('/')
     }
 })
 
