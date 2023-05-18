@@ -10,12 +10,18 @@ import dotenv from 'dotenv'
 
 const app = express()
 
+
+
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
     database: 'e_learn_portal'
 })
+
+
+
+
 
 const storage1 = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -27,6 +33,7 @@ const storage1 = multer.diskStorage({
     }
 })
   
+
 const storage2 = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, './public/pdfuploads')
@@ -36,14 +43,28 @@ const storage2 = multer.diskStorage({
         cb(null, file.originalname)
     }
 })
-  
+
+
+
 const upload1 = multer({ storage: storage1 })
+
 const upload2 = multer({ storage: storage2 })
 
+
 dotenv.config()
+
+
 app.set('view engine', 'ejs')
+
+
 app.use(express.static('public'))
+
+
 app.use(express.urlencoded({extended: false}))
+
+
+
+
 
 // prepare to use session
 app.use(session({
@@ -51,6 +72,11 @@ app.use(session({
     saveUninitialized: false,
     resave: true
 }))
+
+
+
+
+
 // continue to check if user is loged in
 app.use((req, res, next) => {
     if (req.session.userID === undefined) {
@@ -63,6 +89,11 @@ app.use((req, res, next) => {
     }
     next()
 })
+
+
+
+
+
 // check if user is admin
 app.use((req, res, next) => {
     if (req.session.adminPin === undefined) {
@@ -72,6 +103,11 @@ app.use((req, res, next) => {
     }
     next()
 })
+
+
+
+
+
 // check if user is superadmin
 app.use((req, res, next) => {
     if (req.session.superadminPin === undefined) {
@@ -81,8 +117,17 @@ app.use((req, res, next) => {
     }
     next()
 })
+
+
+
+
 let adminAuthenticationPin = process.env.ADMIN_AUTH_PIN
 let superAdminAuthPin = process.env.SUPER_ADMIN_AUTH_PIN
+
+
+
+
+
 // Landing page
 app.get('/', (req, res) => {
     if (res.locals.isLogedIn && res.locals.sessionpin) {
@@ -93,6 +138,7 @@ app.get('/', (req, res) => {
         res.render('index')
     }
 })
+
 // Display Signup Page
 app.get('/signup', (req, res) => {
     const user = {
@@ -110,6 +156,7 @@ app.get('/signup', (req, res) => {
         res.render('signup', {error:false, user: user})
     }  
 })
+
 // process signup form 
 app.post('/signup', (req, res) => {
     const user = {
@@ -156,6 +203,7 @@ app.post('/signup', (req, res) => {
     }
     
 })
+
 // Display Login Page
 app.get('/login', (req, res) => {
     const user = {
@@ -170,6 +218,7 @@ app.get('/login', (req, res) => {
         res.render('login', {error:false, user: user})
     }
 })
+
 // process login page
 app.post('/login', (req, res) => {
     const user = {
@@ -198,6 +247,7 @@ app.post('/login', (req, res) => {
         }
     )
 })
+
 // home
 app.get('/home', (req, res) => {
     
@@ -209,6 +259,7 @@ app.get('/home', (req, res) => {
         res.redirect('/login')
     }
 })
+
 // learn page
 app.get('/learn', (req, res) => {
     if (res.locals.isLogedIn) {
@@ -223,6 +274,7 @@ app.get('/learn', (req, res) => {
         res.redirect('/login')
     }
 })
+
 // pdf view
 app.get('/viewpdf/:lr_id', (req, res) => {
     let lr_id = req.params.lr_id
@@ -267,6 +319,7 @@ app.get('/viewpdf/:lr_id', (req, res) => {
         res.redirect('/login')
     }
 })
+
 // remark view 
 app.get('/remark/:lr_id', (req, res) => {
     let lr_id = req.params.lr_id
@@ -283,6 +336,7 @@ app.get('/remark/:lr_id', (req, res) => {
         res.redirect('/login')
     }
 })
+
 app.post('/remark/:lr_id/:studentID', (req, res) => {
     let lr_id = req.params.lr_id
     let studentID = req.params.studentID
@@ -315,6 +369,7 @@ app.post('/remark/:lr_id/:studentID', (req, res) => {
         res.redirect('/login')
     }
 })
+
 // progress view
 app.get('/progress', (req, res) => {
     if (res.locals.isLogedIn) {
@@ -328,6 +383,7 @@ app.get('/progress', (req, res) => {
         res.redirect('/login')
     }
 })
+
 // edit Profile view
 app.get('/editMyProfile', (req, res) => {
     if (res.locals.isLogedIn) {
@@ -342,6 +398,7 @@ app.get('/editMyProfile', (req, res) => {
         res.redirect('/login')
     }
 })
+
 app.post('/editProfile/:s_id', upload1.single('profilePic'), (req, res) => {
     if (req.file) {
         connection.query(
@@ -379,6 +436,7 @@ app.post('/editProfile/:s_id', upload1.single('profilePic'), (req, res) => {
     }
     }
 )
+
 // render chatroom 
 app.get('/chatroom', (req, res) => {
     if (res.locals.sessionpin) {
@@ -403,6 +461,7 @@ app.get('/chatroom', (req, res) => {
         res.redirect('/login')
     }
 })
+
 // Send message in chatroom
 app.post('/sendmessage', (req, res) => {
     const chatInfo = {
@@ -437,6 +496,7 @@ app.post('/sendmessage', (req, res) => {
         res.redirect('/login')
     }
 })
+
 // Clear Messages
 app.post('/clearchats', (req, res) => {
     connection.query(
@@ -447,6 +507,7 @@ app.post('/clearchats', (req, res) => {
         }
     )
 })
+
 // Admin signup
 app.get('/adminsignup', (req, res) => {
     const admin = {
@@ -464,6 +525,7 @@ app.get('/adminsignup', (req, res) => {
         res.render('adminsignup', {error:false, admin: admin} )
     }
 })
+
 // process admin signup form
 app.post('/adminsignup', (req, res) => {
     const admin = {
@@ -513,6 +575,7 @@ app.post('/adminsignup', (req, res) => {
         res.render('adminsignup', {error: true, message: message, admin: admin})
     }
 })
+
 // Admin login
 app.get('/adminlogin', (req, res) => {
     const admin = {
@@ -528,6 +591,7 @@ app.get('/adminlogin', (req, res) => {
         res.render('adminlogin', {error:false, admin: admin})
     }
 })
+
 // Process admin login form
 app.post('/adminlogin', (req, res) => {
     const admin = {
@@ -565,6 +629,7 @@ app.post('/adminlogin', (req, res) => {
         res.render('adminlogin', {error: true, message: message, admin: admin})
     }
 })
+
 // Render admin home page
 app.get('/adminhome', (req, res) => {
     if (res.locals.sessionpin) {
@@ -573,6 +638,7 @@ app.get('/adminhome', (req, res) => {
         res.redirect('/adminlogin')
     }
 })
+
 // Render viewStudent
 app.get('/viewstudent', (req, res) => {
     if (res.locals.sessionpin) {
@@ -587,6 +653,7 @@ app.get('/viewstudent', (req, res) => {
         res.redirect('/adminlogin')
     }
 })
+
 // Render viewresource
 app.get('/viewresource', (req, res) => {
     if (res.locals.sessionpin) {
@@ -601,6 +668,7 @@ app.get('/viewresource', (req, res) => {
         res.redirect('/adminlogin')
     }
 })
+
 // Render addresource
 app.get('/addresource', (req, res) => {
     const resourceInfo = {
@@ -620,6 +688,7 @@ app.get('/addresource', (req, res) => {
         res.redirect('/adminlogin')
     }
 })
+
 // Adding resource
 app.post('/addresource', upload2.single('route'), (req, res) => {
     const resourceInfo = {
@@ -682,6 +751,7 @@ app.post('/addresource', upload2.single('route'), (req, res) => {
         }
     )
 })
+
 // edit resource
 app.get('/editresource/:lr_id', (req, res) => {
     let lr_id = req.params.lr_id
@@ -697,6 +767,7 @@ app.get('/editresource/:lr_id', (req, res) => {
         res.redirect('/adminlogin')
     }
 })
+
 // editting the resource
 app.post('/editresource/:lr_id', upload2.single('route'), (req, res) => {
     let lr_id = req.params.lr_id
@@ -732,6 +803,7 @@ app.post('/editresource/:lr_id', upload2.single('route'), (req, res) => {
         
     }
 })
+
 // delete resource
 app.post('/delete/:lr_id', (req, res) => {
     connection.query (
@@ -754,6 +826,7 @@ app.post('/delete/:lr_id', (req, res) => {
         }
     )
 })
+
 // Render viewremarks
 app.get('/viewremark', (req, res) => {
     if (res.locals.sessionpin) {
@@ -768,6 +841,7 @@ app.get('/viewremark', (req, res) => {
         res.redirect('/adminlogin')
     }
 })
+
 // Handle remark
 app.post('/handle/:r_id', (req, res) => {
     connection.query (
@@ -778,6 +852,7 @@ app.post('/handle/:r_id', (req, res) => {
         }
     )
 })
+
 // render superadmin
 app.get('/superadminlogin', (req, res) => {
     const superadmin = {
@@ -791,6 +866,7 @@ app.get('/superadminlogin', (req, res) => {
         res.redirect('/adminlogin')
     }
 })
+
 app.post('/superadminlogin', (req, res) => {
     const superadmin = {
         superadminpin: req.body.superadminpin
@@ -803,6 +879,7 @@ app.post('/superadminlogin', (req, res) => {
         res.render('superadminlogin', {error: true, message: message, superadmin: superadmin})
     }
 })
+
 app.get('/manager', (req, res) => {
     if (res.locals.isLogedIn && res.locals.sessionpin && res.locals.superadminsession) {
         res.render('manager')
@@ -812,6 +889,7 @@ app.get('/manager', (req, res) => {
         res.redirect('/adminlogin')
     }
 })
+
 app.get('/studentmanager', (req, res) => {
     if (res.locals.isLogedIn && res.locals.sessionpin && res.locals.superadminsession) {
         connection.query(
@@ -827,6 +905,7 @@ app.get('/studentmanager', (req, res) => {
         res.redirect('/adminlogin')
     }
 })
+
 // delete student
 app.post('/deletestudent/:s_id', (req, res) => {
     connection.query (
@@ -837,6 +916,7 @@ app.post('/deletestudent/:s_id', (req, res) => {
         }
     )
 })
+
 app.get('/adminmanager', (req, res) => {
     if (res.locals.isLogedIn && res.locals.sessionpin && res.locals.superadminsession) {
         connection.query(
@@ -852,6 +932,7 @@ app.get('/adminmanager', (req, res) => {
         res.redirect('/adminlogin')
     }
 })
+
 // delete admin
 app.post('/deleteadmin/:a_id', (req, res) => {
     connection.query (
@@ -862,12 +943,14 @@ app.post('/deleteadmin/:a_id', (req, res) => {
         }
     )
 })
+
 // logout functionality
 app.get('/logout', (req, res) => {
     req.session.destroy(() =>{
         res.redirect('/')
     })
 })
+
 app.get('*', (req, res) => {
     res.render('pagenotfound')
 })
