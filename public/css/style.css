@@ -947,6 +947,43 @@ footer .copyright {
 #manager .introduction {
     font-size: 22px;
 }
+.terms_privacy_conduct {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+  }
+  
+  .terms_privacy_conduct h1 {
+    font-size: 26px;
+    margin-bottom: 10px;
+  }
+  .terms_privacy_conduct h2, .terms_privacy_conduct strong {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .terms_privacy_conduct p {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .terms_privacy_conduct ol, .terms_privacy_conduct ul {
+    padding-left: 30px;
+    margin-bottom: 10px;
+  }
+  
+  .terms_privacy_conduct strong {
+    font-weight: bold;
+  }
+  
+  .terms_privacy_conduct li {
+    font-size: 19px;
+    margin-bottom: 5px;
+  }
+  
+  .terms_privacy_conduct a {
+    color: #560013;
+    text-decoration: underline;
+  }
 /* responsive */
 @media only screen and (max-width: 730px) {
     .container {

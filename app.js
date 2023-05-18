@@ -944,6 +944,18 @@ app.post('/deleteadmin/:a_id', (req, res) => {
     )
 })
 
+app.get('/terms', (req, res) => {
+    res.render('terms')
+})
+
+app.get('/privacy', (req, res) => {
+    res.render('privacy')
+})
+
+app.get('/codeofconduct', (req, res) => {
+    res.render('codeofconduct')
+})
+
 // logout functionality
 app.get('/logout', (req, res) => {
     req.session.destroy(() =>{

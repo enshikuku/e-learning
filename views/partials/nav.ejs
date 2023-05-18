@@ -8,6 +8,9 @@
         <% } else if(locals.isLogedIn) { %>
             <a href="/home"><img src="/images/home.png" alt=""> HOME</a>
             <a href="/logout" id="logOut"><img src="/images/logout.png" alt=""> LOGOUT</a>
-        <%}%>
+        <% } else { %>
+            <a href="/home"><img src="/images/home.png" alt=""> HOME</a>
+            <a href="/login"><img src="/images/login.png" alt=""> LOGIN</a>
+        <% } %>
     </nav>
 </header>
