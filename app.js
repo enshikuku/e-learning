@@ -955,7 +955,7 @@ app.get('*', (req, res) => {
     res.render('pagenotfound')
 })
 
-const PORT = process.env.PORT || 3550
+const PORT = process.env.PORT || 3049
 app.listen(PORT, () => {
     console.log(`app is live on PORT ${PORT}`)
 })
