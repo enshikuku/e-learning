@@ -33,7 +33,6 @@ const storage2 = multer.diskStorage({
     },
     filename: function (req, file, cb) {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-        // cb(null, file.fieldname + '-' + uniqueSuffix)
         cb(null, file.originalname)
     }
 })
@@ -569,7 +568,6 @@ app.post('/adminlogin', (req, res) => {
 // Render admin home page
 app.get('/adminhome', (req, res) => {
     if (res.locals.sessionpin) {
-        // let sessionpin = req.session.adminPin, {sessionpin: sessionpin}
         res.render('adminhome')
     } else {
         res.redirect('/adminlogin')
@@ -866,7 +864,6 @@ app.post('/deleteadmin/:a_id', (req, res) => {
 })
 // logout functionality
 app.get('/logout', (req, res) => {
-    // kill the logged in session
     req.session.destroy(() =>{
         res.redirect('/')
     })
