@@ -3,20 +3,29 @@
     <%- include('partials/nav') %>
     <main id="adminviewresource" class="container">
         <div>
-            <div id="editmininav"><h1>Total Admins: <%= results.length %></h1></div>
+            <div id="editmininav">
+                <h1>Total Admins: <%= results.length %></h1>
+                <a href="/studentmanager" class="btn41-43 btn-41"><img src="images/student.png" alt=""> student manager</a>
+            </div>
             <% results.forEach(result => { %>
                 <div class="resourcesMain">
                     <div class="resourceid">
                         <p><%= results.indexOf(result)+1 %>. EA/<%= result.a_id %>/<%= result.created_at.toLocaleDateString("en-US", { year: "numeric" }).slice(-2) %> <%= result.name %></p>
-                        <div class="edit-delete">
-                            <form action="/deleteadmin/<%= result.a_id %>" method="post">
-                                <input type="submit" value="Delete Admin">
+                        <div class="activate">
+                            <form action="/activateadmin/<%= result.a_id %>" method="post">
+                                <input class="activateuser" type="submit" value="Activate">
+                            </form>
+                            <form action="/deactivateadmin/<%= result.a_id %>" method="post">
+                                <input class="deactivateuser" type="submit" value="Deactivate">
                             </form>
                         </div>
                     </div>
                     <div class="resources">
                         <div class="resourceInfo">
                             <p>Email: <%= result.email %></p>
+                        </div>
+                        <div class="resourceInfo">
+                            <p><%= result.isactive %></p>
                         </div>
                         <div class="resourceInfo">
                             <p>Joined on: <%= result.created_at.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", hour: "numeric", minute: "numeric" }) %></p>

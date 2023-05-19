@@ -3,14 +3,20 @@
     <%- include('partials/nav') %>
     <main id="adminviewresource" class="container">
         <div>
-            <div id="editmininav"><h1>Total students: <%= results.length %></h1></div>
+            <div id="editmininav">
+                <h1>Total students: <%= results.length %></h1>
+                <a href="/adminmanager" class="btn41-43 btn-41"><img src="images/manage.png" alt=""> admin manager</a>
+            </div>
             <% results.forEach(result => { %>
                 <div class="resourcesMain">
                     <div class="resourceid">
                         <p><%= results.indexOf(result)+1 %>. ES/<%= result.s_id %>/<%= result.timestamp.toLocaleDateString("en-US", { year: "numeric" }).slice(-2) %> <%= result.name %></p>
-                        <div class="edit-delete">
-                            <form action="/deletestudent/<%= result.s_id %>" method="post">
-                                <input type="submit" value="Delete Student">
+                        <div class="activate">
+                            <form action="/activatestudent/<%= result.s_id %>" method="post">
+                                <input class="activateuser" type="submit" value="activate">
+                            </form>
+                            <form action="/deactivatestudent/<%= result.s_id %>" method="post">
+                                <input class="deactivateuser" type="submit" value="Deactivate">
                             </form>
                         </div>
                     </div>
@@ -20,6 +26,9 @@
                         </div>
                         <div class="resourceInfo">
                             <p>Gender: <%= result.gender %></p>
+                        </div>
+                        <div class="resourceInfo">
+                            <p><%= result.isactive %></p>
                         </div>
                         <div class="resourceInfo">
                             <p>Learn Progress: <%= result.learn %></p>

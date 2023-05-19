@@ -720,7 +720,7 @@ footer .copyright {
     padding: 2px 5px;
     font-size: 22px;
 }
-#adminviewresource .resourceid .edit-delete {
+#adminviewresource .resourceid .edit-delete, #adminviewresource .resourceid .activate {
     width: fit-content;
     padding: 0 5px;
     font-size: 19px;
@@ -739,6 +739,24 @@ footer .copyright {
     border-radius: 10px;
 }
 #adminviewresource .resourceid .edit-delete input {
+    font-size: 19px;
+    text-transform: capitalize;
+    background-color: red;
+    border: 1px solid red;
+    color: #ffede4;
+    padding: 2px 5px;
+    border-radius: 10px;
+}
+#adminviewresource .resourceid .activate .activateuser {
+    font-size: 19px;
+    text-transform: capitalize;
+    background-color: #005b00;
+    border: 1px solid #005b00;
+    color: #ffede4;
+    padding: 2px 5px;
+    border-radius: 10px;
+}
+#adminviewresource .resourceid .activate .deactivateuser {
     font-size: 19px;
     text-transform: capitalize;
     background-color: red;

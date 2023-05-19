@@ -176,7 +176,7 @@ app.post('/signup', (req, res) => {
                 }  else {
                     // create account
                     bcrypt.hash(user.password, 10, (error, hash) => {
-                        let sql = 'INSERT INTO e_student (email, name, password, learn, profilePic) VALUES (?,?,?,?,?)'
+                        let sql = 'INSERT INTO e_student (email, name, password, learn, profilePic, isactive) VALUES (?,?,?,?,?,?)'
                         connection.query(
                             sql,
                             [
@@ -184,7 +184,8 @@ app.post('/signup', (req, res) => {
                                 user.name,
                                 hash,
                                 0,
-                                'user.png'
+                                'user.png',
+                                'active'
                             ],
                             (error, results) => {
                                 res.redirect('/login')
@@ -228,18 +229,25 @@ app.post('/login', (req, res) => {
 
     let sql = 'SELECT * FROM e_student WHERE email = ?'
     connection.query(
-        sql, [user.email], (error, results) => {
+        sql, 
+        [user.email], 
+        (error, results) => {
             if (results.length > 0) {
-                bcrypt.compare(user.password, results[0].password, (error, passwordMatches) => {
-                    if (passwordMatches) {
-                        req.session.userID = results[0].s_id
-                        req.session.username = results[0].name.split(' ')[0]
-                        res.redirect('/home')
-                    } else {
-                        let message = 'Incorrect password!'
-                        res.render('login', {error: true, message: message, user: user})
-                    }
-                })
+                if (results[0].isactive === 'active') {
+                    bcrypt.compare(user.password, results[0].password, (error, passwordMatches) => {
+                        if (passwordMatches) {
+                            req.session.userID = results[0].s_id
+                            req.session.username = results[0].name.split(' ')[0]
+                            res.redirect('/home')
+                        } else {
+                            let message = 'Incorrect password!'
+                            res.render('login', {error: true, message: message, user: user})
+                        }
+                    })
+                } else {
+                    let message = 'Your account is inactive. Call Manager to activate'
+                    res.render('login', {error: true, message: message, user: user})
+                }
             } else {
                 let message = 'Account does not exist please create one'
                 res.render('login', {error: true, message: message, user: user})
@@ -606,18 +614,23 @@ app.post('/adminlogin', (req, res) => {
             [admin.email],
             (error, results) => {
                 if (results.length > 0) {
-                    bcrypt.compare(admin.password, results[0].password, (error, passwordMatches) => {
-                        if (passwordMatches) {
-                            req.session.userID = results[0].a_id
-                            req.session.username = results[0].name.split(' ')[0]
-                            req.session.adminPin = adminAuthenticationPin
-                            res.redirect('/adminhome')
-                        } else {
-                            let message = 'Incorrect password!'
-                            admin.password = ''
-                            res.render('adminlogin', {error: true, message: message, admin: admin})
-                        }
-                    })
+                    if (results[0].isactive === 'active') {
+                        bcrypt.compare(admin.password, results[0].password, (error, passwordMatches) => {
+                            if (passwordMatches) {
+                                req.session.userID = results[0].a_id
+                                req.session.username = results[0].name.split(' ')[0]
+                                req.session.adminPin = adminAuthenticationPin
+                                res.redirect('/adminhome')
+                            } else {
+                                let message = 'Incorrect password!'
+                                admin.password = ''
+                                res.render('adminlogin', {error: true, message: message, admin: admin})
+                            }
+                        })
+                    } else {
+                        let message = 'Your Acount is inactive. Call manager to continue'
+                        res.render('adminlogin', {error: true, message: message, admin: admin})                        
+                    }
                 } else {
                     let message = 'You do not have an account with that email! Please create one'
                     res.render('adminlogin', {error: true, message: message, admin: admin})
@@ -883,10 +896,8 @@ app.post('/superadminlogin', (req, res) => {
 app.get('/manager', (req, res) => {
     if (res.locals.isLogedIn && res.locals.sessionpin && res.locals.superadminsession) {
         res.render('manager')
-    } else if (res.locals.isLogedIn) {
-        res.redirect('/home')
     } else {
-        res.redirect('/adminlogin')
+        res.redirect('/superadminlogin')
     }
 })
 
@@ -906,10 +917,21 @@ app.get('/studentmanager', (req, res) => {
     }
 })
 
-// delete student
-app.post('/deletestudent/:s_id', (req, res) => {
+// activate student
+app.post('/activatestudent/:s_id', (req, res) => {
     connection.query (
-        'DELETE FROM e_student WHERE s_id = ?',
+        "UPDATE e_student SET isactive = 'active' WHERE s_id = ?",
+        [req.params.s_id],
+        (error, results) => {
+            res.redirect('/studentmanager')
+        }
+    )
+})
+
+// deactivate student
+app.post('/deactivatestudent/:s_id', (req, res) => {
+    connection.query (
+        "UPDATE e_student SET isactive = 'inactive' WHERE s_id = ?",
         [req.params.s_id],
         (error, results) => {
             res.redirect('/studentmanager')
@@ -933,10 +955,21 @@ app.get('/adminmanager', (req, res) => {
     }
 })
 
-// delete admin
-app.post('/deleteadmin/:a_id', (req, res) => {
+// activate admin
+app.post('/activateadmin/:a_id', (req, res) => {
     connection.query (
-        'DELETE FROM e_admininfo WHERE a_id = ?',
+        "UPDATE e_admininfo SET isactive = 'active' WHERE a_id = ?",
+        [req.params.a_id],
+        (error, results) => {
+            res.redirect('/adminmanager')
+        }
+    )
+})
+
+// deactivate admin
+app.post('/deactivateadmin/:a_id', (req, res) => {
+    connection.query (
+        "UPDATE e_admininfo SET isactive = 'inactive' WHERE a_id = ?",
         [req.params.a_id],
         (error, results) => {
             res.redirect('/adminmanager')
