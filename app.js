@@ -557,11 +557,12 @@ app.post('/adminsignup', (req, res) => {
                         // create account
                         bcrypt.hash(admin.password, 10, (error, hash) => {
                             connection.query(
-                                'INSERT INTO e_adminInfo (name, email, password) VALUES (?,?,?)',
+                                'INSERT INTO e_adminInfo (name, email, password, isactive) VALUES (?,?,?,?)',
                                 [
                                     admin.name,
                                     admin.email,
-                                    hash
+                                    hash,
+                                    'active'
                                 ],
                                 (error, results) => {
                                     res.redirect('/adminlogin')
