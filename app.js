@@ -715,47 +715,30 @@ app.post('/addresource', upload2.single('route'), (req, res) => {
         'SELECT rsctitle FROM learningresources WHERE rsctitle = ?',
         [resourceInfo.title],
         (error, results) => {
-            console.log(error)
             if(results.length > 0){
                 let message = 'There is already a resource with the title! Please rename!'
                 resourceInfo.title = ''
                 res.render('addresource', {error: true, message: message, resourceInfo: resourceInfo})
             }else{
                 connection.query(
-                    'SELECT resource FROM learningresources WHERE resource = ?',
-                    [resourceInfo.resource],
+                    'SELECT route FROM learningresources WHERE route = ?',
+                    [resourceInfo.route],
                     (error, results) => {
-                        console.log(error)
                         if(results.length > 0){
-                            let message = 'Resource code already exists! Please change the resouce code'
-                            resourceInfo.resource = ''
+                            let message = 'File name already exists! Please rename the file before uploading.'
+                            resourceInfo.filename = ''
                             res.render('addresource', {error: true, message: message, resourceInfo: resourceInfo})
                         }else{
                             connection.query(
-                                'SELECT route FROM learningresources WHERE route = ?',
-                                [resourceInfo.route],
+                                'INSERT INTO learningresources (rsctitle, learndefinition, route, a_id) VALUES (?, ?, ?, ?)',
+                                [
+                                    resourceInfo.title,            
+                                    resourceInfo.definition,
+                                    resourceInfo.filename,
+                                    req.session.userID
+                                ],
                                 (error, results) => {
-                                    console.log(error)
-                                    if(results.length > 0){
-                                        let message = 'File name already exists! Please rename the file before uploading.'
-                                        resourceInfo.filename = ''
-                                        res.render('addresource', {error: true, message: message, resourceInfo: resourceInfo})
-                                    }else{
-                                        connection.query(
-                                            'INSERT INTO learningresources (rsctitle, learndefinition, resource, route, a_id) VALUES (?, ?, ?, ?, ?)',
-                                            [
-                                                resourceInfo.title,            
-                                                resourceInfo.definition,
-                                                resourceInfo.resource,
-                                                resourceInfo.filename,
-                                                req.session.userID
-                                            ],
-                                            (error, results) => {
-                                                console.log(error)
-                                                res.redirect('/viewresource')
-                                            }
-                                        )
-                                    }
+                                    res.redirect('/viewresource')
                                 }
                             )
                         }
@@ -826,7 +809,6 @@ app.post('/delete/:lr_id', (req, res) => {
         (error, results) => {
             fs.unlink(`./public/pdfuploads/${results[0].route}`, (err) => {
                 if (err) {
-                    console.error(err)
                     return
                 }
                 connection.query(
