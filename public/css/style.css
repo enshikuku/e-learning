@@ -895,25 +895,10 @@ footer .copyright {
 }
 #pagenotfound {
     text-align: center;
-    font-size: 22px;
+    font-size: 15px;
 }
-#pagenotfound a {
-    display: flex;
-    width: fit-content;
-    margin: 0 auto;
-    justify-content: center;
-    align-items: center;
-    border: 2px solid #900020;
-    color: #900020;
-    border-radius: 5px;
-    text-decoration: none;
-}
-#pagenotfound a img {
-    height: 22px;
-    width: 22px;
-}
-#pagenotfound, #pagenotfound img {
-    width: 100%;
+#pagenotfound img {
+    width: 300px;
 }
 .loader{
     width: 100%;
