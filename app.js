@@ -516,6 +516,17 @@ app.post('/clearchats', (req, res) => {
     )
 })
 
+// Delete Specific Chat
+app.post('/deletemessage/:c_id', (req, res) => {
+    connection.query (
+        'DELETE FROM chatroom WHERE c_id = ?',
+        [req.params.c_id],
+        (error, results) => {
+            res.redirect('/chatroom')
+        }
+    )
+})
+
 // Admin signup
 app.get('/adminsignup', (req, res) => {
     const admin = {

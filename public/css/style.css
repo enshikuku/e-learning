@@ -602,6 +602,8 @@ footer .copyright {
 }
 #chatroom .chats .chatMain .userInfo .uiTitle {
     padding: 0 10px;
+    width: fit-content;
+    flex-wrap: wrap;
 }
 #chatroom .chats .chatMain .userInfo {
     display: flex;
@@ -612,6 +614,10 @@ footer .copyright {
 #chatroom .chats .chatMain .messages {
     font-size: 22px;
     padding: 10px;
+}
+#chatroom .chats .chatMain .message {
+    font-size: 22px;
+    padding: 8px;
 }
 #chatroom #form {
     width: 100%;
@@ -638,14 +644,27 @@ footer .copyright {
     cursor: pointer;
     width: fit-content;
 
-}#chatroom form input[type="submit"] {
-    margin: 0 20px;
+}
+#chatroom form input[type="submit"] {
     color: #F6CBB7;
-    background-color: #900020;
-    letter-spacing: 2px;
+    background-color: #d40000;
+    letter-spacing: 0;
     border: #900020;
     border-radius: 10px;
     padding: 2px 5px;
+    text-transform: capitalize;
+    cursor: pointer;
+    font-size: 15px;
+    width: fit-content;
+}
+#chatroom form #deletemessage {
+    color: #900020;
+    background-color: #F6CBB7;
+    letter-spacing: 0;
+    border: 1px solid #900020;
+    border-radius: 20px;
+    font-size: 15px;
+    padding: 2px 8px;
     text-transform: capitalize;
     cursor: pointer;
     width: fit-content;

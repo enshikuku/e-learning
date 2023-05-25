@@ -17,20 +17,24 @@
                     </div>
                     <div class="message">
                         <p class="messages"><%= result.chat %></p>
+                        <% if(admin) { %>
+                            <form action="/deletemessage/<%= result.c_id %>" method="post">
+                                <input type="submit" value="Delete message" id="deletemessage">
+                            </form>
+                        <% } %>
                     </div>
                 </div>
             <% }) %>
+            <% if(admin) { %>
+                <form action="/clearchats" method="post">
+                    <input type="submit" value="Clear all chats">
+                </form>
+            <% } %>
         </div>
-        <% if(admin) { %>
-            <form action="/clearchats" method="post">
-                <input type="submit" value="Clear chats">
-            </form>
-        <% } %>
         <form action="/sendmessage" method="post" id="form">
             <input type="hidden" name="id" value="<%= senderID %>">
             <input type="text" name="message" id="" required>
             <input type="submit" value="Send message">
         </form>
     </main>
-    <%- include('partials/footermain') %>
 <%- include('partials/footer') %>
