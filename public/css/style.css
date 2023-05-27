@@ -408,6 +408,7 @@ footer .copyright {
 }
 .learnUnits {
     background-color: #F6CBB799;
+    box-shadow: 0 0 20px #900020EF;
     padding: 20px;
     width: 40%;
     min-width: 380px;
@@ -415,12 +416,21 @@ footer .copyright {
     border-radius: 15px;
     margin-bottom: 20px;
     font-size: 22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.3s ease;
+}
+.learnUnits:hover {
+    transform: scale(1.08); 
 }
 #learn #learndiv {
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
-    gap: 20px;
+    align-items: left;
+    justify-content: center;
+    gap: 30px;
+    padding: 20px;
 }
 #pdfView {
     width: 100%;
