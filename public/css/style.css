@@ -375,6 +375,7 @@ footer .copyright {
 .btn-41:hover {
     color: #560013;
     border: 2px solid #560013;
+    transform: scale(1.04);
 
 } 
 .btn-41:hover:after {
