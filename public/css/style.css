@@ -282,7 +282,7 @@ footer .copyright {
     color: #ffffff;
     text-align: center;
     padding: 5px;
-    font-weight: bold;
+    font-size: 15px;
 }
 #home p {
     font-size: 22px;
@@ -408,7 +408,7 @@ footer .copyright {
 }
 .learnUnits {
     background-color: #F6CBB799;
-    box-shadow: 0 0 20px #900020EF;
+    box-shadow: 0 0 10px #900020EF;
     padding: 20px;
     width: 40%;
     min-width: 380px;
@@ -422,7 +422,8 @@ footer .copyright {
     transition: all 0.3s ease;
 }
 .learnUnits:hover {
-    transform: scale(1.08); 
+    transform: scale(1.04); 
+    box-shadow: 0 0 20px #6e0018ef;
 }
 #learn #learndiv {
     display: flex;
