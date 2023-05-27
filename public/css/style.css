@@ -153,7 +153,7 @@ header nav a:hover {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-evenly;
     padding: 20px;
     gap: 20px;
 }
