@@ -291,7 +291,7 @@ footer .copyright {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
     gap: 30px;
     padding: 30px 0;
