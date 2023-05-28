@@ -423,7 +423,7 @@ footer .copyright {
     transition: all 0.3s ease;
 }
 .learnUnits:hover {
-    transform: scale(1.04); 
+    transform: scale(1.06); 
     box-shadow: 0 0 20px #6e0018ef;
 }
 #learn #learndiv {
@@ -431,7 +431,7 @@ footer .copyright {
     flex-wrap: wrap;
     align-items: left;
     justify-content: center;
-    gap: 30px;
+    gap: 50px;
     padding: 20px;
 }
 #pdfView {
@@ -690,6 +690,7 @@ footer .copyright {
     gap: 20px;
     flex-wrap: wrap;
     align-items: center;
+    justify-content: space-between;
     border-radius: 0 0 15px 15px;
     border-right: 2px solid #900020;
     border-bottom: 2px solid #900020;
@@ -721,15 +722,13 @@ footer .copyright {
     box-shadow: 0 0 15px rgba(144, 0, 32, 0.5);
 }
 #adminviewstudent .studentdetailedinformation .studentinfo {
-    width: 23%;
+    /* width: 20%; */
     font-size: 22px;
-    text-transform: uppercase;
-    font-weight: bold;
-    min-width: 180px;
+    text-transform: capitalize;
+    min-width: fit-content;
 }
 #adminviewstudent .studentdetailedinformation .studentinfo .email {
     text-transform: lowercase;
-    letter-spacing: 2px;
 }
 #adminviewremark .remarkMain, #adminviewresource .resourcesMain {
     border: 2px solid #900020;

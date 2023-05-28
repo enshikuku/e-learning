@@ -10,9 +10,10 @@
                     <div class="studentdetailedinformation">
                         <div class="studentinfo"><img src="/images/imageuploads/<%= result.profilePic %>" alt="" class="pic"></div>
                         <div class="studentinfo"><p class="email"><%= result.email %></p></div>
-                        <div class="studentinfo"><p><i><%= result.gender %></i></p></div>
+                        <div class="studentinfo"><p><%= result.isactive %></p></div>
+                        <div class="studentinfo"><p><%= result.gender %></p></div>
                         <div class="studentinfo">
-                            <p class="learn"><i>Progress:</i> [<%= result.learn %>] <br>
+                            <p class="learn">Progress: <b><%= result.learn %></b> <br>
                                  <% if(result.learn >= 15) { %> 
                                     Very Good &#x1F60A;
                                 <% } else if(result.learn >= 10) { %>
