@@ -360,11 +360,19 @@ app.post('/remark/:lr_id/:studentID', (req, res) => {
                 newtotalremarks++
                 connection.query(
                     'UPDATE learningresources SET totalremarks = ? WHERE lr_id = ?', 
-                    [newtotalremarks, lr_id],
+                    [
+                        newtotalremarks, 
+                        lr_id
+                    ],
                     (error, results) => {
                         connection.query(
-                            'INSERT INTO remarks_table (lr_id, s_id, remark) VALUES (?, ?, ?)',
-                            [lr_id, studentID, userRemarks.remark],
+                            'INSERT INTO remarks_table (lr_id, s_id, remark, isactive) VALUES (?, ?, ?, ?)',
+                            [
+                                lr_id, 
+                                studentID, 
+                                userRemarks.remark,
+                                'active'
+                            ],
                             (error, results) => {
                                 res.redirect('/learn')
                             }
@@ -478,11 +486,12 @@ app.post('/sendmessage', (req, res) => {
     }
     if (res.locals.sessionpin) {
         connection.query(
-            'INSERT INTO chatroom (a_id, tutor, chat) VALUES (?, ?, ?)',
+            'INSERT INTO chatroom (a_id, tutor, chat, isactive) VALUES (?, ?, ?, ?)',
             [
                 chatInfo.id,
                 'true',
-                chatInfo.message
+                chatInfo.message,
+                'active'
             ],
             (error, results) => {
                 res.redirect('/chatroom')
@@ -490,11 +499,12 @@ app.post('/sendmessage', (req, res) => {
         )
     } else if (res.locals.isLogedIn) {
         connection.query(
-            'INSERT INTO chatroom (s_id, tutor, chat) VALUES (?, ?, ?)',
+            'INSERT INTO chatroom (s_id, tutor, chat, isactive) VALUES (?, ?, ?, ?)',
             [
                 chatInfo.id,
                 'false',
-                chatInfo.message
+                chatInfo.message,
+                'active'
             ],
             (error, results) => {
                 res.redirect('/chatroom')
@@ -741,12 +751,13 @@ app.post('/addresource', upload2.single('route'), (req, res) => {
                             res.render('addresource', {error: true, message: message, resourceInfo: resourceInfo})
                         }else{
                             connection.query(
-                                'INSERT INTO learningresources (rsctitle, learndefinition, route, a_id) VALUES (?, ?, ?, ?)',
+                                'INSERT INTO learningresources (rsctitle, learndefinition, route, a_id, isactive) VALUES (?, ?, ?, ?, ?)',
                                 [
                                     resourceInfo.title,            
                                     resourceInfo.definition,
                                     resourceInfo.filename,
-                                    req.session.userID
+                                    req.session.userID,
+                                    'active'
                                 ],
                                 (error, results) => {
                                     res.redirect('/viewresource')
