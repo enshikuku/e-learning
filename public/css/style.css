@@ -789,8 +789,8 @@ footer .copyright {
 #adminviewresource .resourceid .activate .deactivateuser {
     font-size: 19px;
     text-transform: capitalize;
-    background-color: red;
-    border: 1px solid red;
+    background-color: #900020;
+    border: 1px solid #900020;
     color: #ffede4;
     padding: 2px 5px;
     border-radius: 10px;

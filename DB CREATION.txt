@@ -1,74 +1,62 @@
-SQL QUERRY TO CREATE THE DATABASE {
-    
-    CREATE DATABASE e_learn_portal;
+CREATE DATABASE e_learn_portal; 
 
-}
+CREATE TABLE e_admininfo (
+    a_id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255),
+    email VARCHAR(255),
+    password VARCHAR(255),
+    created_at TIMESTAMP,
+    isactive VARCHAR(10)
+);
 
-SQL QUERRY TO CREATE THE TABLES {
-  
-    CREATE TABLE e_admininfo (
-        a_id INT,
-        name VARCHAR(255),
-        email VARCHAR(255),
-        password VARCHAR(255),
-        created_at TIMESTAMP,
-        isactive VARCHAR(10),
-        PRIMARY KEY (a_id)
-    );
+CREATE TABLE e_student (
+    s_id INT PRIMARY KEY AUTO_INCREMENT,
+    email VARCHAR(255),
+    name VARCHAR(255),
+    password VARCHAR(255),
+    learn INT,
+    gender VARCHAR(255),
+    profilePic VARCHAR(255),
+    timestamp TIMESTAMP,
+    isactive VARCHAR(10)
+);
 
-    CREATE TABLE e_student (
-        s_id INT,
-        email LONGTEXT,
-        name LONGTEXT,
-        password LONGTEXT,
-        learn INT,
-        gender LONGTEXT,
-        profilePic LONGTEXT,
-        timestamp TIMESTAMP,
-        isactive VARCHAR(10),
-        PRIMARY KEY (s_id)
-    );
+CREATE TABLE learningresources (
+    lr_id INT PRIMARY KEY AUTO_INCREMENT,
+    a_id INT,
+    opened INT,
+    totalremarks INT,
+    rsctitle VARCHAR(255),
+    learndefinition LONGTEXT,
+    route VARCHAR(255),
+    created_at TIMESTAMP,
+    isactive VARCHAR(10),
+    FOREIGN KEY (a_id) REFERENCES e_admininfo(a_id)
+);
 
-    CREATE TABLE learningresources (
-        lr_id INT,
-        a_id INT,
-        opened INT,
-        totalremarks INT,
-        rsctitle VARCHAR(255),
-        learndefinition LONGTEXT,
-        route VARCHAR(255),
-        created_at TIMESTAMP,
-        isactive VARCHAR(10),
-        PRIMARY KEY (lr_id),
-        FOREIGN KEY (a_id) REFERENCES e_admininfo(a_id)
-    );
+CREATE TABLE remarks_table (
+    r_id INT PRIMARY KEY AUTO_INCREMENT,
+    lr_id INT,
+    s_id INT,
+    remark LONGTEXT,
+    created_at TIMESTAMP,
+    isactive VARCHAR(10),
+    FOREIGN KEY (lr_id) REFERENCES learningresources(lr_id),
+    FOREIGN KEY (s_id) REFERENCES e_student(s_id)
+);
 
-    CREATE TABLE remarks_table (
-        r_id INT,
-        lr_id INT,
-        s_id INT,
-        remark LONGTEXT,
-        created_at TIMESTAMP,
-        isactive VARCHAR(10),
-        PRIMARY KEY (r_id),
-        FOREIGN KEY (lr_id) REFERENCES learningresources(lr_id),
-        FOREIGN KEY (s_id) REFERENCES e_student(s_id)
-    );
+CREATE TABLE chatroom (
+    c_id INT PRIMARY KEY AUTO_INCREMENT,
+    s_id INT,
+    a_id INT,
+    tutor VARCHAR(255),
+    chat LONGTEXT,
+    created_at TIMESTAMP,
+    isactive VARCHAR(10),
+    FOREIGN KEY (s_id) REFERENCES e_student(s_id),
+    FOREIGN KEY (a_id) REFERENCES e_admininfo(a_id)
+);
 
-    CREATE TABLE chatroom (
-        c_id INT,
-        s_id INT,
-        a_id INT,
-        tutor VARCHAR(255),
-        chat LONGTEXT,
-        created_at TIMESTAMP,
-        isactive VARCHAR(10),
-        PRIMARY KEY (c_id),
-        FOREIGN KEY (s_id) REFERENCES e_student(s_id),
-        FOREIGN KEY (a_id) REFERENCES e_admininfo(a_id)
-    );
-
-}
 
 
 

@@ -10,7 +10,7 @@
             <% results.forEach(result => { %>
                 <div class="resourcesMain">
                     <div class="resourceid">
-                        <p><%= results.indexOf(result)+1 %>. ES/<%= result.s_id %>/<%= result.timestamp.toLocaleDateString("en-US", { year: "numeric" }).slice(-2) %> <%= result.name %></p>
+                        <p><%= results.indexOf(result)+1 %>. ES<%= result.s_id %>-<%= result.timestamp.toLocaleDateString("en-US", { year: "numeric" }).slice(-2) %> <%= result.name %></p>
                         <div class="activate">
                             <form action="/activatestudent/<%= result.s_id %>" method="post">
                                 <input class="activateuser" type="submit" value="activate">
