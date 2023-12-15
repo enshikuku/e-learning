@@ -94,13 +94,10 @@ let superAdminAuthPin = process.env.SUPER_ADMIN_AUTH_PIN
 // Landing page
 app.get('/', (req, res) => {
     if (res.locals.isLogedIn && res.locals.sessionpin) {
-        console.log('User is logged in with admin privileges. Redirecting to adminhome.')
         res.redirect('/adminhome')
     } else if (res.locals.isLogedIn) {
-        console.log('User is logged in. Redirecting to home.')
         res.redirect('home')
     } else {
-        console.log('Rendering landing page successfully.')
         res.render('index')
     }
 })
@@ -115,13 +112,10 @@ app.get('/signup', (req, res) => {
     }
 
     if (res.locals.isLogedIn && res.locals.sessionpin) {
-        console.log('User is logged in with admin privileges. Redirecting to adminhome.')
         res.redirect('/adminhome')
     } else if (res.locals.isLogedIn) {
-        console.log('User is logged in. Redirecting to home.')
         res.redirect('home')
     } else {
-        console.log('Rendering signup page successfully.')
         res.render('signup', { error: false, user: user })
     }
 })
@@ -144,7 +138,6 @@ app.post('/signup', (req, res) => {
                 res.status(500).render('error', { error: 'Error checking if user exists' })
             } else {
                 if (results.length > 0) {
-                    console.log('Account already exists with the email provided. Rendering signup page with error message.')
                     let message = 'Account already exists with the email provided!'
                     res.render('signup', { error: true, message: message, user: user })
                 } else {
@@ -159,7 +152,6 @@ app.post('/signup', (req, res) => {
                                     console.error('Error creating account:', error)
                                     res.status(500).render('error', { error: 'Error creating account' })
                                 } else {
-                                    console.log('Account created successfully. Redirecting to login page.')
                                     res.redirect('/login')
                                 }
                             }
@@ -169,7 +161,6 @@ app.post('/signup', (req, res) => {
             }
         })
     } else {
-        console.log('Passwords don\'t match. Rendering signup page with error message.')
         let message = 'Passwords don\'t match!'
         res.render('signup', { error: true, message: message, user: user })
     }
@@ -183,13 +174,10 @@ app.get('/login', (req, res) => {
     }
 
     if (res.locals.isLogedIn && res.locals.sessionpin) {
-        console.log('User is logged in with admin privileges. Redirecting to adminhome.')
         res.redirect('/adminhome')
     } else if (res.locals.isLogedIn) {
-        console.log('User is logged in. Redirecting to home.')
         res.redirect('home')
     } else {
-        console.log('Rendering login page successfully.')
         res.render('login', { error: false, user: user })
     }
 })
@@ -215,24 +203,20 @@ app.post('/login', (req, res) => {
                             res.status(500).render('error', { error: 'Error comparing passwords' })
                         } else {
                             if (passwordMatches) {
-                                console.log('Login successful. Redirecting to home.')
                                 req.session.userID = results[0].s_id
                                 req.session.username = results[0].name.split(' ')[0]
                                 res.redirect('/home')
                             } else {
-                                console.log('Incorrect password. Rendering login page with error message.')
                                 let message = 'Incorrect password!'
                                 res.render('login', { error: true, message: message, user: user })
                             }
                         }
                     })
                 } else {
-                    console.log('User account is inactive. Rendering login page with error message.')
                     let message = 'Your account is inactive. Call Manager to activate'
                     res.render('login', { error: true, message: message, user: user })
                 }
             } else {
-                console.log('Account does not exist. Rendering login page with error message.')
                 let message = 'Account does not exist. Please create one'
                 res.render('login', { error: true, message: message, user: user })
             }
@@ -243,10 +227,8 @@ app.post('/login', (req, res) => {
 // Home
 app.get('/home', (req, res) => {
     if (res.locals.isLogedIn && res.locals.sessionpin) {
-        console.log('Redirecting to adminhome')
         res.redirect('/adminhome')
     } else if (res.locals.isLogedIn) {
-        console.log('Rendering home page successfully')
         res.render('home')
     } else {
         console.error('Unauthorized access to home page. Redirecting to /')
@@ -265,7 +247,6 @@ app.get('/learn', (req, res) => {
                     console.error('Error fetching learning resources:', error)
                     res.status(500).render('error', { error: 'Error fetching learning resources' })
                 } else {
-                    console.log('Rendering learn page successfully')
                     res.render('learn', { results: results })
                 }
             }
@@ -315,7 +296,6 @@ app.get('/viewpdf/:lr_id', (req, res) => {
                                                         console.error('Error updating opened count for learning resource:', error)
                                                         res.status(500).render('error', { error: 'Error updating opened count for learning resource' })
                                                     } else {
-                                                        console.log('Rendering PDF page successfully')
                                                         res.render('pdf', { routes: results[0] })
                                                     }
                                                 }
@@ -349,7 +329,6 @@ app.get('/remark/:lr_id', (req, res) => {
                     console.error('Error fetching learning resource for remark:', error)
                     res.status(500).render('error', { error: 'Error fetching learning resource for remark' })
                 } else {
-                    console.log('Rendering remark page successfully')
                     res.render('remark', { lr_id: lr_id, studentID: studentID, results: results[0] })
                 }
             }
@@ -395,7 +374,6 @@ app.post('/remark/:lr_id/:studentID', (req, res) => {
                                             console.error('Error inserting remark:', error)
                                             res.status(500).render('error', { error: 'Error inserting remark' })
                                         } else {
-                                            console.log('Remark submitted successfully. Redirecting to learn')
                                             res.redirect('/learn')
                                         }
                                     }
@@ -422,7 +400,6 @@ app.get('/progress', (req, res) => {
                     console.error('Error fetching progress data:', error)
                     res.status(500).render('error', { error: 'Error fetching progress data' })
                 } else {
-                    console.log('Rendering progress page successfully')
                     res.render('progress', { profile: results[0] })
                 }
             }
@@ -444,7 +421,6 @@ app.get('/editMyProfile', (req, res) => {
                     console.error('Error fetching profile data for editing:', error)
                     res.status(500).render('error', { error: 'Error fetching profile data for editing' })
                 } else {
-                    console.log('Rendering editProfile page successfully')
                     res.render('editProfile', { profile: results[0] })
                 }
             }
@@ -470,7 +446,6 @@ app.post('/editProfile/:s_id', upload1.single('profilePic'), (req, res) => {
                         console.error('Error updating profile with picture:', error)
                         res.status(500).render('error', { error: 'Error updating profile with picture' })
                     } else {
-                        console.log('Profile updated successfully with picture. Redirecting to progress')
                         res.redirect('/progress')
                     }
                 }
@@ -484,7 +459,6 @@ app.post('/editProfile/:s_id', upload1.single('profilePic'), (req, res) => {
                         console.error('Error updating profile without picture:', error)
                         res.status(500).render('error', { error: 'Error updating profile without picture' })
                     } else {
-                        console.log('Profile updated successfully without picture. Redirecting to progress')
                         res.redirect('/progress')
                     }
                 }
@@ -508,7 +482,6 @@ app.get('/chatroom', (req, res) => {
                     res.status(500).render('error', { error: 'Error fetching chatroom data' })
                 } else {
                     let senderID = req.session.userID
-                    console.log('Rendering chatroom page successfully')
                     res.render('chatroom', { results: results, admin: true, senderID: senderID })
                 }
             }
@@ -523,7 +496,6 @@ app.get('/chatroom', (req, res) => {
                     res.status(500).render('error', { error: 'Error fetching chatroom data' })
                 } else {
                     let senderID = req.session.userID
-                    console.log('Rendering chatroom page successfully')
                     res.render('chatroom', { results: results, admin: false, senderID: senderID })
                 }
             }
@@ -555,7 +527,6 @@ app.post('/sendmessage', (req, res) => {
                     console.error('Error sending message:', error)
                     res.status(500).send('Error sending message')
                 } else {
-                    console.log('Message sent successfully. Redirecting to chatroom')
                     res.redirect('/chatroom')
                 }
             }
@@ -574,7 +545,6 @@ app.post('/sendmessage', (req, res) => {
                     console.error('Error sending message:', error)
                     res.status(500).send('Error sending message')
                 } else {
-                    console.log('Message sent successfully. Redirecting to chatroom')
                     res.redirect('/chatroom')
                 }
             }
@@ -595,7 +565,6 @@ app.post('/clearchats', (req, res) => {
                 console.error('Error clearing chatroom messages:', error)
                 res.status(500).send('Error clearing chatroom messages')
             } else {
-                console.log('Chatroom messages cleared successfully. Redirecting to chatroom')
                 res.redirect('/chatroom')
             }
         }
@@ -612,7 +581,6 @@ app.post('/deletemessage/:c_id', (req, res) => {
                 console.error('Error deleting chatroom message:', error)
                 res.status(500).send('Error deleting chatroom message')
             } else {
-                console.log('Chatroom message deleted successfully. Redirecting to chatroom')
                 res.redirect('/chatroom')
             }
         }
@@ -629,13 +597,11 @@ app.get('/adminsignup', (req, res) => {
         pin: '',
     }
     if (res.locals.isLogedIn && res.locals.sessionpin) {
-        console.log('User is already logged in. Redirecting to adminhome')
         res.redirect('/adminhome')
     } else if (res.locals.isLogedIn) {
         console.error('Unauthorized access to adminsignup page. Redirecting to home')
         res.redirect('home')
     } else {
-        console.log('Rendering adminsignup page successfully')
         res.render('adminsignup', { error: false, admin: admin })
     }
 })
@@ -683,7 +649,6 @@ app.post('/adminsignup', (req, res) => {
                                             console.error('Error creating admin account:', insertError)
                                             res.status(500).send('Error creating admin account')
                                         } else {
-                                            console.log('Admin account created successfully. Redirecting to adminlogin')
                                             res.redirect('/adminlogin')
                                         }
                                     }
@@ -717,13 +682,11 @@ app.get('/adminlogin', (req, res) => {
         pin: ''
     }
     if (res.locals.isLogedIn && res.locals.sessionpin) {
-        console.log('User is already logged in. Redirecting to adminhome')
         res.redirect('/adminhome')
     } else if (res.locals.isLogedIn) {
         console.error('Unauthorized access to adminlogin page. Redirecting to home')
         res.redirect('home')
     } else {
-        console.log('Rendering adminlogin page successfully')
         res.render('adminlogin', { error: false, admin: admin })
     }
 })
@@ -752,7 +715,6 @@ app.post('/adminlogin', (req, res) => {
                                 console.error('Error comparing passwords:', error)
                                 res.status(500).send('Error comparing passwords')
                             } else if (passwordMatches) {
-                                console.log('Admin logged in successfully. Redirecting to adminhome')
                                 req.session.userID = results[0].a_id
                                 req.session.username = results[0].name.split(' ')[0]
                                 req.session.usernamefull = results[0].name
@@ -787,7 +749,6 @@ app.post('/adminlogin', (req, res) => {
 // Render admin home page
 app.get('/adminhome', (req, res) => {
     if (res.locals.sessionpin) {
-        console.log('Rendering adminhome page successfully')
         res.render('adminhome')
     } else {
         console.error('Unauthorized access to adminhome page. Redirecting to adminlogin')
@@ -806,7 +767,6 @@ app.get('/viewstudent', (req, res) => {
                     console.error('Error fetching student data:', error)
                     res.status(500).render('error', { error: 'Error fetching student data' })
                 } else {
-                    console.log('Rendering viewstudent page successfully')
                     res.render('viewstudent', { results: results })
                 }
             }
@@ -828,7 +788,6 @@ app.get('/viewresource', (req, res) => {
                     console.error('Error fetching resource data:', error)
                     res.status(500).render('error', { error: 'Error fetching resource data' })
                 } else {
-                    console.log('Rendering viewresource page successfully')
                     res.render('viewresource', { results: results })
                 }
             }
@@ -855,7 +814,6 @@ app.get('/addresource', (req, res) => {
                     console.error('Error fetching resource data:', error)
                     res.status(500).render('error', { error: 'Error fetching resource data' })
                 } else {
-                    console.log('Rendering addresource page successfully')
                     res.render('addresource', { error: false, results: results, resourceInfo: resourceInfo })
                 }
             }
@@ -915,7 +873,6 @@ app.post('/addresource', upload2.single('route'), (req, res) => {
                                         console.error('Error inserting resource:', error)
                                         res.status(500).send('Error inserting resource')
                                     } else {
-                                        console.log('Resource added successfully. Redirecting to viewresource')
                                         res.redirect('/viewresource')
                                     }
                                 }
@@ -940,7 +897,6 @@ app.get('/editresource/:lr_id', (req, res) => {
                     console.error('Error fetching resource data for editing:', error)
                     res.status(500).send('Error fetching resource data for editing')
                 } else {
-                    console.log('Rendering editresource page successfully')
                     res.render('editresource', { results: results[0], error: false })
                 }
             }
@@ -972,7 +928,6 @@ app.post('/editresource/:lr_id', upload2.single('route'), (req, res) => {
                     console.error('Error updating resource:', error)
                     res.status(500).send('Error updating resource')
                 } else {
-                    console.log('Resource updated successfully. Redirecting to viewresource')
                     res.redirect('/viewresource')
                 }
             }
@@ -990,7 +945,6 @@ app.post('/editresource/:lr_id', upload2.single('route'), (req, res) => {
                     console.error('Error updating resource:', error)
                     res.status(500).send('Error updating resource')
                 } else {
-                    console.log('Resource updated successfully. Redirecting to viewresource')
                     res.redirect('/viewresource')
                 }
             }
@@ -1030,7 +984,6 @@ app.post('/delete/:lr_id', (req, res) => {
                                             console.error('Error deleting resource:', deleteError)
                                             res.status(500).send('Error deleting resource')
                                         } else {
-                                            console.log('Resource deleted successfully. Redirecting to viewresource')
                                             res.redirect('/viewresource')
                                         }
                                     }
@@ -1055,7 +1008,6 @@ app.get('/viewremark', (req, res) => {
                     console.error('Error fetching remarks data:', error)
                     res.status(500).render('error', { error: 'Error fetching remarks data' })
                 } else {
-                    console.log('Rendering viewremark page successfully')
                     res.render('viewremark', { results: results })
                 }
             }
@@ -1076,7 +1028,6 @@ app.post('/handle/:r_id', (req, res) => {
                 console.error('Error handling remark:', error)
                 res.status(500).send('Error handling remark')
             } else {
-                console.log('Remark handled successfully. Redirecting to viewremark')
                 res.redirect('/viewremark')
             }
         }
@@ -1089,7 +1040,6 @@ app.get('/superadminlogin', (req, res) => {
         pin: ''
     }
     if (res.locals.isLogedIn && res.locals.sessionpin) {
-        console.log('Rendering superadminlogin page successfully')
         res.render('superadminlogin', { error: false, superadmin: superadmin })
     } else if (res.locals.isLogedIn) {
         console.error('Unauthorized access to superadminlogin page. Redirecting to home')
@@ -1106,7 +1056,6 @@ app.post('/superadminlogin', (req, res) => {
     }
     if (superadmin.superadminpin === superAdminAuthPin) {
         req.session.superadminPin = adminAuthenticationPin
-        console.log('Superadmin logged in successfully. Redirecting to manager')
         res.redirect('/manager')
     } else {
         let message = 'Wrong Superadmin Pin'
@@ -1118,7 +1067,6 @@ app.post('/superadminlogin', (req, res) => {
 
 app.get('/manager', (req, res) => {
     if (res.locals.isLogedIn && res.locals.sessionpin && res.locals.superadminsession) {
-        console.log('Rendering manager page successfully')
         res.render('manager')
     } else {
         console.error('Unauthorized access to manager page. Redirecting to superadminlogin')
@@ -1136,7 +1084,6 @@ app.get('/studentmanager', (req, res) => {
                     console.error('Error fetching student data:', error)
                     res.status(500).render('error', { error: 'Error fetching student data' })
                 } else {
-                    console.log('Rendering studentmanager page successfully')
                     res.render('studentmanager', { results: results })
                 }
             }
@@ -1160,7 +1107,6 @@ app.post('/activatestudent/:s_id', (req, res) => {
                 console.error('Error activating student:', error)
                 res.status(500).send('Error activating student')
             } else {
-                console.log('Student activated successfully')
                 res.redirect('/studentmanager')
             }
         }
@@ -1177,7 +1123,6 @@ app.post('/deactivatestudent/:s_id', (req, res) => {
                 console.error('Error deactivating student:', error)
                 res.status(500).send('Error deactivating student')
             } else {
-                console.log('Student deactivated successfully')
                 res.redirect('/studentmanager')
             }
         }
@@ -1210,7 +1155,6 @@ app.post('/activateadmin/:a_id', (req, res) => {
                 console.error("Error activating admin:", error)
                 res.status(500).send("Error activating admin")
             } else {
-                console.log("Admin activated successfully")
                 res.redirect('/adminmanager')
             }
         }
@@ -1227,7 +1171,6 @@ app.post('/deactivateadmin/:a_id', (req, res) => {
                 console.error("Error deactivating admin:", error)
                 res.status(500).send("Error deactivating admin")
             } else {
-                console.log("Admin deactivated successfully")
                 res.redirect('/adminmanager')
             }
         }
@@ -1235,29 +1178,24 @@ app.post('/deactivateadmin/:a_id', (req, res) => {
 })
 
 app.get('/terms', (req, res) => {
-    console.log('Rendering terms page')
     res.render('terms')
 })
 
 app.get('/privacy', (req, res) => {
-    console.log('Rendering privacy page')
     res.render('privacy')
 })
 
 app.get('/codeofconduct', (req, res) => {
-    console.log('Rendering codeofconduct page')
     res.render('codeofconduct')
 })
 
 app.get('/logout', (req, res) => {
     req.session.destroy(() => {
-        console.log('Logging out and redirecting to /')
         res.redirect('/')
     })
 })
 
 app.get('*', (req, res) => {
-    console.log('Rendering pagenotfound page')
     res.render('pagenotfound')
 })
 
