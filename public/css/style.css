@@ -222,14 +222,14 @@ footer .copyright {
 #login-form .signInUpIMG, #signup .signInUpIMG, #adminsignup .signInUpIMG, #adminlogin .signInUpIMG, #superadminlogin .signInUpIMG{
     width: 32px;
 }
-#login-form, #signup, #adminsignup, #adminlogin, #superadminlogin {
+#login-form, #signup, #adminsignup, #adminlogin, #superadminlogin, #resetpassword, #verificationcode, #newpassword {
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     color: #900020;
 }
-#login-form form, #signup form, #adminsignup form, #adminlogin form, #superadminlogin form {
+#login-form form, #signup form, #adminsignup form, #adminlogin form, #superadminlogin form, #resetpassword form, #verificationcode form, #newpassword form {
     display: flex;
     flex-direction: column;
     padding: 20px;
@@ -237,7 +237,7 @@ footer .copyright {
     border-radius: 15px;
     box-shadow: 0 0 15px #9b0020e6;
 }
-#login-form input, #signup input, #adminsignup input, #adminlogin input, #superadminlogin input {
+#login-form input, #signup input, #adminsignup input, #adminlogin input, #superadminlogin input, #resetpassword input, #verificationcode input, #newpassword input {
     font-size: 25px;
     border: 2px solid #9b0020e6;
     border-radius: 10px;
@@ -248,7 +248,7 @@ footer .copyright {
     display: flex;
     justify-content: space-between;
 }
-#login-form input[type='submit'], #signup input[type='submit'], #adminsignup input[type='submit'], #adminlogin input[type='submit'], #superadminlogin input[type='submit'] {
+#login-form input[type='submit'], #signup input[type='submit'], #adminsignup input[type='submit'], #adminlogin input[type='submit'], #superadminlogin input[type='submit'], #resetpassword input[type='submit'], #verificationcode input[type='submit'], #newpassword input[type='submit'] {
     background-color: #900020;
     border: 1px solid #900020;
     color: #F6CBB7;
@@ -261,7 +261,7 @@ footer .copyright {
     font-size: 20px;
     transition: .4s;
 }
-#login-form input[type='submit']:hover, #signup input[type='submit']:hover, #adminsignup input[type='submit']:hover, #adminlogin input[type='submit']:hover, #superadminlogin input[type='submit']:hover {
+#login-form input[type='submit']:hover, #signup input[type='submit']:hover, #adminsignup input[type='submit']:hover, #adminlogin input[type='submit']:hover, #superadminlogin input[type='submit']:hover, #resetpassword input[type='submit']:hover, #verificationcode input[type='submit']:hover, #newpassword input[type='submit']:hover {
     cursor: pointer;
     transform: scale(1.05);
     transition: .4s;

@@ -224,6 +224,33 @@ app.post('/login', (req, res) => {
     })
 })
 
+// reset password
+app.get('/resetpassword', (req, res) => {
+    const user = {
+        email: ''
+    }
+    res.render('resetpassword', { error: false, user: user })
+})
+
+// verification code
+app.get('/verificationcode', (req, res) => {
+    const user = {
+        email: '',
+        code: ''
+    }
+    res.render('verificationcode', { error: false, user: user })
+})
+
+// newpassword code
+app.get('/newpassword', (req, res) => {
+    const user = {
+        password: '',
+        confirmPassword: ''
+    }
+    res.render('newpassword', { error: false, user: user })
+})
+
+
 // Home
 app.get('/home', (req, res) => {
     if (res.locals.isLogedIn && res.locals.sessionpin) {

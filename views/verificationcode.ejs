@@ -1,0 +1,17 @@
+<%- include('partials/header')%>
+    <%- include('partials/preloader')%>
+    <%- include('partials/nav') %>
+    <main id="verificationcode">
+        <form action="/verificationcode" method="post">
+            <h2>Password Reset</h2>
+            <p>Enter the verification code sent to your email address to reset your password.</p>
+            <% if(error) { %>
+                <p class="error"><%= message %></p>
+            <% } %>
+            <input type="email" name="email" id="" value="<%= user.email %>" placeholder="Email Address" required>
+            <input type="text" name="code" id="" value="<%= user.code %>" placeholder="Verification Code" required>
+            <input type="submit" value="Confirm">
+            <a href="/login" class="btn41-43 btn-41" >Back to Login</a>
+        </form>
+    </main>
+<%- include('partials/footer')%>
