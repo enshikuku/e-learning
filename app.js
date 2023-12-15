@@ -472,9 +472,10 @@ app.post('/editProfile/:s_id', upload1.single('profilePic'), (req, res) => {
 
 // Render chatroom
 app.get('/chatroom', (req, res) => {
+    let sql = "SELECT chatroom.*, e_student.name AS student_name, e_admininfo.name AS admin_name FROM chatroom LEFT JOIN e_student ON chatroom.s_id = e_student.s_id LEFT JOIN e_admininfo ON chatroom.a_id = e_admininfo.a_id WHERE  chatroom.isactive = 'active'"
     if (res.locals.sessionpin) {
         connection.query(
-            "SELECT chatroom.*, e_student.name AS student_name, e_admininfo.name AS admin_name FROM chatroom LEFT JOIN e_student ON chatroom.s_id = e_student.s_id LEFT JOIN e_admininfo ON chatroom.a_id = e_admininfo.a_id WHERE  chatroom.isactive = 'active'",
+            sql,
             [],
             (error, results) => {
                 if (error) {
@@ -488,7 +489,7 @@ app.get('/chatroom', (req, res) => {
         )
     } else if (res.locals.isLogedIn) {
         connection.query(
-            "SELECT chatroom.*, e_student.name AS student_name, e_admininfo.name AS admin_name FROM chatroom LEFT JOIN e_student ON chatroom.s_id = e_student.s_id LEFT JOIN e_admininfo ON chatroom.a_id = e_admininfo.a_id WHERE  chatroom.isactive = 'active'",
+            sql,
             [],
             (error, results) => {
                 if (error) {
@@ -587,22 +588,6 @@ app.post('/activatechats', (req, res) => {
     )
 })
 
-// Clear Messages
-app.post('/clearchats', (req, res) => {
-    connection.query(
-        'DELETE FROM chatroom WHERE c_id > ?',
-        [0],
-        (error, results) => {
-            if (error) {
-                console.error('Error clearing chatroom messages:', error)
-                res.status(500).send('Error clearing chatroom messages')
-            } else {
-                res.redirect('/chatroom')
-            }
-        }
-    )
-})
-
 // deactivate specific chat
 app.post('/deactivatemessage/:c_id', (req, res) => {
     connection.query (
@@ -612,22 +597,6 @@ app.post('/deactivatemessage/:c_id', (req, res) => {
             if (error) {
                 console.error("Error deactivating chat:", error)
                 res.status(500).send("Error deactivating chat")
-            } else {
-                res.redirect('/chatroom')
-            }
-        }
-    )
-})
-
-// Delete Specific Chat
-app.post('/deletemessage/:c_id', (req, res) => {
-    connection.query(
-        'DELETE FROM chatroom WHERE c_id = ?',
-        [req.params.c_id],
-        (error, results) => {
-            if (error) {
-                console.error('Error deleting chatroom message:', error)
-                res.status(500).send('Error deleting chatroom message')
             } else {
                 res.redirect('/chatroom')
             }
