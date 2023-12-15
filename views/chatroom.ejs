@@ -18,7 +18,7 @@
                     <div class="message">
                         <p class="messages"><%= result.chat %></p>
                         <% if(admin) { %>
-                            <form action="/deletemessage/<%= result.c_id %>" method="post">
+                            <form action="/deactivatemessage/<%= result.c_id %>" method="post">
                                 <input type="submit" value="Delete message" id="deletemessage">
                             </form>
                         <% } %>
@@ -26,8 +26,11 @@
                 </div>
             <% }) %>
             <% if(admin) { %>
-                <form action="/clearchats" method="post">
+                <form action="/deactivatechats" method="post">
                     <input type="submit" value="Clear all chats">
+                </form>
+                <form action="/activatechats" method="post">
+                    <input type="submit" value="Retreive all chats">
                 </form>
             <% } %>
         </div>

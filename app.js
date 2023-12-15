@@ -224,33 +224,6 @@ app.post('/login', (req, res) => {
     })
 })
 
-// reset password
-app.get('/resetpassword', (req, res) => {
-    const user = {
-        email: ''
-    }
-    res.render('resetpassword', { error: false, user: user })
-})
-
-// verification code
-app.get('/verificationcode', (req, res) => {
-    const user = {
-        email: '',
-        code: ''
-    }
-    res.render('verificationcode', { error: false, user: user })
-})
-
-// newpassword code
-app.get('/newpassword', (req, res) => {
-    const user = {
-        password: '',
-        confirmPassword: ''
-    }
-    res.render('newpassword', { error: false, user: user })
-})
-
-
 // Home
 app.get('/home', (req, res) => {
     if (res.locals.isLogedIn && res.locals.sessionpin) {
@@ -501,7 +474,7 @@ app.post('/editProfile/:s_id', upload1.single('profilePic'), (req, res) => {
 app.get('/chatroom', (req, res) => {
     if (res.locals.sessionpin) {
         connection.query(
-            'SELECT chatroom.*, e_student.name AS student_name, e_admininfo.name AS admin_name FROM chatroom LEFT JOIN e_student ON chatroom.s_id = e_student.s_id LEFT JOIN e_admininfo ON chatroom.a_id = e_admininfo.a_id',
+            "SELECT chatroom.*, e_student.name AS student_name, e_admininfo.name AS admin_name FROM chatroom LEFT JOIN e_student ON chatroom.s_id = e_student.s_id LEFT JOIN e_admininfo ON chatroom.a_id = e_admininfo.a_id WHERE  chatroom.isactive = 'active'",
             [],
             (error, results) => {
                 if (error) {
@@ -515,7 +488,7 @@ app.get('/chatroom', (req, res) => {
         )
     } else if (res.locals.isLogedIn) {
         connection.query(
-            'SELECT chatroom.*, e_student.name AS student_name, e_admininfo.name AS admin_name FROM chatroom LEFT JOIN e_student ON chatroom.s_id = e_student.s_id LEFT JOIN e_admininfo ON chatroom.a_id = e_admininfo.a_id',
+            "SELECT chatroom.*, e_student.name AS student_name, e_admininfo.name AS admin_name FROM chatroom LEFT JOIN e_student ON chatroom.s_id = e_student.s_id LEFT JOIN e_admininfo ON chatroom.a_id = e_admininfo.a_id WHERE  chatroom.isactive = 'active'",
             [],
             (error, results) => {
                 if (error) {
@@ -582,6 +555,38 @@ app.post('/sendmessage', (req, res) => {
     }
 })
 
+// deactivate all chats
+app.post('/deactivatechats', (req, res) => {
+    connection.query (
+        "UPDATE chatroom SET isactive = 'inactive'",
+        [],
+        (error, results) => {
+            if (error) {
+                console.error("Error deactivating chats:", error)
+                res.status(500).send("Error deactivating chats")
+            } else {
+                res.redirect('/chatroom')
+            }
+        }
+    )
+})
+
+// activate all chats
+app.post('/activatechats', (req, res) => {
+    connection.query (
+        "UPDATE chatroom SET isactive = 'active'",
+        [],
+        (error, results) => {
+            if (error) {
+                console.error("Error activating chats:", error)
+                res.status(500).send("Error activating chats")
+            } else {
+                res.redirect('/chatroom')
+            }
+        }
+    )
+})
+
 // Clear Messages
 app.post('/clearchats', (req, res) => {
     connection.query(
@@ -591,6 +596,22 @@ app.post('/clearchats', (req, res) => {
             if (error) {
                 console.error('Error clearing chatroom messages:', error)
                 res.status(500).send('Error clearing chatroom messages')
+            } else {
+                res.redirect('/chatroom')
+            }
+        }
+    )
+})
+
+// deactivate specific chat
+app.post('/deactivatemessage/:c_id', (req, res) => {
+    connection.query (
+        "UPDATE chatroom SET isactive = 'inactive' WHERE c_id = ?",
+        [req.params.c_id],
+        (error, results) => {
+            if (error) {
+                console.error("Error deactivating chat:", error)
+                res.status(500).send("Error deactivating chat")
             } else {
                 res.redirect('/chatroom')
             }
