@@ -258,8 +258,8 @@ app.get('/learn', (req, res) => {
 })
 
 // PDF view
-app.get('/viewpdf/:lr_id', (req, res) => {
-    const lr_id = req.params.lr_id
+app.get('/viewpdf/:resourceId', (req, res) => {
+    const resourceId = req.params.resourceId
 
     if (res.locals.isLogedIn) {
         connection.query(
@@ -270,7 +270,7 @@ app.get('/viewpdf/:lr_id', (req, res) => {
                     console.error('Error updating learn count for student:', error)
                     res.status(500).render('error', { error: 'Error updating learn count for student' })
                 } else {
-                    const newResult = results[0].learn + 1
+                    const newResult = results[0].learn + 5
                     connection.query(
                         'UPDATE e_student SET learn = ? WHERE s_id = ?',
                         [newResult, req.session.userID],
@@ -280,23 +280,22 @@ app.get('/viewpdf/:lr_id', (req, res) => {
                                 res.status(500).render('error', { error: 'Error updating opened count for learning resource' })
                             } else {
                                 connection.query(
-                                    'SELECT * FROM learningresources WHERE lr_id = ?',
-                                    [lr_id],
-                                    (error, results) => {
+                                    'UPDATE learningresources SET opened = ? WHERE lr_id = ?',
+                                    [newOpened, resourceId],
+                                    (error, updateResults) => {
                                         if (error) {
-                                            console.error('Error fetching learning resource for PDF view:', error)
-                                            res.status(500).render('error', { error: 'Error fetching learning resource for PDF view' })
+                                            console.error('Error updating opened count for learning resource:', error)
+                                            res.status(500).render('error', { error: 'Error updating opened count for learning resource' })
                                         } else {
-                                            const newOpened = results[0].opened + 1
                                             connection.query(
-                                                'UPDATE learningresources SET opened = ? WHERE lr_id = ?',
-                                                [newOpened, lr_id],
-                                                (error, results) => {
+                                                'SELECT * FROM learningresources WHERE lr_id = ?',
+                                                [resourceId],
+                                                (error, selectResults) => {
                                                     if (error) {
-                                                        console.error('Error updating opened count for learning resource:', error)
-                                                        res.status(500).render('error', { error: 'Error updating opened count for learning resource' })
+                                                        console.error('Error fetching learning resource for PDF view:', error)
+                                                        res.status(500).render('error', { error: 'Error fetching learning resource for PDF view' })
                                                     } else {
-                                                        res.render('pdf', { routes: results[0] })
+                                                        res.render('pdf', { resource: selectResults[0] })
                                                     }
                                                 }
                                             )
@@ -1152,7 +1151,7 @@ app.get('/adminmanager', (req, res) => {
             'SELECT * FROM e_admininfo',
             [],
             (error, results) => {
-                res.render('adminmanager', {results: results})
+                res.render('adminmanager', {error: false ,results: results})
             }
         )
     } else if (res.locals.isLogedIn) {
@@ -1164,34 +1163,62 @@ app.get('/adminmanager', (req, res) => {
 
 // activate admin
 app.post('/activateadmin/:a_id', (req, res) => {
-    connection.query (
-        "UPDATE e_admininfo SET isactive = 'active' WHERE a_id = ?",
-        [req.params.a_id],
-        (error, results) => {
-            if (error) {
-                console.error("Error activating admin:", error)
-                res.status(500).send("Error activating admin")
-            } else {
-                res.redirect('/adminmanager')
+    let adminPin = req.params.a_id
+    let sessionLiveAdmin = req.session.userID
+    console.log(adminPin)
+    console.log(sessionLiveAdmin)
+    if (parseInt(adminPin, 10) === sessionLiveAdmin) {
+        connection.query(
+            'SELECT * FROM e_admininfo',
+            [],
+            (error, results) => {
+                let message = 'You cannot activate yourself'
+                res.render('adminmanager', { error: true, message: message, results: results })
             }
-        }
-    )
+        )
+    } else {
+        connection.query (
+            "UPDATE e_admininfo SET isactive = 'active' WHERE a_id = ?",
+            [adminPin],
+            (error, results) => {
+                if (error) {
+                    console.error("Error activating admin:", error)
+                    res.status(500).send("Error activating admin")
+                } else {
+                    res.redirect('/adminmanager')
+                }
+            }
+        )
+    }
 })
 
 // deactivate admin
 app.post('/deactivateadmin/:a_id', (req, res) => {
-    connection.query (
-        "UPDATE e_admininfo SET isactive = 'inactive' WHERE a_id = ?",
-        [req.params.a_id],
-        (error, results) => {
-            if (error) {
-                console.error("Error deactivating admin:", error)
-                res.status(500).send("Error deactivating admin")
-            } else {
-                res.redirect('/adminmanager')
+    let adminPin = req.params.a_id
+    let sessionLiveAdmin = req.session.userID
+    if (parseInt(adminPin, 10) === sessionLiveAdmin) {
+        connection.query(
+            'SELECT * FROM e_admininfo',
+            [],
+            (error, results) => {
+                let message = 'You cannot deactivate yourself'
+                res.render('adminmanager', { error: true, message: message, results: results })
             }
-        }
-    )
+        )
+    } else {
+        connection.query (
+            "UPDATE e_admininfo SET isactive = 'inactive' WHERE a_id = ?",
+            [req.params.a_id],
+            (error, results) => {
+                if (error) {
+                    console.error("Error deactivating admin:", error)
+                    res.status(500).send("Error deactivating admin")
+                } else {
+                    res.redirect('/adminmanager')
+                }
+            }
+        )
+    }
 })
 
 app.get('/terms', (req, res) => {
