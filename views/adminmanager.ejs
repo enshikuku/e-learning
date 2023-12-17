@@ -3,10 +3,26 @@
     <%- include('partials/nav') %>
     <main id="adminviewresource" class="container">
         <div>
-            <div id="editmininav">
-                <h1>Total Admins: <%= results.length %></h1>
-                <a href="/studentmanager" class="btn41-43 btn-41"><img src="images/student.png" alt=""> student manager</a>
+            <h1>Admin Manager</h1>
+            <div class="manhead">
+                <div id="editmininav">
+                    <h1>Total Admins: <%= results.length %></h1>
+                    <a href="/studentmanager" class="btn41-43 btn-41"><img src="images/student.png" alt="">Go to student manager</a>
+                </div>
+                <table>
+                    <thead>
+                        <th colspan="2"><i>Color Code:</i></th>
+                        <tr>
+                            <th class="resourceactive">Active</th>
+                            <th class="resourceinactive">Inactive</th>
+                        </tr>
+                    </thead>
+                </table>
             </div>
+            <% if(error) { %>
+                <p class="error"><%= message %></p>
+            <% } %>
+            
             <% results.forEach(result => { %>
                 <div class="resourcesMain">
                     <div class="resourceid">
@@ -20,7 +36,7 @@
                             </form>
                         </div>
                     </div>
-                    <div class="resources">
+                    <div class="resources resource<%= result.isactive %>">
                         <div class="resourceInfo">
                             <p>Email: <%= result.email %></p>
                         </div>

@@ -7,34 +7,39 @@
             <h1>Progress Tab</h1>
         </div>
         
-    <div class="profile-container">
-        <img src="/images/imageuploads/<%= profile.profilePic %>" alt="Profile Picture" class="profile-picture">
-        <p><strong>Name:</strong> <%= profile.name %></p>
-        <p><strong>Admission Number:</strong> ES<%= profile.s_id %>-<%= profile.timestamp.toLocaleDateString("en-US", { year: "numeric" }).slice(-2) %></p>
-
-        <div class="progress-bar">
-            <div class="progress-bar-inner" style="width: <%= profile.learn %>%;"><%= profile.learn %>% Complete</div>
-        </div>
-
-        <a href="/editMyProfile" class="btn41-43 btn-41">Edit Profile</a>
-        
-        <div class="admin-remark">
-            <p>
-                <strong>Admin Remark:</strong>
-                <% if(profile.learn >= 15) { %> 
-                    Well done!&#x1F60A;
-                <% } else if(profile.learn >= 10) { %>
-                    Keep it up!&#x1F603;
-                <% } else if(profile.learn >= 5) { %>
-                    Work harder!&#x1F616;
-                <% } else if(profile.learn >= 2) { %>
-                    Be more serious!&#x1F612;
-                <% } else { %>
-                    Go and learn, dummy!&#128544;
+        <div class="profile-container">
+            <img src="/images/imageuploads/<%= profile.profilePic %>" alt="Profile Picture" class="profile-picture">
+            <p><strong>Name:</strong> <%= profile.name %></p>
+            <p><strong>Admission Number:</strong> ES<%= profile.s_id %>-<%= profile.timestamp.toLocaleDateString("en-US", { year: "numeric" }).slice(-2) %></p>
+            <div class="progress-bar">
+                <% if(profile.learn <= 0) { %> 
+                    <div class="progress-bar-inner">Not Began yet</div>
+                    <input type="hidden" name="learn" value="100" id="learn-value">
                 <% } %>
-            </p>
+                <div class="progress-bar-inner"><%= profile.learn %>%</div>
+                <input type="hidden" name="learn" value="<%= profile.learn %>" id="learn-value">
+            </div>
+            <a href="/editMyProfile" class="btn41-43 btn-41">Edit Profile</a>
+            <div class="admin-remark">
+                <p>
+                    <strong>Admin Remark:</strong>
+                    <% if(profile.learn >= 15) { %> 
+                        Well done!&#x1F60A;
+                    <% } else if(profile.learn >= 10) { %>
+                        Keep it up!&#x1F603;
+                    <% } else if(profile.learn >= 5) { %>
+                        Work harder!&#x1F616;
+                    <% } else if(profile.learn >= 2) { %>
+                        Be more serious!&#x1F612;
+                    <% } else { %>
+                        Go and learn, dummy!&#128544;
+                    <% } %>
+                </p>
+            </div>
         </div>
-    </div>
     </main>
     <%- include('partials/footermain') %>
+    <script>
+        document.querySelector('.progress-bar-inner').style.width = document.querySelector('#learn-value').value + "%";
+    </script>
 <%- include('partials/footer') %>
