@@ -327,6 +327,47 @@ footer .copyright {
     align-items: center;
     gap: 3px;
 }
+.profile-container {
+    max-width: 600px;
+    margin: 20px auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-picture {
+    max-width: 100px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
+
+.progress-bar {
+    width: 100%;
+    background-color: #ddd;
+    height: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.progress-bar-inner {
+    height: 100%;
+    background-color: #4caf50;
+    border-radius: 10px;
+    text-align: center;
+    line-height: 20px;
+    color: #fff;
+}
+
+.admin-remark {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f2f2f2;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
 .allcards {
     font-size: 22px;
     text-align: center;

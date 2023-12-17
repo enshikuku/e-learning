@@ -1,3 +1,4 @@
+
 <%- include('partials/header') %>
     <%- include('partials/preloader')%>
     <%- include('partials/nav') %>
@@ -5,13 +6,21 @@
         <div>
             <h1>Progress Tab</h1>
         </div>
-        <div id="progressProfile">
-            <img src="/images/imageuploads/<%= profile.profilePic %>" alt="progressProfileImg">
-            <h2><%= profile.name %></h2>
-            <h4>Admision Number: ES<%= profile.s_id %>-<%= profile.timestamp.toLocaleDateString("en-US", { year: "numeric" }).slice(-2) %></h4>
-            <h4>Learning Progress: <span id="learn"><%= profile.learn %></span></h4>
+        
+    <div class="profile-container">
+        <img src="/images/imageuploads/<%= profile.profilePic %>" alt="Profile Picture" class="profile-picture">
+        <p><strong>Name:</strong> <%= profile.name %></p>
+        <p><strong>Admission Number:</strong> ES<%= profile.s_id %>-<%= profile.timestamp.toLocaleDateString("en-US", { year: "numeric" }).slice(-2) %></p>
+
+        <div class="progress-bar">
+            <div class="progress-bar-inner" style="width: <%= profile.learn %>%;"><%= profile.learn %>% Complete</div>
+        </div>
+
+        <a href="/editMyProfile" class="btn41-43 btn-41">Edit Profile</a>
+        
+        <div class="admin-remark">
             <p>
-                <b>Remark:</b> 
+                <strong>Admin Remark:</strong>
                 <% if(profile.learn >= 15) { %> 
                     Well done!&#x1F60A;
                 <% } else if(profile.learn >= 10) { %>
@@ -25,7 +34,7 @@
                 <% } %>
             </p>
         </div>
-        <a href="/editMyProfile" class="btn41-43 btn-41" >Edit My Profile</a>
+    </div>
     </main>
     <%- include('partials/footermain') %>
 <%- include('partials/footer') %>
