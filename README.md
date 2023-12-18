@@ -119,7 +119,7 @@ We encourage you to submit pull requests for bug fixes, improvements, or new fea
 1. Fork the repository.
 2. Create a new branch: `git checkout -b feature-name`.
 3. Implement your changes and test thoroughly.
-4. Commit your changes: `git commit -m "Description of changes"`.
+4. Commit your changes: `git commit -m "Clear description of changes"`.
 5. Push your branch to your fork: `git push origin feature-name`.
 6. Open a pull request on the [GitHub repository](https://github.com/enshikuku/e-learning/pulls) with a clear title and description of your changes.
 
