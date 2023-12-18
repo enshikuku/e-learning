@@ -13,16 +13,16 @@
                     <thead>
                         <th colspan="2"><i>Color Code:</i></th>
                         <tr>
-                            <th class="resourceactive">Active</th>
-                            <th class="resourceinactive">Inactive</th>
+                            <th class="keyactive">Active</th>
+                            <th class="keyinactive">Inactive</th>
                         </tr>
                     </thead>
                 </table>
             </div>
             <% results.forEach(result => { %>
                 <div class="resourcesMain">
-                    <div class="resourceid">
-                        <p><%= results.indexOf(result)+1 %>. ES<%= result.s_id %>-<%= result.timestamp.toLocaleDateString("en-US", { year: "numeric" }).slice(-2) %> <%= result.name %></p>
+                    <div class="resourceid resource<%= result.isactive %>">
+                        <p><%= results.indexOf(result)+1 %>. ES<%= result.s_id %>-<%= result.timestamp.toLocaleDateString("en-US", { year: "numeric" }).slice(-2) %>: <%= result.name %>: <%= result.isactive %></p>
                         <div class="activate">
                             <form action="/activatestudent/<%= result.s_id %>" method="post">
                                 <input class="activateuser" type="submit" value="activate">
@@ -32,22 +32,22 @@
                             </form>
                         </div>
                     </div>
-                    <div class="resources  resource<%= result.isactive %>">
-                        <div class="resourceInfo">
-                            <p>Email: <%= result.email %></p>
+                    <div class="resources">
+                        <div class="resourceInfo progress-container-manager">
+                            <div class="progress-container">
+                                <div class="progress-label">Progress: <%= result.learn %>%</div>
+                                <progress class="progress-bar" value="<%= result.learn %>" max="100"><%= result.learn %></progress>
+                            </div>
                         </div>
                         <div class="resourceInfo">
-                            <p>Gender: <%= result.gender %></p>
+                            <p><b>Email: </b> <%= result.email %></p>
                         </div>
                         <div class="resourceInfo">
-                            <p><%= result.isactive %></p>
+                            <p><b>Gender:</b> <%= result.gender %></p>
                         </div>
                         <div class="resourceInfo">
-                            <p>Learn Progress: <%= result.learn %></p>
-                        </div>
-                        <div class="resourceInfo">
-                            <p>Joined on: <%= result.timestamp.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", hour: "numeric", minute: "numeric" }) %></p>
-                        </div>
+                            <p><b>Joined on:</b> <%= (new Date(result.timestamp)).toLocaleTimeString("en-US", { hour: "numeric", minute: "numeric", hour12: true }) + ' ' + (new Date(result.timestamp)).toLocaleDateString("en-US", { month: "numeric", day: "numeric", year: "numeric" }) %></p>
+                        </div>                          
                     </div>
                 </div>
             <% }) %>
