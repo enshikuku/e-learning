@@ -5,7 +5,13 @@
         <div>
             <div id="rscmininav">
                 <div id="editmininav"><h1>Total resources: <%= results.length %></h1></div>
-                <div id="editmininav"><a href="/addresource" class="btn41-43 btn-41">add resources</a></div>
+                <div id="editmininav">
+                    <a href="/addresource" class="btn41-43 btn-41">add resources</a>
+                    <form action="/activate" method="post">
+                        <input type="submit" class="restorersc" value="restore resources">
+                    </form>
+                </div>
+                
             </div>
             <% results.forEach(result => { %>
                 <div class="resourcesMain">
@@ -13,7 +19,7 @@
                         <p><%= results.indexOf(result)+1 %>. <%= result.rsctitle %></p>
                         <div class="edit-delete">
                             <a href="/editresource/<%= result.lr_id %>">Edit</a>
-                            <form action="/delete/<%= result.lr_id %>" method="post">
+                            <form action="/deactivate/<%= result.lr_id %>" method="post">
                                 <input type="submit" value="Delete">
                             </form>
                         </div>
@@ -40,7 +46,7 @@
                             </p>
                         </div>
                         <div class="resourceInfo">
-                            <p>Added by: <%= result.name.split(' ')[1] %> on <%= result.created_at.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", hour: "numeric", minute: "numeric" }) %></p>
+                            <p><b>Added by:</b> <%= result.name %> <b>On:</b> <%= (new Date(result.created_at)).toLocaleTimeString("en-US", { hour: "numeric", minute: "numeric", hour12: true }) + ' ' + (new Date(result.created_at)).toLocaleDateString("en-US", { month: "numeric", day: "numeric", year: "numeric" }) %></p>
                         </div>
                     </div>
                 </div>

@@ -240,8 +240,8 @@ app.get('/home', (req, res) => {
 app.get('/learn', (req, res) => {
     if (res.locals.isLogedIn) {
         connection.query(
-            'SELECT * FROM learningresources',
-            [],
+            'SELECT * FROM learningresources WHERE isactive = ?',
+            ['active'],
             (error, results) => {
                 if (error) {
                     console.error('Error fetching learning resources:', error)
@@ -280,22 +280,33 @@ app.get('/viewpdf/:resourceId', (req, res) => {
                                 res.status(500).render('error', { error: 'Error updating opened count for learning resource' })
                             } else {
                                 connection.query(
-                                    'UPDATE learningresources SET opened = ? WHERE lr_id = ?',
-                                    [newOpened, resourceId],
-                                    (error, updateResults) => {
+                                    'SELECT * FROM learningresources WHERE lr_id = ?',
+                                    [resourceId],
+                                    (error, selectResults) => {
                                         if (error) {
-                                            console.error('Error updating opened count for learning resource:', error)
-                                            res.status(500).render('error', { error: 'Error updating opened count for learning resource' })
+                                            console.error('Error fetching learning resource for PDF view:', error)
+                                            res.status(500).render('error', { error: 'Error fetching learning resource for PDF view' })
                                         } else {
                                             connection.query(
-                                                'SELECT * FROM learningresources WHERE lr_id = ?',
-                                                [resourceId],
-                                                (error, selectResults) => {
+                                                'UPDATE learningresources SET opened = ? WHERE lr_id = ?',
+                                                [selectResults[0].opened += 1, resourceId],
+                                                (error, updateResults) => {
                                                     if (error) {
-                                                        console.error('Error fetching learning resource for PDF view:', error)
-                                                        res.status(500).render('error', { error: 'Error fetching learning resource for PDF view' })
+                                                        console.error('Error updating opened count for learning resource:', error)
+                                                        res.status(500).render('error', { error: 'Error updating opened count for learning resource' })
                                                     } else {
-                                                        res.render('pdf', { resource: selectResults[0] })
+                                                        connection.query(
+                                                            'SELECT * FROM learningresources WHERE lr_id = ?',
+                                                            [resourceId],
+                                                            (error, selectResults) => {
+                                                                if (error) {
+                                                                    console.error('Error fetching learning resource for PDF view:', error)
+                                                                    res.status(500).render('error', { error: 'Error fetching learning resource for PDF view' })
+                                                                } else {
+                                                                    res.render('pdf', { resource: selectResults[0] })
+                                                                }
+                                                            }
+                                                        )
                                                     }
                                                 }
                                             )
@@ -797,8 +808,8 @@ app.get('/viewstudent', (req, res) => {
 app.get('/viewresource', (req, res) => {
     if (res.locals.sessionpin) {
         connection.query(
-            'SELECT learningresources.*, e_admininfo.name FROM learningresources LEFT JOIN e_admininfo ON learningresources.a_id = e_admininfo.a_id',
-            [],
+            'SELECT learningresources.*, e_admininfo.name FROM learningresources LEFT JOIN e_admininfo ON learningresources.a_id = e_admininfo.a_id WHERE learningresources.isactive = ?',
+            ['active'],
             (error, results) => {
                 if (error) {
                     console.error('Error fetching resource data:', error)
@@ -968,46 +979,33 @@ app.post('/editresource/:lr_id', upload2.single('route'), (req, res) => {
     }
 })
 
-// Delete resource
-app.post('/delete/:lr_id', (req, res) => {
+// Deactivate resource
+app.post('/deactivate/:lr_id', (req, res) => {
     connection.query(
-        'SELECT * FROM learningresources WHERE lr_id = ?',
-        [req.params.lr_id],
+        'UPDATE learningresources SET isactive = ? WHERE lr_id = ?',
+        ['inactive', req.params.lr_id],
         (error, results) => {
             if (error) {
-                console.error('Error fetching resource data:', error)
-                res.status(500).send('Error fetching resource data')
+                console.error('Error deactivating resource:', error)
+                res.status(500).send('Error deactivating resource')
             } else {
-                const filePath = `./public/pdfuploads/${results[0].route}`
-                
-                // Check if the file exists before attempting to delete
-                fs.access(filePath, fs.constants.F_OK, (accessError) => {
-                    if (accessError) {
-                        console.error('File does not exist. Redirecting to viewresource')
-                        res.redirect('/viewresource')
-                    } else {
-                        // File exists, proceed with deletion
-                        fs.unlink(filePath, (unlinkError) => {
-                            if (unlinkError) {
-                                console.error('Error deleting resource file:', unlinkError)
-                                res.status(500).send('Error deleting resource file')
-                            } else {
-                                connection.query(
-                                    'DELETE FROM learningresources WHERE lr_id = ?',
-                                    [req.params.lr_id],
-                                    (deleteError, deleteResults) => {
-                                        if (deleteError) {
-                                            console.error('Error deleting resource:', deleteError)
-                                            res.status(500).send('Error deleting resource')
-                                        } else {
-                                            res.redirect('/viewresource')
-                                        }
-                                    }
-                                )
-                            }
-                        })
-                    }
-                })
+                res.redirect('/viewresource')
+            }
+        }
+    )
+})
+
+// Activate all resources
+app.post('/activate', (req, res) => {
+    connection.query(
+        'UPDATE learningresources SET isactive = ?',
+        ['active'],
+        (error, results) => {
+            if (error) {
+                console.error('Error activating resource:', error)
+                res.status(500).send('Error activating resources')
+            } else {
+                res.redirect('/viewresource')
             }
         }
     )
@@ -1017,8 +1015,8 @@ app.post('/delete/:lr_id', (req, res) => {
 app.get('/viewremark', (req, res) => {
     if (res.locals.sessionpin) {
         connection.query(
-            'SELECT rt.*, e.name, lr.rsctitle FROM remarks_table AS rt JOIN e_student AS e ON rt.s_id = e.s_id JOIN learningresources AS lr ON rt.lr_id = lr.lr_id',
-            [],
+            'SELECT rt.*, e.name, lr.rsctitle FROM remarks_table AS rt JOIN e_student AS e ON rt.s_id = e.s_id JOIN learningresources AS lr ON rt.lr_id = lr.lr_id WHERE rt.isactive = ?',
+            ['active'],
             (error, results) => {
                 if (error) {
                     console.error('Error fetching remarks data:', error)
@@ -1037,8 +1035,8 @@ app.get('/viewremark', (req, res) => {
 // Handle remark
 app.post('/handle/:r_id', (req, res) => {
     connection.query(
-        'DELETE FROM remarks_table WHERE r_id = ?',
-        [req.params.r_id],
+        'UPDATE remarks_table SET isactive = ? WHERE r_id = ?',
+        ['inactive', req.params.r_id],
         (error, results) => {
             if (error) {
                 console.error('Error handling remark:', error)
