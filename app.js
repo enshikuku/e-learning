@@ -1163,8 +1163,6 @@ app.get('/adminmanager', (req, res) => {
 app.post('/activateadmin/:a_id', (req, res) => {
     let adminPin = req.params.a_id
     let sessionLiveAdmin = req.session.userID
-    console.log(adminPin)
-    console.log(sessionLiveAdmin)
     if (parseInt(adminPin, 10) === sessionLiveAdmin) {
         connection.query(
             'SELECT * FROM e_admininfo',
