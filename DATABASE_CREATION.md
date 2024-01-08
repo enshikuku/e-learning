@@ -3,7 +3,7 @@
 ## E-LEARN Database
 
 ```sql
-CREATE DATABASE e_learn_portal;
+CREATE DATABASE e_learn;
 ```
 
 ## e_admininfo Table

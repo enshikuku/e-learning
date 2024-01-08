@@ -3,7 +3,6 @@ import mysql from 'mysql'
 import session from 'express-session'
 import bcrypt from 'bcrypt'
 import multer from 'multer'
-import fs from 'fs'
 import dotenv from 'dotenv'
 
 const app = express()
@@ -12,7 +11,7 @@ const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'e_learn_portal'
+    database: 'e_learn'
 })
 
 const storage1 = multer.diskStorage({
